@@ -1,0 +1,17 @@
+A hó megsemmisülése: Ha a hókotró az út legszélső sávjából az út mellé tolja a havat, az egyszerűen eltűnik a memóriából, így nem kell a végtelen hótorlaszok fizikáját számolni.
+
+Hídról lehulló hó: A hídról letolt hó hozzáadódik az alsó út hórétegéhez, de nem okoz azonnali, fizikai balesetet a lent haladóknak, csupán a megnövekedett hóréteg miatt akadhatnak el a következő pillanatban.
+
+Jég és friss hó együttes takarítása: Ha a jégtörő által feltört jégre friss hó esik, a söprő fej egyetlen áthaladással, egyszerre képes eltakarítani mindkettőt, megspórolva a bonyolult rétegrend-kezelést.
+
+A nincstelen, elakadt hókotró esete: Ha egy hókotróból kifogy az üzemanyag/só, elakad a mély hóban, és a játékosnak nincs pénze, egy perc várakozás után a jármű automatikusan visszateleportál a bázisra a legolcsóbb fejjel, megelőzve a játék végleges elakadását.
+
+Beragadt civil (NPC) autók: A tartósan, legalább három percig elakadt vagy blokkolt NPC autók egyszerűen eltűnnek a térképről (despawn), majd a célpontjuknál később újra legenerálódnak, így nem dugítják be véglegesen a várost.
+
+Kikerülhetetlen balesetek: Ha két autó összecsúszik, és a mögöttük érkező forgalom nem tud szabályosan sávot váltani, a járművek egyszerűen megállnak és megvárják az akadály megszűnését jelentő egy percet, elkerülve a bonyolult útkereső algoritmusok írását.
+
+Bázisok és boltok sérthetetlensége: A boltok, a bázisok, valamint az ezeket a főhálózattal összekötő közvetlen útszakaszok immunisak a földrengésekre, garantálva, hogy a felszerelés-vásárlás mindig elérhető maradjon.
+
+A buszok végállomásának pusztulása: Ha a földrengések miatt egy busznak már csak egy vagy nulla végállomása marad a térképen, a játékos azonnal megkapja a "Game Over" képernyőt, mivel a feladatát fizikailag lehetetlen folytatni.
+
+Halál a hídon vagy a megsemmisülő úton: Ha egy játékos (busz vagy hókotró) alatt beomlik a híd vagy megsemmisül az út, nem esik ki véglegesen a játékból, hanem egy rövid időbüntetés letelte után visszateleportál a bázisra vagy az utolsó érvényes állomására.
