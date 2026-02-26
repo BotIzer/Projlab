@@ -1,0 +1,47 @@
+@startuml name hokotrok_finomitas
+skinparam packageStyle rectangle
+skinparam linetype ortho ' Egyenesebb, derékszögű nyilak az átláthatóságért
+
+rectangle " Hókotrók - Use Case kapcsolatok finomítása" {
+    
+    (Vásárlás) as UC_Buy
+    (Felszerelés vásárlása) as UC3
+    (Új hókotró vásárlása) as UC7
+    
+    UC3 -up-|> UC_Buy
+    UC7 -up-|> UC_Buy
+    
+    (Fej használata) as UC_HeadUse
+    (Sárkány fej használata) as UC9
+    (Sószóró fej alkalmazása) as UC11
+    
+    UC9 -up-|> UC_HeadUse
+    UC11 -up-|> UC_HeadUse
+
+    UC_Buy -[hidden]right- UC_HeadUse
+
+    (Hókotró útvonalának megadása) as UC1
+    (Buszvezető útvonalának megadása) as UC4
+    
+    (Kotrófej cseréje a hókotrón) as UC2
+    (Baleset jégpáncélon) as UC5
+    (Busz elakadása a magas hóban) as UC6
+    (Kereszteződésben való áthaladás) as UC10
+    (Útszakasz jegessé válása) as UC8
+
+    ' Kiterjesztések rendezése
+    UC10 .up.> UC1 : <<extend>>
+    UC10 .up.> UC4 : <<extend>>
+    
+    UC2 .right.> UC1 : <<extend>>
+    
+    UC5 .down.> UC4 : <<extend>>
+    UC6 .down.> UC4 : <<extend>>
+    
+    ' Környezeti feltételek
+    UC8 .right.> UC5 : <<extend>>
+    
+    UC3 .down.> UC9 : <<extend>>
+    UC3 .down.> UC11 : <<extend>>
+}
+@enduml

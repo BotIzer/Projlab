@@ -1,34 +1,48 @@
 @startuml name hokotrok
 left to right direction
 skinparam packageStyle rectangle
-skinparam shadowing false
-skinparam usecase {
-    BackgroundColor White
-    BorderColor Black
-    RectangleDisplay true
+
+actor "Takarító" as Cleaner
+actor "Buszvezető" as BusDriver
+actor "Rendszer" as System << Automatic >>
+
+rectangle "Hókotró" {
+    (Hókotró útvonalának megadása) as UC1
+    (Kotrófej cseréje a hókotrón) as UC2
+    (Felszerelés vásárlása) as UC3
+    (Új hókotró vásárlása) as UC7
+    (Sárkány fej használata) as UC9
+    (Sószóró fej alkalmazása) as UC11
+    (Buszvezető útvonalának megadása) as UC4
+    (Baleset jégpáncélon) as UC5
+    (Busz elakadása a magas hóban) as UC6
+    (Útszakasz jegessé válása) as UC8
+    (Kereszteződésben való áthaladás) as UC10
 }
 
-actor "Takarító" as T
-actor "Buszvezető" as B
+' Takarító kapcsolatok
+Cleaner -- UC1 
+Cleaner -- UC2 
+Cleaner -- UC3 
+Cleaner -- UC7 
+Cleaner -- UC9 
+Cleaner -- UC11 
+Cleaner -- UC10 
 
-rectangle "Hókotrók" {
-  usecase UC1 as "Hókotró útvonalának megadása"
-  usecase UC2 as "Kotrófej cseréje a hókotrón"
-  usecase UC3 as "Felszerelés vásárlása"
-  usecase UC4 as "Buszvezető útvonalának megadása"
-  usecase UC5 as "Egy másik jármű belecsúszik a buszvezető által vezetett buszba"
-  usecase UC6 as "A busz elakad a magas hóban"
+' Buszvezető kapcsolatok
+BusDriver -- UC4 
+BusDriver -- UC5 
+BusDriver -- UC6 
+BusDriver -- UC10 
 
-  ' Sima vonalak az aktorok és a fő Use Case-ek között
-  T -- UC1
-  T -- UC3
-  
-  ' A kotrófejet a kezdetihez képest expliciten akkor cseréljük ha a munka közben váratlan eset adódik (Extend)
-  UC1 <.. UC2 : <<extend>>
-
-  B -- UC4
-' Szintén váratlan esetek a busszal kapcsolatban ha elakad vagy becsúszik egy másik jármű (Extend)
-  UC4 <.. UC5 : <<extend>>
-  UC4 <.. UC6 : <<extend>>
-}
+' Rendszer kapcsolatok (másodlagos aktor)
+UC1 -- System 
+UC2 -- System 
+UC3 -- System 
+UC4 -- System 
+UC7 -- System 
+UC8 -- System 
+UC9 -- System 
+UC10 -- System 
+UC11 -- System
 @enduml
