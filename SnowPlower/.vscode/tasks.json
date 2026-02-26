@@ -5,6 +5,8 @@
 			"type": "shell",
 			"command": "javac",
 			"args": [
+				"--release",
+				"18",
 				"-sourcepath",
 				"./src/", 
 				"-d",
