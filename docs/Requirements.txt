@@ -1,0 +1,28 @@
+Funkcionális követelmények:
+    -(MUST) A rendszernek a város hálózatát, útjait relativan kell reprezentálnia tektonikus aktivitás miatt, gráf-szerű megjelenéssel (csomópontok, élek rendszere) : Hókotró útvonalának megadása
+    -(MUST) A rendszernek képesnek kell lennie a különböző tipusú útszakaszok reprezentálására, mint út, hid, alagút
+    -(MUST) A rendszernek szimulálnia kell egy folyamatos hóesésben lévő város forgalmát. : Havas útszakasz takaritása adott fejjel
+    -(MUST) A rendszernek kezelnie kell a hóréteg változását külső befolyásra, mint a letaposás, sószórás, kotrás, jégtörés. : Útszakasz jegessé válása, Busz elakadása magas hóban, Útvonal takaritása adott fejjel
+    -(MUST) A rendszernek képesnek kell lennie jeges, csúszós utak szimulációjára. : Baleset jégpáncélon
+    -(MUST) A rendszernek képesnek kell lennie dinamikusan, a csomópontok közti legrövidebb út meghatározására komplex tényezők figyelembevételével, például útlezárások, havas útom lassaban lehet utazni. : Kereszteződésen való áthaladás
+    -(MUST) A rendszernek baleseteket egy meghatározott idő után el kell tűntetnie automatikusan, a végzetes dugulás elkerülésének érdekében.
+    -(MUST) A rendszernek képesnek kell lennie dugulás esetén újratervezni a járművek útvonalát célpontjukhoz. : Kereszteződésen való áthaladás
+    -(MUST) A rendszernek felhasználói felületet kell biztositania a buszok, takaritók, hókotrók irányitásához. : Busz/Hókotró útvonalának megadása
+    -(MUST) A takaritókat, hókotrókak nem befojásolhatja az időjárási, balaeset végett létrejövő hátráltatások. : Hókotró útvonalának megadása
+    -(MUST) A rendszernek meg kell valósitania egy játékpénz-kezelési rendszert, melyben a megtisztitott utakért jár jutalom. : Hókotró útvonalának megadása 
+    -(MUST) A rendszernek meg kell valósitania egy játékboltot, amelyben a felhasználó vásárolhat segédeszközöket, új hókotrókat : Felszerelés vásárlása
+    -(MUST) A rendszernek kezelnie kell a felhasználó számára elérhető erőforrásokat (pénz, hókotró fejek, sószóró, kerozin). : Felszerelés vásárlása, Új hókotró vásárlása, Hókotró fej használata
+    -(SHOULD) A rendszernek lehetőséget kell nyujtania a hókotrók fejeinek cserélésre. : Kotrófej cseréje a hókotrón
+    -(MAY) A hókotrók akár út közben dinamikusan is cserélhetik fejeiket felhasználói beavatkozás hatására : Kotrófej cseréje a hókotrón
+    -(MUST) A hókotróknak kezdetben fel kell lenniük szerelve 1-1 hókotró és jégtörő fejjel
+    -(MUST) A rendszernek meg kell valósitania a különböző hókotró fejek különböző hatásait: Söprőfej: egy sávval jobbrább kotorja a havat, Hányó fej: egyből az út szélére hányja a havat, Jégtörő: jeges utat újra balesetmentesen járhatóvá teszi, Sószóró: meghatározott idő intervallumig megakadájózza a hó lerakódását az útszakaszon, Sárkányfek: biokerozin használatával hó, jég eltüntetésére egyaránt egység idő alatt képes. : Kotrófej használata
+Nem funkcionális:
+    -(SHOULD) Valósidejűség: a hó és forgalom szimulációjának, változásának valós időbeli reprezentációjának akadozásmentesnek kell lennie. 
+    -(SHOULD) A rendszernek jelentős működési, minőségi csökkenés nélkül kezelnie kell a nagy forgalmakat (több száz autós) is.
+    -(MUST) A rendszernek akadályoznia, korlátoznia kell a hó egyik sávból másikba kotrás általi jutalom elérését.
+Átadással kapcsolatos:
+    -(MUST) Felhasználónak rendelkeznie kell java 18-as verzióval, vagy nagyobbal.
+    -(MUST) A felhasználó a specifikáció telepitési szekciójában található módon helyezheti üzembe a programot.
+Erőforrással kapcsolats:
+    -(MUST) A program fejlesztéséhez a MAVEN keretrendszer standard projekt fájl struktúráját kell követni.
+    -(MUST) A program üzemeltetéséhez működő egér és billentyűzet szükséges.
