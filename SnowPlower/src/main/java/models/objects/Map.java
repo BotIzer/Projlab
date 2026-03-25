@@ -14,8 +14,8 @@ public class Map {
         console.info("->Map.addRoad(Road road)");
     }
 
-    public void addIntersections(Intersection Intersection) {
-        console.info("->Map.addIntersections(Intersection Intersection)");
+    public void addIntersections(Intersection intersection) {
+        console.info("->Map.addIntersections(Intersection intersection)");
     }
 
     public void addVehicle(IVehicle vehicle) {
