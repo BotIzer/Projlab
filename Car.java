@@ -1,4 +1,5 @@
 import java.util.logging.Logger;
+import main.java.models.interfaces.*;
 
 public class Car extends VehicleBase
 {

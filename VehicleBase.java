@@ -1,3 +1,4 @@
+import main.java.models.interfaces.*;
 import java.util.logging.Logger;
 
 public abstract class VehicleBase implements IVehicle

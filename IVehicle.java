@@ -1,3 +1,5 @@
+import main.java.models.interfaces.*;
+
 public interface IVehicle 
 {
     public void Move();
