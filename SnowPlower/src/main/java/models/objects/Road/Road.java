@@ -3,6 +3,6 @@ import java.util.List;
 import main.java.models.interfaces.ILane;
 
 public class Road {
-    List<ILane> lanes;
-    double length;
+    private List<ILane> lanes;
+    private double length;
 }
