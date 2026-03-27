@@ -1,4 +1,5 @@
 package main.java.models.objects.vehicles.heads;
+import main.java.models.interfaces.ILane;
 import main.java.models.objects.vehicles.SnowPlower;
 import java.util.logging.Logger;
 public class SalterHead extends AttachmentBase {

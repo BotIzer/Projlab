@@ -1,7 +1,6 @@
-package main.java.models.objects.Road;
+package main.java.models.objects.road;
 import java.util.logging.Logger;
 import java.util.List;
-import main.java.Main;
 import main.java.models.interfaces.*;
 
 public abstract class LaneBase implements ILane {
@@ -10,7 +9,7 @@ public abstract class LaneBase implements ILane {
     protected Intersection start;
     protected Intersection end;
     protected List<IVehicle> vehicles;
-    protected enum state{CLEAN, SNOWY, SNOWY_DEEP, BROKEN_ICE};
+    protected enum state{CLEAN, SNOWY, SNOWY_DEEP, BROKEN_ICE}
 
     @Override
     public boolean enterVehicle(IVehicle v) {

@@ -1,4 +1,4 @@
-package main.java.models.objects.Road;
+package main.java.models.objects.road; 
 import java.util.List;
 
 public class Intersection {

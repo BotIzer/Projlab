@@ -1,4 +1,7 @@
+package main.java.models.objects.vehicles;
 import main.java.models.interfaces.*;
+import main.java.models.objects.road.Intersection;
+
 import java.util.logging.Logger;
 
 public abstract class VehicleBase implements IVehicle

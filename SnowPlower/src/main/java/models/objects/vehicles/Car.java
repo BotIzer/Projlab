@@ -1,9 +1,10 @@
+package main.java.models.objects.vehicles;
 import java.util.logging.Logger;
-import main.java.models.interfaces.*;
+import main.java.models.objects.road.Intersection;
 
 public class Car extends VehicleBase
 {
-    private static final Logger logger = Logger.getLogger(VehicleBase.class.getName());
+    private static final Logger logger = Logger.getLogger(Car.class.getName());
 
     @Override
     public void Move()

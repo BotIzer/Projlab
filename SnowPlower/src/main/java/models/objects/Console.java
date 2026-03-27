@@ -2,7 +2,7 @@ package main.java.models.objects;
 import main.java.models.interfaces.ICommand;
 import java.util.logging.Logger;
 import main.java.models.interfaces.*;
-import main.java.models.objects.*;
+import main.java.models.objects.vehicles.SnowPlower;
 
 public class Console implements ICommand {
     static Logger logger = Logger.getLogger(Console.class.getName());

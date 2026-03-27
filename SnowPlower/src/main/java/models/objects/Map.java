@@ -3,6 +3,8 @@ package main.java.models.objects;
 import java.util.List;
 import java.util.logging.Logger;
 import main.java.models.interfaces.*;
+import main.java.models.objects.road.Intersection;
+import main.java.models.objects.road.Road;
 
 public class Map {
     static Logger console = Logger.getLogger(Map.class.getName());
