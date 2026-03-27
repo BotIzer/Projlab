@@ -3,17 +3,20 @@ package main.java.models.objects;
 import java.util.logging.Logger;
 
 public class FileHandler {
-    static Logger logger = Logger.getLogger(FileHandler.class.getName());
+
+    public FileHandler(){
+        Console.print("\t!<<create>>FileHandler");
+    }
 
     public boolean saveState(String loc) {
-        logger.info("->FileHandler.saveState(String loc)");
-        logger.info("<-FileHandler.saveState(String loc): true");
+        Console.print("\t->FileHandler.saveState(" + loc +")");
+        Console.print("\t<-FileHandler.saveState(" + loc +"): true");
         return true;
     }
 
     public boolean loadState(String loc) {
-        logger.info("->FileHandler.loadState(String loc)");
-        logger.info("<-FileHandler.loadState(String loc): true");
+        Console.print("\t->FileHandler.loadState(" + loc +")");
+        Console.print("\t<-FileHandler.loadState(" + loc +"): true");
         return true;
     }
 }
