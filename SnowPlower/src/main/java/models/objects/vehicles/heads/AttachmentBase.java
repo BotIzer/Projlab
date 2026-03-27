@@ -1,4 +1,5 @@
 package main.java.models.objects.vehicles.heads;
+import main.java.models.objects.vehicles.SnowPlower;
 import main.java.models.interfaces.*;
 public abstract class AttachmentBase implements ICleaning {
     protected double price;
@@ -9,6 +10,6 @@ public abstract class AttachmentBase implements ICleaning {
      * @param plow A hókotró példány, amelynek az erőforrásait (só, kerozin) használja a fej[cite: 191].
      */
     @Override
-    public abstract void Clean(ILane lane, SnowPlow plow);
+    public abstract void Clean(ILane lane, SnowPlower plow);
 
 }

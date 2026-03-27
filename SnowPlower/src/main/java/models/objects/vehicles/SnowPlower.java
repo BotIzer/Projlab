@@ -1,5 +1,6 @@
 package main.java.models.objects.vehicles;
 import java.util.List;
+import main.java.models.interfaces.ICleaning;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
@@ -11,16 +12,16 @@ public class SnowPlower extends VehicleBase {
     static Logger logger = Logger.getLogger(SnowPlower.class.getName());
 
     public void ChangeAttachment(ICleaning head) {
-        logger.info("-> SnowPlow.ChangeAttachment(ICleaning head)");
-        logger.info("<- SnowPlow.ChangeAttachment(ICleaning head)");
+        logger.info("-> SnowPlower.ChangeAttachment(ICleaning head)");
+        logger.info("<- SnowPlower.ChangeAttachment(ICleaning head)");
     }
 
     /**
      * Aktiválja a tisztítási folyamatot az aktuális sávon a jelenlegi fejjel.
      */
     public void PerformCleaning() {
-        logger.info("-> SnowPlow.PerformCleaning()");
-        logger.info("<- SnowPlow.PerformCleaning()");
+        logger.info("-> SnowPlower.PerformCleaning()");
+        logger.info("<- SnowPlower.PerformCleaning()");
     }
 
     /**
@@ -28,8 +29,8 @@ public class SnowPlower extends VehicleBase {
      * @return true, ha volt elég só, különben false.
      */
     public boolean ConsumeSalt(double amount) {
-        logger.info("-> SnowPlow.ConsumeSalt(double amount)");
-        logger.info("<- SnowPlow.ConsumeSalt(double amount)");
+        logger.info("-> SnowPlower.ConsumeSalt(double amount)");
+        logger.info("<- SnowPlower.ConsumeSalt(double amount)");
         return true;
     }
 
@@ -38,26 +39,26 @@ public class SnowPlower extends VehicleBase {
      * @return true, ha volt elég kerozin, különben false.
      */
     public boolean ConsumeBioKerosene(double amount) {
-        logger.info("-> SnowPlow.ConsumeBioKerosene(double amount)");
-        logger.info("<- SnowPlow.ConsumeBioKerosene(double amount)");
+        logger.info("-> SnowPlower.ConsumeBioKerosene(double amount)");
+        logger.info("<- SnowPlower.ConsumeBioKerosene(double amount)");
         return true;
     }
 
     @Override
     public void Move() {
-        logger.info("-> SnowPlow.Move()");
-        logger.info("<- SnowPlow.Move()");
+        logger.info("-> SnowPlower.Move()");
+        logger.info("<- SnowPlower.Move()");
     }
 
     @Override
     public void Stop() {
-        logger.info("-> SnowPlow.Stop()");
-        logger.info("<- SnowPlow.Stop()");
+        logger.info("-> SnowPlower.Stop()");
+        logger.info("<- SnowPlower.Stop()");
      }
 
     @Override
     public void Slipping() { 
-        logger.info("-> SnowPlow.Slipping()");
-        logger.info("<- SnowPlow.Slipping()");
+        logger.info("-> SnowPlower.Slipping()");
+        logger.info("<- SnowPlower.Slipping()");
      }
 }
