@@ -1,4 +1,5 @@
-import main.java.models.interfaces.*;
+package main.java.models.interfaces;
+import main.java.models.objects.road.Intersection;
 
 public interface IVehicle 
 {

@@ -1,4 +1,4 @@
-package main.java.models.objects.Road;
+package main.java.models.objects.road;
 
 public class BridgeLane extends LaneBase {
     @Override

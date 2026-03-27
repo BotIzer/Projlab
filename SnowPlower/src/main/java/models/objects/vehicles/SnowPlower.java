@@ -1,6 +1,8 @@
 package main.java.models.objects.vehicles;
 import java.util.List;
 import main.java.models.interfaces.ICleaning;
+import main.java.models.objects.road.Intersection;
+
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
@@ -61,4 +63,10 @@ public class SnowPlower extends VehicleBase {
         logger.info("-> SnowPlower.Slipping()");
         logger.info("<- SnowPlower.Slipping()");
      }
+
+    @Override
+    public void SetRoute(Intersection start, Intersection end) {
+        logger.info("-> SnowPlower.SetRoute(start, end)");
+        logger.info("<- SnowPlower.SetRoute(start, end)");
+    }
 }
