@@ -44,7 +44,8 @@ public class Main {
                 break;
         
             case "2":
-                
+                console.start();
+                console.initGeneral();
                 break;
             case "3":
                 

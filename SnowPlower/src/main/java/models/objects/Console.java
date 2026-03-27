@@ -3,7 +3,13 @@ import main.java.models.interfaces.ICommand;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+
 import main.java.models.interfaces.*;
+import main.java.models.objects.road.Intersection;
+import main.java.models.objects.road.Road;
+import main.java.models.objects.vehicles.Bus;
+import main.java.models.objects.vehicles.Car;
 import main.java.models.objects.vehicles.SnowPlower;
 
 public class Console implements ICommand {
@@ -11,6 +17,7 @@ public class Console implements ICommand {
     private Map map;
     private IVehicle selectedPlower;
     private FileHandler fileHandler;
+    private Shop shop;
     private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
     public static void print(String msg){
@@ -29,11 +36,10 @@ public class Console implements ICommand {
     @Override
     public boolean start() {
         print("-> Console.start()");
-        /*
         player = new Player();
         map = new Map();
-         */
         fileHandler = new FileHandler();
+        shop = new Shop();
         print("<- Console.start():true");
         return true;
     }
@@ -104,6 +110,26 @@ public class Console implements ICommand {
         print("-> Console.printInventory()");
         print("<- Console.printInventory():String");
         return "";
+    }
+    @Override
+    public void initGeneral(){
+        Console.print("----------------Initialization--------------");
+        ArrayList<ILane> lanes = new ArrayList<>();
+        Road r = new Road(lanes, 5);
+        ArrayList<Intersection> intersections = (ArrayList<Intersection>)r.initGeneral();
+        map.addRoad(r);
+        for (Intersection intersection : intersections) {
+            map.addIntersections(intersection);
+        }
+        SnowPlower sp = new SnowPlower(45.0);
+        Car c = new Car(50.0);
+        ArrayList<Road> route = new ArrayList<>();
+        Bus b = new Bus(40.0, "1", route);  
+        map.addVehicle(sp);
+        map.addVehicle(c);
+        map.addVehicle(b);
+        map.initGeneral(); 
+        Console.print("------------End of Initialization-----------");
     }
 
 

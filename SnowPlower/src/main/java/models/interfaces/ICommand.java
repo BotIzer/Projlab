@@ -12,4 +12,5 @@ public interface ICommand {
    boolean changeEquipment(ICleaning newEq);
    String printVehicles();
    String printInventory();
+   void initGeneral();
 }
