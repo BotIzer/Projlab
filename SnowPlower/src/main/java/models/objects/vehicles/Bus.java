@@ -21,19 +21,21 @@ public class Bus extends VehicleBase {
         this.line = route;
     }
     public void Move() {
-        Console.print("-> Bus.Move()");
-        Console.print("<- Bus.Move()");
+        Console.print("\t\t-> Bus.Move()");
+        Console.print("\t\t<- Bus.Move()");
+        Stop();
     }
     public void Stop() {
-        Console.print("-> Bus.Stop()");
-        Console.print("<- Bus.Stop()");
+        Console.print("\t\t\t-> Bus.Stop()");
+        Console.print("\t\t\t<- Bus.Stop()");
     }
     public void Slipping() {
-        Console.print("-> Bus.Slipping()");
-        Console.print("<- Bus.Slipping()");
+        Console.print("\t\t-> Bus.Slipping()");
+        Console.print("\t\t<- Bus.Slipping()");
     }
     public void SetRoute(Intersection start, Intersection end) {
-        Console.print("-> Bus.SetRoute(Intersection start, Intersection end)");
-        Console.print("<- Bus.SetRoute(Intersection start, Intersection end)");
+        Console.print("\t-> Bus.SetRoute(Intersection start, Intersection end)");
+        Move();
+        Console.print("\t<- Bus.SetRoute(Intersection start, Intersection end)");
     }
 }

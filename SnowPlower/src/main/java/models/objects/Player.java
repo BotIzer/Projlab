@@ -13,7 +13,7 @@ public class Player {
     private List<ICleaning> heads;
 
     public Player(){
-        money = 0;
+        money = 500;
         plowers = new ArrayList<>();
         buses = new ArrayList<>();
         heads = new ArrayList<>();
@@ -39,5 +39,23 @@ public class Player {
         //sp.ChangeAttachment(null);
         Console.print("<-Player.changeEquipment(sp): true");
         return true;
+    }
+    public void printInventory(){
+        Console.print("-----------Inventory---------");
+        Console.print("Money:" + money);
+        Console.print("Plowers: " + plowers.size());
+        Console.print("Heads: " + heads.size());
+    }
+    public void updateInventory(List<SnowPlower> lsp, List<ICleaning> lh){
+        Console.print("\t->Player.updateInventory()");
+        Console.print("\t<-Player.updateInventory()");
+    }
+    public boolean removeFunds(int n){
+        if (n <= money) {
+           money -= n;
+           return true; 
+        } else {
+            return false;
+        }
     }
 }

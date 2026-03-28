@@ -1,16 +1,18 @@
 package main.java.models.interfaces;
 
-import main.java.models.objects.vehicles.SnowPlower;
 
 public interface ICommand {
    boolean start();
    boolean end();
    boolean saveState();
-   boolean setRoute(IVehicle vehicle);
-   boolean selectPlower(SnowPlower sp);
+   boolean loadState();
+   boolean setRoute();
+   boolean selectVehicle();
    boolean buyEquipment();
-   boolean changeEquipment(ICleaning newEq);
+   boolean changeEquipment();
    String printVehicles();
    String printInventory();
    void initGeneral();
+   void initIcy();
+   void loop();
 }

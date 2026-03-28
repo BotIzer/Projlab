@@ -20,27 +20,28 @@ public class SnowPlower extends VehicleBase {
         Console.print("\t!<<create>>SnowPlower");
         heads.add(new BlowerHead());
         heads.add(new IceBreakerHead());
-    
+        currentHead = heads.get(0);
     }
 
     public void attach(ICleaning newHead){
-        Console.print("-> SnowPlower.attach(newHead)");
+        Console.print("\t-> SnowPlower.attach(newHead)");
         heads.add(newHead);
-        Console.print("<- SSnowPlower.attach(newHead)");
+        Console.print("\t<- SSnowPlower.attach(newHead)");
     }
 
     public void ChangeAttachment(ICleaning head) {
-        Console.print("-> SnowPlower.ChangeAttachment(head)");
+        Console.print("\t-> SnowPlower.ChangeAttachment(head)");
         currentHead = head;
-        Console.print("<- SnowPlower.ChangeAttachment(head)");
+        Console.print("\t<- SnowPlower.ChangeAttachment(head)");
     }
 
     /**
      * Aktiválja a tisztítási folyamatot az aktuális sávon a jelenlegi fejjel.
      */
     public void PerformCleaning() {
-        Console.print("-> SnowPlower.PerformCleaning()");
-        Console.print("<- SnowPlower.PerformCleaning()");
+        Console.print("\t\t\t-> SnowPlower.PerformCleaning()");
+        currentHead.Clean(lane, null);
+        Console.print("\t\t\t<- SnowPlower.PerformCleaning()");
     }
 
     /**
@@ -48,8 +49,8 @@ public class SnowPlower extends VehicleBase {
      * @return true, ha volt elég só, különben false.
      */
     public boolean ConsumeSalt(double amount) {
-        Console.print("-> SnowPlower.ConsumeSalt(amount)");
-        Console.print("<- SnowPlower.ConsumeSalt(amount)");
+        Console.print("\t-> SnowPlower.ConsumeSalt(amount)");
+        Console.print("\t<- SnowPlower.ConsumeSalt(amount)");
         return true;
     }
 
@@ -58,32 +59,34 @@ public class SnowPlower extends VehicleBase {
      * @return true, ha volt elég kerozin, különben false.
      */
     public boolean ConsumeBioKerosene(double amount) {
-        Console.print("-> SnowPlower.ConsumeBioKerosene(amount)");
-        Console.print("<- SnowPlower.ConsumeBioKerosene(amount)");
+        Console.print("\t-> SnowPlower.ConsumeBioKerosene(amount)");
+        Console.print("\t<- SnowPlower.ConsumeBioKerosene(amount)");
         return true;
     }
 
     @Override
     public void Move() {
-        Console.print("-> SnowPlower.Move()");
-        Console.print("<- SnowPlower.Move()");
+        Console.print("\t\t-> SnowPlower.Move()");
+        PerformCleaning();
+        Console.print("\t\t<- SnowPlower.Move()");
     }
 
     @Override
     public void Stop() {
-        Console.print("-> SnowPlower.Stop()");
-        Console.print("<- SnowPlower.Stop()");
+        Console.print("\t-> SnowPlower.Stop()");
+        Console.print("\t<- SnowPlower.Stop()");
      }
 
     @Override
     public void Slipping() { 
-        Console.print("-> SnowPlower.Slipping()");
-        Console.print("<- SnowPlower.Slipping()");
+        Console.print("\t-> SnowPlower.Slipping()");
+        Console.print("\t<- SnowPlower.Slipping()");
      }
 
     @Override
     public void SetRoute(Intersection start, Intersection end) {
-        Console.print("-> SnowPlower.SetRoute(start, end)");
-        Console.print("<- SnowPlower.SetRoute(start, end)");
+        Console.print("\t-> SnowPlower.SetRoute(start, end)");
+        Move();
+        Console.print("\t<- SnowPlower.SetRoute(start, end)");
     }
 }

@@ -1,5 +1,6 @@
 package main.java.models.objects.road;
 
+import main.java.models.interfaces.IVehicle;
 import main.java.models.objects.Console;
 
 public class RoadLane extends LaneBase {

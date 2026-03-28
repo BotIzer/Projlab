@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 import main.java.models.interfaces.*;
 import main.java.models.objects.Console;
+import main.java.models.objects.vehicles.*;;
 
 public abstract class LaneBase implements ILane {
 
@@ -17,7 +18,7 @@ public abstract class LaneBase implements ILane {
         end = e;
     }
 
-    @Override
+    //@Override
     public boolean enterVehicle(IVehicle v) {
         Console.print("->LaneBase.enterVehicle(v)");
         vehicles.add(v);
@@ -34,9 +35,9 @@ public abstract class LaneBase implements ILane {
     }
 
     @Override
-    public boolean changeState() {
-        Console.print("->LaneBase.changeState()");
-        Console.print("<-LaneBase.changeState()");
+    public boolean changeState(String ns) {
+        Console.print("->LaneBase.changeState(" + ns + ")");
+        Console.print("<-LaneBase.changeState(" + ns + "): true");
         return true;
     }
 

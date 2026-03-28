@@ -30,6 +30,7 @@ public class Car extends VehicleBase
     public void Slipping()
     {
         Console.print("-> Car.Slipping()");
+        lane.changeState("blocked");
         Console.print("<- Car.Slipping(): void");
     }
 
@@ -37,6 +38,7 @@ public class Car extends VehicleBase
     public void SetRoute(Intersection start, Intersection end)
     {
         Console.print("-> Car.SetRoute(Intersection start, Intersection end)");
+        Move();
         Console.print("<- Car.SetRoute(Intersection start, Intersection end)");
     }
 }

@@ -43,5 +43,7 @@ public abstract class VehicleBase implements IVehicle
         Console.print("-> VehicleBase.SetRoute(Intersection start, Intersection end)");
         Console.print("<- VehicleBase.SetRoute(Intersection start, Intersection end): void");
     }
-
+    public void setLane(ILane l){
+        lane = l;
+    }
 }

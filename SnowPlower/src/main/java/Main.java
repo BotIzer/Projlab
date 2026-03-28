@@ -17,12 +17,9 @@ public class Main {
                 Console.print("Select a use-case to run!");
                 Console.print("(1)Load game from state");
                 Console.print("(2)Save game state");
-                Console.print("(3)Set Route of Vehicle");
-                Console.print("(4)Clean Route");
-                Console.print("(5)Cycle snow state");
-                Console.print("(6)Road becomes Icy");
-                Console.print("(7)Collision of two Cars");
-                Console.print("(8)Collision of Car and Bus");
+                Console.print("(3)Set Route of Vehicle (and Clean if selected is a SnowPlower)");
+                Console.print("(4)Collision of two Cars");
+                Console.print("(5)Buy Equipment");
                 Console.print("""
                 -----------------
                 (x)Exit
@@ -30,7 +27,7 @@ public class Main {
                 line = br.readLine();
                 handleInput(line);
 
-            }   while (line.equals("x"));  
+            }   while (!line.equals("x"));  
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -42,29 +39,23 @@ public class Main {
                 console.start();
                 console.saveState();
                 break;
-        
             case "2":
                 console.start();
-                console.initGeneral();
+                console.loadState();
                 break;
             case "3":
-                
+                console.start();
+                console.initGeneral();
+                console.setRoute();
                 break;
             case "4":
-                
+                console.start();
+                console.initIcy(); 
                 break;
             case "5":
-                
-                break;
-            case "6":
-                
-                break;
-            case "7":
-                
-                break;
-            case "8":
-                    
-            break;
+                console.start();
+                console.buyEquipment();
+                break; 
             default:
                 break;
         }

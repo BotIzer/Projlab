@@ -2,10 +2,9 @@ package main.java.models.objects;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 import main.java.models.interfaces.*;
-import main.java.models.objects.road.Intersection;
-import main.java.models.objects.road.Road;
+import main.java.models.objects.road.*;
+import main.java.models.objects.vehicles.VehicleBase;
 
 public class Map {
     private List<Road> roads;
@@ -36,10 +35,46 @@ public class Map {
         vehicles.add(vehicle);
         Console.print("<-Map.addVehicle(vehicle)");
     }
+    public void listVehicles(){
+        for (int i = 0; i < vehicles.size(); i++) {
+            String out = "(" + i + ")" + " " + vehicles.get(i).toString();
+            Console.print(out);
+        }
+    }
+    public void loop(){
+        Console.print("-> Map.loop()");
+        for (IVehicle vehicle : vehicles) {
+            vehicle.Move();
+        }
+        for (Road r : roads) {
+            for (ILane lane : r.getLanes()) {
+                lane.changeState("snowy");
+            }
+        }
+        Console.print("<- Map.loop");
+    }
+    public List<IVehicle> getVehicles(){return vehicles;}
     public void initGeneral(){
         ArrayList<ILane> lanes = (ArrayList<ILane>)roads.getFirst().getLanes();
-        lanes.get(0).enterVehicle(vehicles.get(0));
-        lanes.get(1).enterVehicle(vehicles.get(1));
-        lanes.get(2).enterVehicle(vehicles.get(2));
+        
+        for (int i = 0; i < vehicles.size(); i++) {
+            ILane lane = lanes.get(i);
+            VehicleBase vehicle = (VehicleBase)vehicles.get(i);
+            lane.enterVehicle(vehicle);
+            vehicle.setLane(lane);
+        }
+    }
+    public void initIcy(){
+        ArrayList<ILane> lanes = (ArrayList<ILane>)roads.getFirst().getLanes();
+        for (int i = 0; i < vehicles.size(); i++) {
+            ILane lane = lanes.get(0);
+            VehicleBase vehicle = (VehicleBase)vehicles.get(i);
+            lane.enterVehicle(vehicle);
+            vehicle.setLane(lane);
+        }
+        vehicles.get(2).Slipping();
+        vehicles.get(2).Stop();
+        vehicles.get(1).Stop();
+
     }
 }
