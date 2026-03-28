@@ -97,7 +97,7 @@ public class Map {
      * Jeges út szimulációjának inicializálása.
      */
     public void initIcy(){
-        ArrayList<ILane> lanes = (ArrayList<ILane>)roads.getFirst().getLanes();
+        ArrayList<ILane> lanes = (ArrayList<ILane>)roads.get(0).getLanes();
         for (int i = 0; i < vehicles.size(); i++) {
             ILane lane = lanes.get(0);
             VehicleBase vehicle = (VehicleBase)vehicles.get(i);
