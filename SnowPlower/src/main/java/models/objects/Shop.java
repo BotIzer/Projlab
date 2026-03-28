@@ -65,7 +65,10 @@ public class Shop {
         }
         if (p.removeFunds(cost)) {
             p.updateInventory(lsp, lh);
-        }else Console.print("Insufficient funds");
+        }else  {
+            Console.print("Insufficient funds");
+            res = false;
+        }
         String out = "<-Shop.ProcessPurchase(buyer, item): " + res;
         Console.print(out);
         return res;
