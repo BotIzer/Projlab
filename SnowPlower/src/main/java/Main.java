@@ -6,9 +6,14 @@ import java.io.InputStreamReader;
 import main.java.models.objects.Console;
 import main.java.models.interfaces.ICommand;
 
+/**
+ * A program fő belépési pontja, amely a felhasználói felületet és a fő menüt kezeli.
+ * Felelős a megfelelő használati esetek elindításáért.
+ */
 public class Main {
         
     private static ICommand console = new Console();
+
     public static void main(String[] args) {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         String line;

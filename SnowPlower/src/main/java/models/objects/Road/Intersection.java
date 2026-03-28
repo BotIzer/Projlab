@@ -4,6 +4,9 @@ import java.util.List;
 
 import main.java.models.objects.Console;
 
+/**
+ * A forgalmi csomópontokat kezeli, ahol az utak és a sávok találkoznak.
+ */
 public class Intersection {
     private List<Road> roads;
 

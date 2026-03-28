@@ -2,6 +2,10 @@ package main.java.models.objects.vehicles.heads;
 import main.java.models.interfaces.ILane;
 import main.java.models.objects.Console;
 import main.java.models.objects.vehicles.SnowPlower;
+
+/**
+ * A friss hó vagy feltört jég seprésére tervezett kefés tisztítófej.
+ */
 public class SweeperHead extends AttachmentBase {
     @Override
     public void Clean(ILane lane, SnowPlower plow) {

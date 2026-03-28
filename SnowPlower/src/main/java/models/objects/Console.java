@@ -1,6 +1,4 @@
 package main.java.models.objects;
-import main.java.models.interfaces.ICommand;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -12,6 +10,9 @@ import main.java.models.objects.vehicles.Bus;
 import main.java.models.objects.vehicles.Car;
 import main.java.models.objects.vehicles.SnowPlower;
 
+/**
+ * A felhasználói interakciókért és a parancsok feldolgozásáért felelős központi vezérlő osztály.
+ */
 public class Console implements ICommand {
     private Player player;
     private Map map;

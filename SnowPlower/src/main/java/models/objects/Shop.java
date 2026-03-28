@@ -15,6 +15,9 @@ import main.java.models.objects.vehicles.heads.IceBreakerHead;
 import main.java.models.objects.vehicles.heads.SalterHead;
 import main.java.models.objects.vehicles.heads.SweeperHead;
 
+/**
+ * A játékon belüli áruházat reprezentálja, ahol a játékos új eszközöket és járműveket vásárolhat.
+ */
 public class Shop {
 
     private int cost = 0;
@@ -36,6 +39,11 @@ public class Shop {
         );
     }
 
+    /**
+     * Lebonyolítja a tranzakciót és visszaadja annak sikerességét.
+     * @param p az adott játékos
+     * @return tranzakció sikeressége
+     */
     public boolean processPurchase(Player p) {
         cost = 0;
         Console.print("->Shop.ProcessPurchase(buyer, item)");
@@ -73,6 +81,14 @@ public class Shop {
         Console.print(out);
         return res;
     }
+    
+    /**
+     * Létrehoz és visszaad egy adott típusú és mennyiségű hóeltakarító felszerelést tartalmazó listát,
+     * valamint megnöveli az összesített költséget (cost) a vásárlás értékével.
+     * @param id a kiválasztott eszköz azonosítója
+     * @param n a vásárolni kivánt darabszám
+     * @return az újonnan létrehozott eszközöket tartalmazó lista
+     */
     private List<ICleaning> handleInput(int id, int n){
         ArrayList<ICleaning> lh = new ArrayList<>();
         if(id == 0) return lh;

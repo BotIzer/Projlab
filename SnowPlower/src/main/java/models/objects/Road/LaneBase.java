@@ -3,8 +3,11 @@ import java.util.ArrayList;
 import java.util.List;
 import main.java.models.interfaces.*;
 import main.java.models.objects.Console;
-import main.java.models.objects.vehicles.*;;
+import main.java.models.objects.vehicles.*;
 
+/**
+ * Absztrakt alapsztályként elvégzi a specifikus sávok közös, mindennapi adminisztrációját.
+ */
 public abstract class LaneBase implements ILane {
 
     protected Intersection start;
@@ -12,7 +15,7 @@ public abstract class LaneBase implements ILane {
     protected List<IVehicle> vehicles;
     protected enum state{CLEAN, SNOWY, SNOWY_DEEP, BROKEN_ICE}
 
-    protected LaneBase(Intersection s, Intersection e){
+    protected LaneBase(Intersection s, Intersection e) {
         vehicles = new ArrayList<>();
         start = s;
         end = e;

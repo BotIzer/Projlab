@@ -3,10 +3,10 @@ import main.java.models.interfaces.*;
 import main.java.models.objects.Console;
 import main.java.models.objects.road.Intersection;
 
-
-public abstract class VehicleBase implements IVehicle
-{
-
+/**
+ * Minden jármű absztrakt alaposztálya, amely definiálja az alapvető mozgási képességeket és a környezettel való kapcsolatot.
+ */
+public abstract class VehicleBase implements IVehicle {
     protected double CurrentPosition;
     protected ILane lane;
     protected double baseSpeed;

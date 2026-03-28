@@ -6,9 +6,13 @@ import main.java.models.objects.Console;
 import main.java.models.objects.road.Intersection;
 import main.java.models.objects.road.Road;
 
+/**
+ * A közúti forgalomban részt vevő tömegközlekedési jármű, amely meghatározott útvonalon halad végig.
+ */
 public class Bus extends VehicleBase {
     private String LineName;
     private List<Road> line;
+
     /**
      * A Bus osztály konstruktora.
      * @param lineName A járat neve.
@@ -20,19 +24,23 @@ public class Bus extends VehicleBase {
         this.LineName = lineName;
         this.line = route;
     }
+    
     public void Move() {
         Console.print("\t\t-> Bus.Move()");
         Console.print("\t\t<- Bus.Move()");
         Stop();
     }
+
     public void Stop() {
         Console.print("\t\t\t-> Bus.Stop()");
         Console.print("\t\t\t<- Bus.Stop()");
     }
+
     public void Slipping() {
         Console.print("\t\t-> Bus.Slipping()");
         Console.print("\t\t<- Bus.Slipping()");
     }
+
     public void SetRoute(Intersection start, Intersection end) {
         Console.print("\t-> Bus.SetRoute(Intersection start, Intersection end)");
         Move();

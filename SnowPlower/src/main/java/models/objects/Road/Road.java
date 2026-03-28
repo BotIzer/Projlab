@@ -4,16 +4,21 @@ import java.util.List;
 import main.java.models.interfaces.ILane;
 import main.java.models.objects.Console;
 
+/**
+ * Egy konkrét útszakaszt reprezentál az úthálózatban.
+ */
 public class Road {
     private List<ILane> lanes;
     private double length;
 
-    public Road(List<ILane> ls, double len){
+    public Road(List<ILane> ls, double len) {
         Console.print("\t!<<create>>Road");
         lanes = ls;
         length = len;
     }
-    public List<ILane> getLanes(){return lanes;}
+
+    public List<ILane> getLanes(){ return lanes; }
+
     public List<Intersection> initGeneral(){
         ArrayList<Intersection> intersections = new ArrayList<>();
         Intersection istart = new Intersection(this);

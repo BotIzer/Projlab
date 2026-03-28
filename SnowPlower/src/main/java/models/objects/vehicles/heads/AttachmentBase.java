@@ -1,9 +1,11 @@
 package main.java.models.objects.vehicles.heads;
 import main.java.models.objects.Console;
 import main.java.models.objects.vehicles.SnowPlower;
-
-
 import main.java.models.interfaces.*;
+
+/**
+ * Ez az absztrakt osztály szolgál alapul minden hóeltakarító eszköz (fej) számára.
+ */
 public abstract class AttachmentBase implements ICleaning {
     protected double price;
     /**

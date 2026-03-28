@@ -9,7 +9,9 @@ import main.java.models.objects.vehicles.heads.IceBreakerHead;
 
 import java.util.ArrayList;
 
-
+/**
+ * Speciális munkagép (hókotró), amely a sávok tisztítását végzi a felszerelt fejek segítségével.
+ */
 public class SnowPlower extends VehicleBase {
     
     private List<ICleaning> heads = new ArrayList<>();

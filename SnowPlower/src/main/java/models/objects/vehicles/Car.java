@@ -4,6 +4,9 @@ import main.java.models.interfaces.ILane;
 import main.java.models.objects.Console;
 import main.java.models.objects.road.Intersection;
 
+/**
+ * A város normál forgalmát adó, önálló célokkal rendelkező jármű.
+ */
 public class Car extends VehicleBase
 {
 
