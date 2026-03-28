@@ -83,7 +83,7 @@ public class Map {
      * Általános inicializálás a szimulációhoz.
      */
     public void initGeneral(){
-        ArrayList<ILane> lanes = (ArrayList<ILane>)roads.getFirst().getLanes();
+        ArrayList<ILane> lanes = (ArrayList<ILane>)roads.get(0).getLanes();
         
         for (int i = 0; i < vehicles.size(); i++) {
             ILane lane = lanes.get(i);
