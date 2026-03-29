@@ -1,15 +1,81 @@
 package main.java.models.interfaces;
 
-import main.java.models.objects.vehicles.SnowPlower;
-
+/**
+ * A rendszer irányításához szükséges magas szintű parancsok interfésze.
+ */
 public interface ICommand {
+   /**
+    * Elindítja a játékot.
+    * @return művelet sikeressége
+    */
    boolean start();
+
+   /**
+    * Befejezi a játékot.
+    * @return művelet sikeressége
+    */
    boolean end();
+
+   /**
+    * Elmenti a játék aktuális állását.
+    * @return művelet sikeressége
+    */
    boolean saveState();
-   boolean setRoute(IVehicle vehicle);
-   boolean selectPlower(SnowPlower sp);
+
+   /**
+    * Betölti a játék elmentett állását.
+    * @return művelet sikeressége
+    */
+   boolean loadState();
+
+   /**
+    * Kijelöli az utvonalat.
+    * @return művelet sikeressége
+    */
+   boolean setRoute();
+
+   /**
+    *  Kiválaszt egy járművet.
+    * @return művelet sikeressége
+    */
+   boolean selectVehicle();
+
+   /**
+    * Kezdeményezi egy új felszerelés vásárlását.
+    * @return művelet sikeressége
+    */
    boolean buyEquipment();
-   boolean changeEquipment(ICleaning newEq);
+
+   /**
+    * Lecseréli a tisztítófejet.
+    * @return művelet sikeressége
+    */
+   boolean changeEquipment();
+
+   /**
+    * Lekérdezi a járművek listáját.
+    * @return művelet sikeressége
+    */
    String printVehicles();
+
+   /**
+    * Lekérdezi a játékos felszerelését.
+    * @return művelet sikeressége
+    */
    String printInventory();
+
+    /**
+     * Általános inicializálás a szimulációhoz.
+     */
+   void initGeneral();
+
+    /**
+     * Jeges út szimulációjának inicializálása.
+     */
+   void initIcy();
+
+    /**
+     * Végrehajt egy szimulációs ciklust a térképen.
+     */
+   void loop();
 }
