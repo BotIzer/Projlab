@@ -15,4 +15,11 @@ public class DragonHead extends AttachmentBase {
         lane.clear();
         Console.print("\t\t\t\t<- DragonHead.Clean(ILane lane, SnowPlower plow)");
     }
+    @Override
+    public String toString() {
+        String res = "H";
+        res += "id=" + GetId();
+        res += "\ntype=DragonHead";
+        return res;
+    }
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import main.java.models.interfaces.*;
 import main.java.models.objects.vehicles.*;
+import main.java.models.objects.vehicles.heads.AttachmentBase;
 
 /**
  * A felhasználót (játékost) és annak erőforrásait reprezentáló osztály.
@@ -93,5 +94,25 @@ public class Player {
         } else {
             return false;
         }
+    }
+    public String ToString(){
+        String res = "P";
+        res += "\nbalance=" + money;
+        res += "\nplowers=";
+        for (SnowPlower plower : plowers) {
+            res += plower.GetId() + ";"; 
+        }
+        res += "\nbuses=";
+        for (Bus bus : buses) {
+            res += bus.GetId() + ";"; 
+        }
+        res += "\nheads=";
+        String headString = "";
+        for (ICleaning head : heads) {
+            res += head.GetId();
+            headString += head.toString();
+        }
+        res += headString;
+        return res;
     }
 }

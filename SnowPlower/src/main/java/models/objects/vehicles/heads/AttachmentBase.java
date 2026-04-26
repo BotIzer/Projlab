@@ -7,6 +7,7 @@ import main.java.models.interfaces.*;
  * Ez az absztrakt osztály szolgál alapul minden hóeltakarító eszköz (fej) számára.
  */
 public abstract class AttachmentBase implements ICleaning {
+    protected int id;
     protected double price;
     /**
      * Absztrakt metódus, amely a konkrét takarítási folyamatot vezérli[cite: 191].
@@ -19,6 +20,10 @@ public abstract class AttachmentBase implements ICleaning {
         Console.print("\t\t\t\t-> AttachmentBase.Clean(lane, plower)");
         lane.clear();
         Console.print("\t\t\t\t<- AttachmentBase.Clean(lane, plower)");
+    }
+    @Override
+    public int GetId() {
+        return id;
     }
 
 }

@@ -91,4 +91,22 @@ public class SnowPlower extends VehicleBase {
         Move();
         Console.print("\t<- SnowPlower.SetRoute(start, end)");
     }
+
+    @Override
+    public String toString() {
+        String res = "V";
+        res += "\nid=" + id;
+        res += "\ntype=SnowPlower";
+        res += "\ncurrentPosition=" + currentPosition;
+        res += "\nlane=" + lane.GetId();
+        res += "\nbaseSpeed=" + baseSpeed;
+        res += "\nroute=";
+        for (ILane lane : route) {
+            res += lane.GetId() + ";";
+        }
+        for (ICleaning head : heads) {
+            res += head.toString();
+        }
+        return res;
+    }
 }

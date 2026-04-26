@@ -19,4 +19,18 @@ public class RoadLane extends LaneBase {
         Console.print("<-RoadLane.clear()");
         return true;
     }
+    @Override
+    public String toString() {
+        String res = "L";
+        res += "\nid=" + GetId();
+        res += "\ntype=RoadLane";
+        res += "\nstart=" + start.GetId();
+        res += "\nend=" + end.GetId();
+        res += "\nvehicles=";
+        for (IVehicle vehicle : vehicles) {
+            res += vehicle.GetId() + ";";
+        }
+        res += "\nstate=" + state.toString();
+        return res;
+    }
 }

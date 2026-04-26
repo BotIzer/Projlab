@@ -46,4 +46,18 @@ public class Bus extends VehicleBase {
         Move();
         Console.print("\t<- Bus.SetRoute(Intersection start, Intersection end)");
     }
+    @Override
+    public String toString() {
+        String res = "V";
+        res += "\nid=" + id;
+        res += "\ntype=Bus";
+        res += "\ncurrentPosition=" + currentPosition;
+        res += "\nlane=" + lane.GetId();
+        res += "\nbaseSpeed=" + baseSpeed;
+        res += "\nroute=";
+        for (ILane lane : route) {
+            res += lane.GetId() + ";";
+        }
+        return res;
+    }
 }

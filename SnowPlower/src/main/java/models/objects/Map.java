@@ -79,6 +79,25 @@ public class Map {
 
     public List<IVehicle> getVehicles(){ return vehicles; }
 
+    @Override
+    public String toString() {
+        String res = "";
+        String roadString = "";
+        String headString = "";
+        for (Intersection intersection : intersections) {
+            res += intersection.toString();
+        }
+        for (Road road : roads) {
+            roadString += road.toString();
+            for (ILane lane : road.getLanes()) {
+                res += lane.toString();
+            } 
+        }
+        for (IVehicle vehicle : vehicles) {
+            res += vehicle.toString();
+        }
+    }
+
     /**
      * Általános inicializálás a szimulációhoz.
      */

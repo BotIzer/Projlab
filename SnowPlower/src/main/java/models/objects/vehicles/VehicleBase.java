@@ -1,4 +1,6 @@
 package main.java.models.objects.vehicles;
+import java.util.ArrayList;
+
 import main.java.models.interfaces.*;
 import main.java.models.objects.Console;
 import main.java.models.objects.road.Intersection;
@@ -7,12 +9,14 @@ import main.java.models.objects.road.Intersection;
  * Minden jármű absztrakt alaposztálya, amely definiálja az alapvető mozgási képességeket és a környezettel való kapcsolatot.
  */
 public abstract class VehicleBase implements IVehicle {
-    protected double CurrentPosition;
+    protected int id;
+    protected double currentPosition;
     protected ILane lane;
     protected double baseSpeed;
+    protected ArrayList<ILane> route;
 
     protected VehicleBase(double bs){
-        CurrentPosition = 0.0;
+        currentPosition = 0.0;
         baseSpeed = bs;
     }
 
@@ -45,5 +49,8 @@ public abstract class VehicleBase implements IVehicle {
     }
     public void setLane(ILane l){
         lane = l;
+    }
+    public int GetId(){
+        return id;
     }
 }

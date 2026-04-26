@@ -15,4 +15,11 @@ public class SalterHead extends AttachmentBase {
         lane.clear();
         Console.print("\t\t\t\t<- SalterHead.Clean(ILane lane, SnowPlower plow)");
     }
+    @Override
+    public String toString() {
+        String res = "H";
+        res += "id=" + GetId();
+        res += "\ntype=SalterHead";
+        return res;
+    }
 }

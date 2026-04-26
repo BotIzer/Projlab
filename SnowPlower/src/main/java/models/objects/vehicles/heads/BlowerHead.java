@@ -13,4 +13,11 @@ public class BlowerHead extends AttachmentBase {
         lane.clear();
         Console.print("\t\t\t\t<- BlowerHead.Clean(ILane lane, SnowPlower plow)");
     }
+    @Override
+    public String toString() {
+        String res = "H";
+        res += "id=" + GetId();
+        res += "\ntype=BlowerHead";
+        return res;
+    }
 }

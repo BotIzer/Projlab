@@ -44,4 +44,18 @@ public class Car extends VehicleBase
         Move();
         Console.print("<- Car.SetRoute(Intersection start, Intersection end)");
     }
+    @Override
+    public String toString() {
+        String res = "V";
+        res += "\nid=" + id;
+        res += "\ntype=Car";
+        res += "\ncurrentPosition=" + currentPosition;
+        res += "\nlane=" + lane.GetId();
+        res += "\nbaseSpeed=" + baseSpeed;
+        res += "\nroute=";
+        for (ILane lane : route) {
+            res += lane.GetId() + ";";
+        }
+        return res;
+    }
 }

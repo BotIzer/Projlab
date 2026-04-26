@@ -26,4 +26,5 @@ public interface IVehicle {
      * @param end keződ kereszteződés
      */
     public void SetRoute(Intersection start, Intersection end);
+    public int GetId();
 }

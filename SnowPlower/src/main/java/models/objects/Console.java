@@ -73,8 +73,8 @@ public class Console implements ICommand {
             res = false;
             print(e.getMessage());
         }
-        if (loc != null && !loc.equals("")) fileHandler.saveState(loc);
-        else fileHandler.saveState("save.txt");
+        if (loc != null && !loc.equals("")) fileHandler.saveState(loc, player, map);
+        else fileHandler.saveState("save.txt", player, map);
         String out = "<- Console.saveState():" + res; 
         print(out);
         return res;

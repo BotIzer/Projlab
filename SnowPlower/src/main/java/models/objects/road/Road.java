@@ -8,6 +8,7 @@ import main.java.models.objects.Console;
  * Egy konkrét útszakaszt reprezentál az úthálózatban.
  */
 public class Road {
+    private int id;
     private List<ILane> lanes;
     private double length;
 
@@ -32,5 +33,16 @@ public class Road {
         this.lanes.add(bl);
         this.lanes.add(tl);
         return intersections;
+    }
+    @Override
+    public String toString() {
+        String res = "R";
+        res += "\nid=" + id;
+        res += "lanes=";
+        for (ILane lane : lanes) {
+           res += lane.GetId() + ";";
+        }
+        res += "length=" + length;
+        return res;
     }
 }

@@ -1,6 +1,5 @@
 package main.java.models.objects;
 
-import java.util.logging.Logger;
 
 /**
  * A játékállapot lemezre mentéséért és betöltéséért felelős segédosztály.
@@ -16,7 +15,7 @@ public class FileHandler {
      * @param loc mentés helye
      * @return művelet sikeressége
      */
-    public boolean saveState(String loc) {
+    public boolean saveState(String loc, Player player, Map map) {
         Console.print("\t->FileHandler.saveState(" + loc +")");
         Console.print("\t<-FileHandler.saveState(" + loc +"): true");
         return true;

@@ -13,4 +13,11 @@ public class SweeperHead extends AttachmentBase {
         lane.clear();
         Console.print("\t\t\t\t<- SweeperHead.Clean(ILane lane, SnowPlower plow)");
     }
+    @Override
+    public String toString() {
+        String res = "H";
+        res += "id=" + GetId();
+        res += "\ntype=SweeperHead";
+        return res;
+    }
 }
