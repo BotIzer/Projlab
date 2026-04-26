@@ -1,7 +1,5 @@
 package main.java;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 
 import main.java.models.objects.Console;
 import main.java.models.interfaces.ICommand;
@@ -15,7 +13,6 @@ public class Main {
     private static ICommand console = new Console();
 
     public static void main(String[] args) {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         String line;
         try {
             do{
@@ -29,10 +26,15 @@ public class Main {
                 -----------------
                 (x)Exit
                 """);
-                line = br.readLine();
+                line = Console.readLine();
                 handleInput(line);
 
             }   while (!line.equals("x"));  
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            Console.br.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

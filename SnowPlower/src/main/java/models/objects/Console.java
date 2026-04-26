@@ -19,7 +19,7 @@ public class Console implements ICommand {
     private IVehicle selectedVehicle;
     private FileHandler fileHandler;
     private Shop shop;
-    private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
     public static void print(String msg){
         try {
@@ -27,6 +27,15 @@ public class Console implements ICommand {
         } catch (Exception e) {
            e.printStackTrace(); 
         }
+    }
+    public static String readLine(){
+        String res = null;
+        try {
+            res = br.readLine();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return res;
     }
 
     public void input(String cmd){
