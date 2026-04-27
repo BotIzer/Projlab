@@ -22,8 +22,8 @@ public abstract class AttachmentBase implements ICleaning {
         Console.print("\t\t\t\t<- AttachmentBase.Clean(lane, plower)");
     }
     @Override
-    public int GetId() {
-        return id;
+    public String toList() {
+        return Integer.toString(id);
     }
 
 }

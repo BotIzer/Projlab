@@ -22,13 +22,13 @@ public class RoadLane extends LaneBase {
     @Override
     public String toString() {
         String res = "L";
-        res += "\nid=" + GetId();
+        res += "\nid=" + id;
         res += "\ntype=RoadLane";
-        res += "\nstart=" + start.GetId();
-        res += "\nend=" + end.GetId();
+        res += "\nstart=" + start.toList();
+        res += "\nend=" + end.toList();
         res += "\nvehicles=";
         for (IVehicle vehicle : vehicles) {
-            res += vehicle.GetId() + ";";
+            res += vehicle.toList() + ";";
         }
         res += "\nstate=" + state.toString();
         return res;

@@ -52,11 +52,11 @@ public class Car extends VehicleBase
         res += "\nid=" + id;
         res += "\ntype=Car";
         res += "\ncurrentPosition=" + currentPosition;
-        res += "\nlane=" + lane.GetId();
+        res += "\nlane=" + lane.toList();
         res += "\nbaseSpeed=" + baseSpeed;
         res += "\nroute=";
         for (ILane lane : route) {
-            res += lane.GetId() + ";";
+            res += lane.toList() + ";";
         }
         return res;
     }

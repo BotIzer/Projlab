@@ -40,7 +40,7 @@ public class Road {
         res += "\nid=" + id;
         res += "lanes=";
         for (ILane lane : lanes) {
-           res += lane.GetId() + ";";
+           res += lane.toList() + ";";
         }
         res += "length=" + length;
         return res;

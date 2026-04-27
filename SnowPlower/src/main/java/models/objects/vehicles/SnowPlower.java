@@ -98,11 +98,11 @@ public class SnowPlower extends VehicleBase {
         res += "\nid=" + id;
         res += "\ntype=SnowPlower";
         res += "\ncurrentPosition=" + currentPosition;
-        res += "\nlane=" + lane.GetId();
+        res += "\nlane=" + lane.toList();
         res += "\nbaseSpeed=" + baseSpeed;
         res += "\nroute=";
         for (ILane lane : route) {
-            res += lane.GetId() + ";";
+            res += lane.toList() + ";";
         }
         for (ICleaning head : heads) {
             res += head.toString();

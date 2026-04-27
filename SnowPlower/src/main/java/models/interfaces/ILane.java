@@ -30,5 +30,5 @@ public interface ILane {
      * @return művelet sikeressége
      */
     public boolean changeState(String ns);
-    public int GetId();
+    public String toList();
 }

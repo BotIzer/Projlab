@@ -51,7 +51,7 @@ public abstract class LaneBase implements ILane {
         return true;
     }
     @Override
-    public int GetId() {
-        return id;
+    public String toList() {
+        return Integer.toString(id);
     }
 }

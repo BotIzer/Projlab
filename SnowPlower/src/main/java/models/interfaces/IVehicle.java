@@ -28,5 +28,5 @@ public interface IVehicle {
      * @param end keződ kereszteződés
      */
     public void SetRoute(List<Intersection> intersections);
-    public int GetId();
+    public String toList();
 }

@@ -24,23 +24,23 @@ public class Bus extends VehicleBase {
         this.LineName = lineName;
         this.line = route;
     }
-    
+    @Override 
     public void Move() {
         Console.print("\t\t-> Bus.Move()");
         Console.print("\t\t<- Bus.Move()");
         Stop();
     }
-
+    @Override
     public void Stop() {
         Console.print("\t\t\t-> Bus.Stop()");
         Console.print("\t\t\t<- Bus.Stop()");
     }
-
+    @Override
     public void Slipping() {
         Console.print("\t\t-> Bus.Slipping()");
         Console.print("\t\t<- Bus.Slipping()");
     }
-
+    @Override
     public void SetRoute(List<Intersection> intersections) {
         Console.print("\t-> Bus.SetRoute(Intersection start, Intersection end)");
         Move();
@@ -52,11 +52,11 @@ public class Bus extends VehicleBase {
         res += "\nid=" + id;
         res += "\ntype=Bus";
         res += "\ncurrentPosition=" + currentPosition;
-        res += "\nlane=" + lane.GetId();
+        res += "\nlane=" + lane.toList();
         res += "\nbaseSpeed=" + baseSpeed;
         res += "\nroute=";
         for (ILane lane : route) {
-            res += lane.GetId() + ";";
+            res += lane.toList() + ";";
         }
         return res;
     }

@@ -20,8 +20,8 @@ public class Intersection {
     public void addRoad(Road r){
         roads.add(r);
     }
-    public int GetId(){
-        return id;
+    public String toList(){
+        return Integer.toString(id);
     }
     @Override
     public String toString() {
@@ -30,7 +30,7 @@ public class Intersection {
         res += "lanes=";
         for (Road road : roads) {
             for (ILane lane : road.getLanes()) {
-                res += lane.GetId() + ";";
+                res += lane.toList() + ";";
             }
         }
         return res;

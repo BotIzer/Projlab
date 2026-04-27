@@ -16,7 +16,7 @@ public class IceBreakerHead extends AttachmentBase {
     @Override
     public String toString() {
         String res = "H";
-        res += "id=" + GetId();
+        res += "id=" + id;
         res += "\ntype=IceBreakerHead";
         return res;
     }

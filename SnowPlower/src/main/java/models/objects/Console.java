@@ -19,7 +19,7 @@ public class Console implements ICommand {
     private IVehicle selectedVehicle;
     private FileHandler fileHandler;
     private Shop shop;
-    public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
     public static void print(String msg){
         try {

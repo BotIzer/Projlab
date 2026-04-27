@@ -95,21 +95,22 @@ public class Player {
             return false;
         }
     }
-    public String ToString(){
+    @Override
+    public String toString(){
         String res = "P";
         res += "\nbalance=" + money;
         res += "\nplowers=";
         for (SnowPlower plower : plowers) {
-            res += plower.GetId() + ";"; 
+            res += plower.toList() + ";"; 
         }
         res += "\nbuses=";
         for (Bus bus : buses) {
-            res += bus.GetId() + ";"; 
+            res += bus.toList() + ";"; 
         }
         res += "\nheads=";
         String headString = "";
         for (ICleaning head : heads) {
-            res += head.GetId();
+            res += head.toList();
             headString += head.toString();
         }
         res += headString;

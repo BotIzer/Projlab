@@ -51,7 +51,7 @@ public abstract class VehicleBase implements IVehicle {
     public void setLane(ILane l){
         lane = l;
     }
-    public int GetId(){
-        return id;
+    public String toList(){
+        return Integer.toString(id);
     }
 }

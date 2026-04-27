@@ -11,6 +11,6 @@ public interface ICleaning {
      * @param lane A tisztítandó útsáv.
      * @param plow A tisztítást végző hókotró (erőforrás-kezeléshez).
      */
-    void Clean(ILane lane, SnowPlower plow);
-    public int GetId();
+    public void Clean(ILane lane, SnowPlower plow);
+    public String toList();
 }
