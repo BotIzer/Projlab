@@ -41,7 +41,7 @@ public class Bus extends VehicleBase {
         Console.print("\t\t<- Bus.Slipping()");
     }
 
-    public void SetRoute(Intersection start, Intersection end) {
+    public void SetRoute(List<Intersection> intersections) {
         Console.print("\t-> Bus.SetRoute(Intersection start, Intersection end)");
         Move();
         Console.print("\t<- Bus.SetRoute(Intersection start, Intersection end)");

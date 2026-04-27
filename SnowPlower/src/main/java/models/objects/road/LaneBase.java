@@ -3,7 +3,6 @@ import java.util.ArrayList;
 import java.util.List;
 import main.java.models.interfaces.*;
 import main.java.models.objects.Console;
-import main.java.models.objects.vehicles.*;
 
 /**
  * Absztrakt alapsztályként elvégzi a specifikus sávok közös, mindennapi adminisztrációját.

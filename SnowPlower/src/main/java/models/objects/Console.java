@@ -37,9 +37,56 @@ public class Console implements ICommand {
         }
         return res;
     }
-
+    //Kezeli a felhasználó által adott bemeneteket,
+    // meghívja az azokhoz tartozó függvényeket, 
+    // illetve egy hibaüzenetet, ha nem rendelhető parancs a bemenethez
     public void input(String cmd){
         print("-> Console.input()");
+    //--------------------HELP---------------------------------------------//
+        cmd = cmd.trim();
+        String[] tmp = cmd.split("[\\s]");
+        cmd = tmp[0].trim();
+        String arg = tmp[1].trim();
+        
+        if("help".contains(cmd)){
+            //TODO print help
+    //--------------------LOAD---------------------------------------------//
+        } else if ("load".contains(cmd)){
+            if(arg != null && !arg.isEmpty()){
+                loadState(arg);
+            }else{
+                loadState("save.txt");
+            }
+    //--------------------SAVE---------------------------------------------//
+        } else if ("save".contains(cmd)){
+            if(arg != null && !arg.isEmpty()){
+                saveState(arg);
+            }else{
+                saveState("save.txt");
+            }
+    //--------------------SELECT---------------------------------------------//
+        } else if ("select".contains(cmd)){
+            printVehicles();
+            selectVehicle();
+    //--------------------SetRoute---------------------------------------------//
+        } else if ("setRoute".contains(cmd)){
+            if(selectedVehicle == null) print("No vehicle selected");
+            else setRoute();
+        } else if ("buy".contains(cmd)){
+            buyEquipment();
+        } else if ("attach".contains(cmd)){
+            if(selectedVehicle == null) print("No vehicle of type SnowPlower selected");
+            //TODO select a head to attach
+            ((SnowPlower)selectedVehicle).attach(null);
+        } else if ("switch".contains(cmd)){
+            if(selectedVehicle == null) print("No vehicle of type SnowPlower selected");
+            //TODO select a head to change
+            ((SnowPlower)selectedVehicle).ChangeAttachment(null);
+        } else if ("printState".contains(cmd)){
+        }
+            
+
+        Console.print("Invalid command! \nType help for list of commands, or help <command> for specific command!");
         print("<- Console.input()");
     }
 
@@ -50,6 +97,7 @@ public class Console implements ICommand {
         map = new Map();
         fileHandler = new FileHandler();
         shop = new Shop();
+        
         print("<- Console.start():true");
         return true;
     }
@@ -62,10 +110,17 @@ public class Console implements ICommand {
     }
 
     @Override
-    public boolean saveState() {
+    public boolean saveState(String loc) {
         print("-> Console.saveState()");
-        String loc = null;
         boolean res = true;
+        String out = "<- Console.saveState():";
+        if(loc != null && !loc.isEmpty())
+        {
+            res = fileHandler.saveState(loc, player, map);
+            out += res; 
+            print(out);
+            return res;
+        }
         print("Save to: (default: save.txt)");
         try {
             loc = br.readLine();
@@ -73,17 +128,23 @@ public class Console implements ICommand {
             res = false;
             print(e.getMessage());
         }
-        if (loc != null && !loc.equals("")) fileHandler.saveState(loc, player, map);
-        else fileHandler.saveState("save.txt", player, map);
-        String out = "<- Console.saveState():" + res; 
+        if (loc != null && !loc.equals("")) res = fileHandler.saveState(loc, player, map);
+        out += res; 
         print(out);
         return res;
     }
     @Override
-    public boolean loadState() {
+    public boolean loadState(String loc) {
         print("-> Console.loadState()");
         boolean res = true;
-        String loc = null;
+        String out = "<- Console.loadState():" ;
+        if (loc != null && !loc.isEmpty()) 
+        {
+            res = fileHandler.loadState(loc);
+            out += res; 
+            print(out);
+            return res;
+        }
         try {
             print("Enter file to load from: (default: save.txt)");
             loc = br.readLine();  
@@ -91,9 +152,8 @@ public class Console implements ICommand {
             res = false;
             print(e.getMessage()); 
         }
-        if (loc != null && !loc.equals("")) fileHandler.loadState(loc);
-        else fileHandler.loadState("save.txt");
-        String out = "<- Console.loadState():" + res; 
+        if (loc != null && !loc.isEmpty()) res = fileHandler.loadState(loc);
+        out += res; 
         print(out);
         return res;
     }
@@ -101,8 +161,9 @@ public class Console implements ICommand {
     @Override
     public boolean setRoute() {
         print("-> Console.setRoute(vehicle)");
-        selectVehicle();
-        selectedVehicle.SetRoute(null, null);
+        ArrayList<Intersection> route = new ArrayList<>();
+        //TODO Determine route
+        selectedVehicle.SetRoute(route);
         print("<- Console.setRoute(vehicle):true");
         return true;
     }
@@ -141,8 +202,12 @@ public class Console implements ICommand {
     @Override
     public String printVehicles() {
         print("-> Console.printVehicles()");
+        String list = "";
+        for (IVehicle vehicle : map.getVehicles()) {
+            list += "\n(" + map.getVehicles().indexOf(vehicle) + ") type:" + vehicle.toString().split("\\r?\\n")[1].substring(5); 
+        }
         print("<- Console.printVehicles():String");
-        return "";
+        return list;
     }
 
     @Override
@@ -189,8 +254,8 @@ public class Console implements ICommand {
         map.addVehicle(sp);
         map.addVehicle(c1);
         map.addVehicle(c2);
-        c1.SetRoute(null, null);
-        c2.SetRoute(null, null);
+        c1.SetRoute(new ArrayList<>());
+        c2.SetRoute(new ArrayList<>());
         map.addVehicle(b);
         map.initIcy(); 
         Console.print("------------End of Initialization-----------");
@@ -198,6 +263,11 @@ public class Console implements ICommand {
 
     @Override
     public void loop(){
+        String input = "";
+        do {
+            
+        } while (!input.startsWith("e"));
+        
         map.loop();
     }
 

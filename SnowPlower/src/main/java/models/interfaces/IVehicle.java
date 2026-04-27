@@ -1,4 +1,6 @@
 package main.java.models.interfaces;
+import java.util.List;
+
 import main.java.models.objects.road.Intersection;
 
 /**
@@ -25,6 +27,6 @@ public interface IVehicle {
      * @param start keződ kereszteződés
      * @param end keződ kereszteződés
      */
-    public void SetRoute(Intersection start, Intersection end);
+    public void SetRoute(List<Intersection> intersections);
     public int GetId();
 }

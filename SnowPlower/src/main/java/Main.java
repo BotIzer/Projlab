@@ -18,21 +18,32 @@ public class Main {
             do{
                 Console.print("Start game or Run tests?");
                 Console.print("(0) Start game");
-                Console.print("(2)Load game from state");
-                Console.print("(3)Set Route of Vehicle (and Clean if selected is a SnowPlower)");
-                Console.print("(4)Collision of two Cars");
-                Console.print("(5)Buy Equipment");
+                Console.print("(1) Run tests");
                 Console.print("""
                 -----------------
                 (x)Exit
                 """);
                 line = Console.readLine();
-                handleInput(line);
 
-            }   while (!line.equals("x"));  
+            }   while (!line.equals("x") || !line.equals("0") || !line.equals("1"));  
+
+            switch (line) {
+                case "x":
+                    break;
+            
+                case "0":
+                    console.start();
+                    break;
+                case "1":
+                    break;
+                default:
+                    break;
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         try {
             Console.br.close();
         } catch (Exception e) {
@@ -42,27 +53,10 @@ public class Main {
 
     private static void handleInput(String line){
         switch (line) {
+            case "0":
+                break;
             case "1":
-                console.start();
-                console.saveState();
                 break;
-            case "2":
-                console.start();
-                console.loadState();
-                break;
-            case "3":
-                console.start();
-                console.initGeneral();
-                console.setRoute();
-                break;
-            case "4":
-                console.start();
-                console.initIcy(); 
-                break;
-            case "5":
-                console.start();
-                console.buyEquipment();
-                break; 
             default:
                 break;
         }

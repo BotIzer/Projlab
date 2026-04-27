@@ -1,5 +1,7 @@
 package main.java.models.objects.vehicles;
 
+import java.util.List;
+
 import main.java.models.interfaces.ILane;
 import main.java.models.objects.Console;
 import main.java.models.objects.road.Intersection;
@@ -38,7 +40,7 @@ public class Car extends VehicleBase
     }
 
     @Override
-    public void SetRoute(Intersection start, Intersection end)
+    public void SetRoute(List<Intersection> intersections)
     {
         Console.print("-> Car.SetRoute(Intersection start, Intersection end)");
         Move();

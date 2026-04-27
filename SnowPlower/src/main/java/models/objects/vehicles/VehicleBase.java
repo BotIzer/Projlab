@@ -1,5 +1,6 @@
 package main.java.models.objects.vehicles;
 import java.util.ArrayList;
+import java.util.List;
 
 import main.java.models.interfaces.*;
 import main.java.models.objects.Console;
@@ -42,7 +43,7 @@ public abstract class VehicleBase implements IVehicle {
     }
 
     @Override
-    public void SetRoute(Intersection start, Intersection end)
+    public void SetRoute(List<Intersection> intersections)
     {
         Console.print("-> VehicleBase.SetRoute(Intersection start, Intersection end)");
         Console.print("<- VehicleBase.SetRoute(Intersection start, Intersection end): void");

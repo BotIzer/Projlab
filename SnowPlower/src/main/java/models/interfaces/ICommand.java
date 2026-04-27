@@ -20,13 +20,13 @@ public interface ICommand {
     * Elmenti a játék aktuális állását.
     * @return művelet sikeressége
     */
-   boolean saveState();
+   boolean saveState(String loc);
 
    /**
     * Betölti a játék elmentett állását.
     * @return művelet sikeressége
     */
-   boolean loadState();
+   boolean loadState(String loc);
 
    /**
     * Kijelöli az utvonalat.
