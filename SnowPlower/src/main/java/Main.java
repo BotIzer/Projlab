@@ -16,8 +16,8 @@ public class Main {
         String line;
         try {
             do{
-                Console.print("Select a use-case to run!");
-                Console.print("(1)Save game state");
+                Console.print("Start game or Run tests?");
+                Console.print("(0) Start game");
                 Console.print("(2)Load game from state");
                 Console.print("(3)Set Route of Vehicle (and Clean if selected is a SnowPlower)");
                 Console.print("(4)Collision of two Cars");

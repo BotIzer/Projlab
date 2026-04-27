@@ -96,6 +96,7 @@ public class Map {
         for (IVehicle vehicle : vehicles) {
             res += vehicle.toString();
         }
+        return res;
     }
 
     /**
