@@ -13,6 +13,8 @@ public class FileHandler {
     /**
      * Elmenti a játék állapotát.
      * @param loc mentés helye
+     * @param player játékos állapota
+     * @param map pálya állapota
      * @return művelet sikeressége
      */
     public boolean saveState(String loc, Player player, Map map) {

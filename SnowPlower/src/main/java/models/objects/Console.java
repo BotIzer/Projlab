@@ -2,6 +2,7 @@ package main.java.models.objects;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import main.java.models.interfaces.*;
@@ -25,7 +26,7 @@ public class Console implements ICommand {
     private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     //lokális konstansok
     private static final List<String> validCommands = List.of(
-        "help", "load", "save", "select", "setRoute", "buy", "attach", "switch", "printState" 
+        "help", "load", "save", "select", "setRoute", "buy", "attach", "switch", "printState", "exit" 
     );
     private static final String HELPMESSAGE = 
             """
@@ -84,7 +85,8 @@ public class Console implements ICommand {
     public void input(String cmd){
         print("-> Console.input()");
         String[] tmp = cmd.trim().split("\\s+", 2);
-        String arg = (tmp.length > 1) ? tmp[1].trim() : "";
+        List<String> args = (tmp.length > 1) ? Arrays.asList(tmp) : Arrays.asList();
+        args.removeFirst();
         List<String> matchingCommands = validCommands.stream()
                                                      .filter(cd -> cd.startsWith(cmd))
                                                      .toList();
@@ -96,29 +98,30 @@ public class Console implements ICommand {
             Console.print("Command is ambigous: " + String.join(",", matchingCommands));
             return;
         }
-        execute(cmd, arg);
+        execute(cmd, args);
         print("<- Console.input()");
     }
     /**
      *Segédfüggvény olvashatóságnak, input feldolgozása után meghivja a  
      *hozzárendelt függvényt
      * @param cmd Az input függvény által meghatározott parancs
-     * @param arg -II- argumentumja
+     * @param args -II- argumentumjai
      */
-    private void execute(String cmd, String arg){
+    private void execute(String cmd, List<String> args){
         boolean isSelected = selectedVehicle != null;
 
         switch (cmd){
             case "help" -> print(HELPMESSAGE);
-            case "load" -> loadState(arg);
-            case "save" -> saveState(arg);
+            case "load" -> loadState(args.getFirst());
+            case "save" -> saveState(args.getFirst());
             case "select" -> selectVehicle();
             case "setRoute" -> setRoute();
             case "buy" -> buyEquipment();
             case "attach" -> {
                 if (isSelected && selectedVehicle instanceof SnowPlower plower) {
-                    //TODO select head to attach
-                    player.attach(plower, null);
+                    player.listHeads();
+                    String id = Console.readLine();
+                    player.attach(plower, Integer.parseInt(id));
                 } else {
                     print("No vehicle of type SnowPlower is selected");
                 }
@@ -126,7 +129,6 @@ public class Console implements ICommand {
                 
             case "switch" -> {
                 if (isSelected && selectedVehicle instanceof SnowPlower plower) {
-                    //TODO determine currentHead
                     player.changeEquipment(plower);
                 } else {
                     print("No vehicle of type SnowPlower is selected");
@@ -157,8 +159,9 @@ public class Console implements ICommand {
      * @return A művelet sikeres/sikertelen
      */
     @Override
-    public boolean end() {
+    public boolean end(List<String> args) {
         print("-> Console.end()");
+        //TODO save with args
         print("<- Console.end():true");
         return true;
     }
@@ -315,6 +318,16 @@ public class Console implements ICommand {
         print("-> Console.printInventory()");
         print("<- Console.printInventory():String");
         return "";
+    }
+    /**
+     * 
+     * @param args argumentumok: -s: rövid, olvasható
+     *                           -f: loadState által elfogadott formátum 
+     */
+    public void printState(List<String> args){
+        if(args.contains("-s")){
+            player.printInventory();
+        }
     }
     @Override
     public void initGeneral(){

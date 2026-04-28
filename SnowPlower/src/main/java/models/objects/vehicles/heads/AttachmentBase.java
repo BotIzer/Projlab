@@ -25,5 +25,15 @@ public abstract class AttachmentBase implements ICleaning {
     public String toList() {
         return Integer.toString(id);
     }
+    @Override
+    public String toString() {
+        StringBuilder res = new StringBuilder();
+        res.append( "H");
+        res.append("\nid=");
+        res.append(id);
+        res.append("\ntype=");
+        res.append(print());
+        return res.toString();
+    }
 
 }

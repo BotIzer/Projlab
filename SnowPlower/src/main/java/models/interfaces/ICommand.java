@@ -1,5 +1,7 @@
 package main.java.models.interfaces;
 
+import java.util.List;
+
 /**
  * A rendszer irányításához szükséges magas szintű parancsok interfésze.
  */
@@ -11,10 +13,11 @@ public interface ICommand {
    boolean start();
 
    /**
-    * Befejezi a játékot.
+    * Befejezi a játékot, rákérdez mentési szándékra,
+    * @param args -s <file> kérdés nélkül menti a megadott file-ba
     * @return művelet sikeressége
     */
-   boolean end();
+   boolean end(List<String> args);
 
    /**
     * Elmenti a játék aktuális állását.

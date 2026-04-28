@@ -31,9 +31,10 @@ public class SnowPlower extends VehicleBase {
         Console.print("\t<- SSnowPlower.attach(newHead)");
     }
 
-    public void ChangeAttachment(ICleaning head) {
+    public void ChangeAttachment(int id) {
         Console.print("\t-> SnowPlower.ChangeAttachment(head)");
-        currentHead = head;
+        //TODO parameter validation
+        currentHead = heads.get(id);
         Console.print("\t<- SnowPlower.ChangeAttachment(head)");
     }
 
@@ -55,6 +56,21 @@ public class SnowPlower extends VehicleBase {
         Console.print("\t<- SnowPlower.ConsumeSalt(amount)");
         return true;
     }
+
+    /**
+     * Kilistázza a leltárban lévő kotrófejeket kiválasztás érdekében
+     * (attach segédfüggvénye) 
+     * @return
+     */
+    public String listHeads(){
+        StringBuilder list = new StringBuilder();
+        list.append("Heads in Inventory:\n");
+        for (ICleaning head : heads) {
+            Console.print("(" + heads.indexOf(head) + ")" + head.print() + "+");
+        }
+        return list.toString();
+    }
+
 
     /**
      * Üzemanyagot von le a tartályból a munka végzése során.
@@ -102,7 +118,8 @@ public class SnowPlower extends VehicleBase {
         res.append("\nbaseSpeed=" + baseSpeed);
         res.append("\nroute=");
         for (ILane lane : route) {
-            res.append(lane.toList() + ";");
+            res.append(lane.toList());
+            res.append(";");
         }
         for (ICleaning head : heads) {
             res.append(head.toString());
