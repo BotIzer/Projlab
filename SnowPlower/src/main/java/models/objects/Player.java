@@ -97,23 +97,25 @@ public class Player {
     }
     @Override
     public String toString(){
-        String res = "P";
-        res += "\nbalance=" + money;
-        res += "\nplowers=";
+        StringBuilder res = new StringBuilder("P");
+        res.append("\nbalance=" + money);
+        res.append("\nplowers=");
         for (SnowPlower plower : plowers) {
-            res += plower.toList() + ";"; 
+            res.append(plower.toList()); 
+            res.append(";");
         }
-        res += "\nbuses=";
+        res.append("\nbuses=");
         for (Bus bus : buses) {
-            res += bus.toList() + ";"; 
+            res.append(bus.toList()); 
+            res.append(";");
         }
-        res += "\nheads=";
-        String headString = "";
+        res.append("\nheads=");
+        StringBuilder headString = new StringBuilder();
         for (ICleaning head : heads) {
-            res += head.toList();
-            headString += head.toString();
+            res.append(head.toList());
+            headString.append(head.toString());
         }
-        res += headString;
-        return res;
+        res.append(headString);
+        return res.toString();
     }
 }

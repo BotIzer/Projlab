@@ -78,4 +78,8 @@ public interface ICommand {
      * Végrehajt egy szimulációs ciklust a térképen.
      */
    void loop();
+    /**
+     * Bezárja az olvasót a program leállásakor
+     */
+   void closeReader();
 }

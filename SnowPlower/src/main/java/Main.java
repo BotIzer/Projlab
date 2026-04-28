@@ -43,12 +43,8 @@ public class Main {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        console.closeReader();
 
-        try {
-            Console.br.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     private static void handleInput(String line){

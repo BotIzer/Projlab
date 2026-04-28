@@ -81,22 +81,23 @@ public class Map {
 
     @Override
     public String toString() {
-        String res = "";
-        String roadString = "";
-        String headString = "";
+        StringBuilder res = new StringBuilder();
+        StringBuilder roadString = new StringBuilder();
         for (Intersection intersection : intersections) {
-            res += intersection.toString();
+            res.append(intersection.toString());
         }
         for (Road road : roads) {
-            roadString += road.toString();
+            roadString.append(road.toString());
             for (ILane lane : road.getLanes()) {
-                res += lane.toString();
+                res.append(lane.toString());
             } 
         }
         for (IVehicle vehicle : vehicles) {
-            res += vehicle.toString();
+
+            res.append(vehicle.toString());
         }
-        return res;
+        res.append(roadString);
+        return res.toString();
     }
 
     /**

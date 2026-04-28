@@ -2,6 +2,7 @@ package main.java.models.objects;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
 
 import main.java.models.interfaces.*;
 import main.java.models.objects.road.Intersection;
@@ -14,13 +15,34 @@ import main.java.models.objects.vehicles.SnowPlower;
  * A felhasználói interakciókért és a parancsok feldolgozásáért felelős központi vezérlő osztály.
  */
 public class Console implements ICommand {
+    //vezérelt objektumok
     private Player player;
     private Map map;
     private IVehicle selectedVehicle;
-    private FileHandler fileHandler;
     private Shop shop;
-    public static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    private FileHandler fileHandler;
+    //globális input olvasó
+    private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    //lokális konstansok
+    private static final List<String> validCommands = List.of(
+        "help", "load", "save", "select", "setRoute", "buy", "attach", "switch", "printState" 
+    );
+    private static final String HELPMESSAGE = 
+            """
+            load <filename.ext> :load saved state
+            save <filename.ext> :save current state
+            select : select a Vehicle for operations
+            setRoute [-f] : set route of selected vehicle
+            buy : opens shop
+            attach : attach head from inventory to selected vehicle (only if selected is SnowPlower)
+            switch : switch current head used for cleaning on selected vehicle (only if selected is SnowPlower)
+            printState [-f, -s] :lists state of game
+            """;
 
+    /**
+    * Standard kimenetre irja a paraméterben kapott szöveget
+    *  @param msg Az átadott szöveg.
+    */        
     public static void print(String msg){
         try {
             System.out.println(msg);
@@ -28,6 +50,10 @@ public class Console implements ICommand {
            e.printStackTrace(); 
         }
     }
+    /**
+     * Standard bemenetről olvas be egy sort
+     * @return A beolvasott szöveg
+     */
     public static String readLine(){
         String res = null;
         try {
@@ -37,59 +63,84 @@ public class Console implements ICommand {
         }
         return res;
     }
-    //Kezeli a felhasználó által adott bemeneteket,
-    // meghívja az azokhoz tartozó függvényeket, 
-    // illetve egy hibaüzenetet, ha nem rendelhető parancs a bemenethez
+    /**
+     * Bezárja az olvasót
+     */
+    @Override
+    public void closeReader(){
+        try {
+            br.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return;
+    }
+    /**
+     * Kezeli a felhasználó által adott bemeneteket, 
+     * meghívja az azokhoz tartozó függvényeket, 
+     * illetve egy hibaüzenetet, ha nem rendelhető parancs a bemenethez
+     * @param cmd A felhasználó által megadott szöveg
+     */
     public void input(String cmd){
         print("-> Console.input()");
-    //--------------------HELP---------------------------------------------//
-        cmd = cmd.trim();
-        String[] tmp = cmd.split("[\\s]");
-        cmd = tmp[0].trim();
-        String arg = tmp[1].trim();
-        
-        if("help".contains(cmd)){
-            //TODO print help
-    //--------------------LOAD---------------------------------------------//
-        } else if ("load".contains(cmd)){
-            if(arg != null && !arg.isEmpty()){
-                loadState(arg);
-            }else{
-                loadState("save.txt");
-            }
-    //--------------------SAVE---------------------------------------------//
-        } else if ("save".contains(cmd)){
-            if(arg != null && !arg.isEmpty()){
-                saveState(arg);
-            }else{
-                saveState("save.txt");
-            }
-    //--------------------SELECT---------------------------------------------//
-        } else if ("select".contains(cmd)){
-            printVehicles();
-            selectVehicle();
-    //--------------------SetRoute---------------------------------------------//
-        } else if ("setRoute".contains(cmd)){
-            if(selectedVehicle == null) print("No vehicle selected");
-            else setRoute();
-        } else if ("buy".contains(cmd)){
-            buyEquipment();
-        } else if ("attach".contains(cmd)){
-            if(selectedVehicle == null) print("No vehicle of type SnowPlower selected");
-            //TODO select a head to attach
-            ((SnowPlower)selectedVehicle).attach(null);
-        } else if ("switch".contains(cmd)){
-            if(selectedVehicle == null) print("No vehicle of type SnowPlower selected");
-            //TODO select a head to change
-            ((SnowPlower)selectedVehicle).ChangeAttachment(null);
-        } else if ("printState".contains(cmd)){
+        String[] tmp = cmd.trim().split("\\s+", 2);
+        String arg = (tmp.length > 1) ? tmp[1].trim() : "";
+        List<String> matchingCommands = validCommands.stream()
+                                                     .filter(cd -> cd.startsWith(cmd))
+                                                     .toList();
+        if (matchingCommands.isEmpty()){
+            Console.print("Invalid command! \nType help for list of commands, or help <command> for specific command!");
+            return;
+        } 
+        if (matchingCommands.size() > 1) {
+            Console.print("Command is ambigous: " + String.join(",", matchingCommands));
+            return;
         }
-            
-
-        Console.print("Invalid command! \nType help for list of commands, or help <command> for specific command!");
+        execute(cmd, arg);
         print("<- Console.input()");
     }
+    /**
+     *Segédfüggvény olvashatóságnak, input feldolgozása után meghivja a  
+     *hozzárendelt függvényt
+     * @param cmd Az input függvény által meghatározott parancs
+     * @param arg -II- argumentumja
+     */
+    private void execute(String cmd, String arg){
+        boolean isSelected = selectedVehicle != null;
 
+        switch (cmd){
+            case "help" -> print(HELPMESSAGE);
+            case "load" -> loadState(arg);
+            case "save" -> saveState(arg);
+            case "select" -> selectVehicle();
+            case "setRoute" -> setRoute();
+            case "buy" -> buyEquipment();
+            case "attach" -> {
+                if (isSelected && selectedVehicle instanceof SnowPlower plower) {
+                    //TODO select head to attach
+                    player.attach(plower, null);
+                } else {
+                    print("No vehicle of type SnowPlower is selected");
+                }
+            }
+                
+            case "switch" -> {
+                if (isSelected && selectedVehicle instanceof SnowPlower plower) {
+                    //TODO determine currentHead
+                    player.changeEquipment(plower);
+                } else {
+                    print("No vehicle of type SnowPlower is selected");
+                }
+            }
+            case "printState" -> {/*TODO define printState*/}
+            default -> print("Invalid command! \nType help for list of commands, or help <command> for specific command!");
+        }
+        return;
+    }
+    /**
+     * Inicializálja a játékot
+     * @return A művelet sikeres/sikertelen
+     */
     @Override
     public boolean start() {
         print("-> Console.start()");
@@ -101,14 +152,21 @@ public class Console implements ICommand {
         print("<- Console.start():true");
         return true;
     }
-
+    /**
+     * 
+     * @return A művelet sikeres/sikertelen
+     */
     @Override
     public boolean end() {
         print("-> Console.end()");
         print("<- Console.end():true");
         return true;
     }
-
+    /**
+     * Elmenti a játék jelenlegi állapotát a paraméterben átadott fájlba
+     * @param loc A mentési fájl, alapértelmezetten save.txt
+     * @return A művelet sikeres/sikertelen
+     */
     @Override
     public boolean saveState(String loc) {
         print("-> Console.saveState()");
@@ -133,6 +191,14 @@ public class Console implements ICommand {
         print(out);
         return res;
     }
+
+    /**
+     * Megpróbálja betölti a játék egy mentett állapotát
+     * Felhasználót értesiti felmerülő hibákról
+     * @param loc A betöltendő fájl, alapértelmezetten save.txt
+     * @return A művelet sikeres/sikertelen
+     */
+
     @Override
     public boolean loadState(String loc) {
         print("-> Console.loadState()");
@@ -157,33 +223,47 @@ public class Console implements ICommand {
         print(out);
         return res;
     }
-
+    
+    /**
+     * Beállit egy útvonalat a kiválasztott járműnek
+     * @return A művelet sikeres/sikertelen
+     */
     @Override
     public boolean setRoute() {
         print("-> Console.setRoute(vehicle)");
         ArrayList<Intersection> route = new ArrayList<>();
+        if(selectedVehicle == null) 
+        {
+            print("No vehicle selected");
+            return false;
+        }
         //TODO Determine route
         selectedVehicle.SetRoute(route);
         print("<- Console.setRoute(vehicle):true");
         return true;
     }
 
+    /**
+     * Felkéri a felhasználót hogy válasszon ki egy járművet, amiken további műveletekez végezhet
+     * @return A művelet sikeres/sikertelen
+     */
     @Override
     public boolean selectVehicle() {
         print("-> Console.selectVehicle()");
         String id = null;
         print("Select a vehicle:");
-        map.listVehicles();
-        try {
-            id = br.readLine();
-        } catch (Exception e) {
-            print(e.getMessage());
+        printVehicles();
+        id = readLine();
+        if(id != null){
+            selectedVehicle = map.getVehicles().get(Integer.parseInt(id));
+            if (selectedVehicle != null)print("<- Console.selectVehicle():true");
         }
-        selectedVehicle = map.getVehicles().get(Integer.parseInt(id));
-        print("<- Console.selectVehicle():true");
         return true;
     }
-
+    /**
+     * Megnyitja a bolt vezérlőjét
+     * @return A vásárlás sikeres/sikertelen
+     */
     @Override
     public boolean buyEquipment() {
         print("-> Console.buyEquipment()");
@@ -192,24 +272,44 @@ public class Console implements ICommand {
         return true;
     }
 
+    /**
+     * Lecseréli a kiválasztott jármű takarításra használt fejét,
+     * amennyiben a kiválasztott jármű Hókotró
+     * @return A vásárlás sikeres/sikertelen
+     */
     @Override
     public boolean changeEquipment() {
         print("-> Console.changeEquipment(newEq)");
         print("<- Console.changeEquipment(newEq):true");
         return true;
     }
-
+    /**
+     * Kilistázza a pályán lévő autókat
+     * @return Formátum: (sorszám kiválasztáshoz) type: (tipus(Bus/Car/SnowPlower)) 
+     */
     @Override
     public String printVehicles() {
         print("-> Console.printVehicles()");
-        String list = "";
+        StringBuilder list = new StringBuilder();
         for (IVehicle vehicle : map.getVehicles()) {
-            list += "\n(" + map.getVehicles().indexOf(vehicle) + ") type:" + vehicle.toString().split("\\r?\\n")[1].substring(5); 
+            list.append( "\n(");
+            list.append(map.getVehicles().indexOf(vehicle) );
+            list.append(") type:" );
+            list.append(vehicle.toString().split("\\r?\\n")[1].substring(5));
         }
         print("<- Console.printVehicles():String");
-        return list;
+        return list.toString();
     }
 
+    /**
+     * Kilistázza a játékos leltárát
+     * @return Formátum:
+        Player: 
+            balance: [jelenlegi pénzmennyiség] 
+            plowers: [id1], [id2], [id3],…[idn] 
+            buses: [id1], [id2], [id3],…[idn] 
+            heads: Sweeper [n1], Blower [n2], Salter[n3], IceBreaker[n4], Graveler[n5], Dragon[n6]  
+     */
     @Override
     public String printInventory() {
         print("-> Console.printInventory()");
@@ -260,7 +360,6 @@ public class Console implements ICommand {
         map.initIcy(); 
         Console.print("------------End of Initialization-----------");
     }
-
     @Override
     public void loop(){
         String input = "";

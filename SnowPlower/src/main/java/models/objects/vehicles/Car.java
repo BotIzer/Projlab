@@ -48,16 +48,16 @@ public class Car extends VehicleBase
     }
     @Override
     public String toString() {
-        String res = "V";
-        res += "\nid=" + id;
-        res += "\ntype=Car";
-        res += "\ncurrentPosition=" + currentPosition;
-        res += "\nlane=" + lane.toList();
-        res += "\nbaseSpeed=" + baseSpeed;
-        res += "\nroute=";
+        StringBuilder res = new StringBuilder("V");
+        res.append("\nid=" + id);
+        res.append("\ntype=Car");
+        res.append("\ncurrentPosition=" + currentPosition);
+        res.append("\nlane=" + lane.toList());
+        res.append("\nbaseSpeed=" + baseSpeed);
+        res.append("\nroute=");
         for (ILane lane : route) {
-            res += lane.toList() + ";";
+            res.append(lane.toList() + ";");
         }
-        return res;
+        return res.toString();
     }
 }

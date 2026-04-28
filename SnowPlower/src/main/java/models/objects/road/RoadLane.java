@@ -21,16 +21,18 @@ public class RoadLane extends LaneBase {
     }
     @Override
     public String toString() {
-        String res = "L";
-        res += "\nid=" + id;
-        res += "\ntype=RoadLane";
-        res += "\nstart=" + start.toList();
-        res += "\nend=" + end.toList();
-        res += "\nvehicles=";
+        StringBuilder res = new StringBuilder("L");
+        res.append("\nid=" + id);
+        res.append("\ntype=RoadLane");
+        res.append("\nstart=" + start.toList()); 
+        res.append("\nend=" + end.toList()); 
+        res.append("\nvehicles="); 
         for (IVehicle vehicle : vehicles) {
-            res += vehicle.toList() + ";";
+            res.append(vehicle.toList() );
+            res.append(";");
         }
-        res += "\nstate=" + state.toString();
-        return res;
+        res.append("\nstate=" );
+        res.append(state.toString());
+        return res.toString();
     }
 }
