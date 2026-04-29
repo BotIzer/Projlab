@@ -134,7 +134,8 @@ public class Console implements ICommand {
                     print("No vehicle of type SnowPlower is selected");
                 }
             }
-            case "printState" -> {/*TODO define printState*/}
+            case "printState" -> printState(args);
+            case "exit" -> end(args);
             default -> print("Invalid command! \nType help for list of commands, or help <command> for specific command!");
         }
         return;
@@ -155,13 +156,28 @@ public class Console implements ICommand {
         return true;
     }
     /**
-     * 
-     * @return A művelet sikeres/sikertelen
+     * A játék befejezése, rákérdez mentési szándékra
+     * @return Mentett/nem mentett
      */
     @Override
     public boolean end(List<String> args) {
         print("-> Console.end()");
-        //TODO save with args
+        String arg = args.contains("-s") ? args.getLast() : ""; 
+        if (arg.isEmpty()) {
+            print("Do you want to save the game?(y/n)");
+            try {
+                
+                String yn = readLine();
+                if (yn == null) return false;
+                if (yn.equalsIgnoreCase("y")) {
+                     return saveState(arg);       
+                }
+                return false;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        saveState(arg);
         print("<- Console.end():true");
         return true;
     }
@@ -234,13 +250,22 @@ public class Console implements ICommand {
     @Override
     public boolean setRoute() {
         print("-> Console.setRoute(vehicle)");
-        ArrayList<Intersection> route = new ArrayList<>();
         if(selectedVehicle == null) 
         {
             print("No vehicle selected");
             return false;
         }
-        //TODO Determine route
+        print("Select intersections: (enter x to end selection)");
+        map.printInterSections();
+        String input = "";
+        ArrayList<Integer> ids = new ArrayList<>();
+        do {
+            input = readLine();
+            input = (input == null) ? "" : input;
+            ids.add(Integer.parseInt(input));
+        } while (!input.equals("x"));
+
+        List<Intersection> route = map.determineRoute(ids);
         selectedVehicle.SetRoute(route);
         print("<- Console.setRoute(vehicle):true");
         return true;
@@ -326,7 +351,14 @@ public class Console implements ICommand {
      */
     public void printState(List<String> args){
         if(args.contains("-s")){
-            player.printInventory();
+            print(player.printInventory());
+            print(map.print());
+            print("selectedVehicle: " + selectedVehicle.toList());
+        } else if(args.contains("-f")){
+            print(fileHandler.format(player, map));
+        } else {
+            print(player.printInventory());
+            print(map.printLong());
         }
     }
     @Override

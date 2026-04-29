@@ -1,12 +1,9 @@
 package main.java.models.objects;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import main.java.models.interfaces.*;
 import main.java.models.objects.vehicles.*;
-import main.java.models.objects.vehicles.heads.AttachmentBase;
 
 /**
  * A felhasználót (játékost) és annak erőforrásait reprezentáló osztály.
@@ -79,14 +76,14 @@ public class Player {
     public String printInventory(){
         StringBuilder res = new StringBuilder();
         res.append("Player:")
-           .append("\nbalance: ")
+           .append("\n\tbalance: ")
            .append(money)
-           .append("\nplowers: ");
+           .append("\np\tlowers: ");
         for (SnowPlower plower : plowers) {
             res.append(plower.toList())
                .append(", ");
         }
-        res.append("\nbuses:");
+        res.append("\nb\tuses:");
         for (Bus bus : buses) {
             res.append(bus.toList())
                .append(", ");
@@ -110,7 +107,7 @@ public class Player {
             }
         }
 
-        res.append("\n  heads: Sweeper ") .append(sweeper)
+        res.append("\n\theads: Sweeper ") .append(sweeper)
        .append(", Blower ").append(blower)
        .append(", Salter ").append(salter)
        .append(", IceBreaker ").append(iceBreaker)

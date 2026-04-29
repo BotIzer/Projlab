@@ -111,11 +111,11 @@ public class SnowPlower extends VehicleBase {
     @Override
     public String toString() {
         StringBuilder res = new StringBuilder("V");
-        res.append("\nid=" + id);
+        res.append("\nid=").append(id);
         res.append("\ntype=SnowPlower");
-        res.append("\ncurrentPosition=" + currentPosition);
-        res.append("\nlane=" + lane.toList());
-        res.append("\nbaseSpeed=" + baseSpeed);
+        res.append("\ncurrentPosition=" ).append(currentPosition);
+        res.append("\nlane=" ).append(lane.toList());
+        res.append("\nbaseSpeed=" ).append(baseSpeed);
         res.append("\nroute=");
         for (ILane lane : route) {
             res.append(lane.toList());
@@ -124,6 +124,37 @@ public class SnowPlower extends VehicleBase {
         for (ICleaning head : heads) {
             res.append(head.toString());
         }
+        return res.toString();
+    }
+    @Override
+    public String printLong() {
+        StringBuilder res = new StringBuilder(super.printLong());
+
+        int sweeper = 0;
+        int blower = 0;
+        int icebreaker = 0;
+        int dragon = 0;
+        int salter = 0;
+        int graveler =0; 
+        
+        for (ICleaning head : heads) {
+            switch (head.print().toLowerCase()) {
+                case "sweeperhead" -> sweeper++;
+                case "blowerhead" -> blower++;
+                case "icebreakerhead" -> icebreaker++;
+                case "dragonhead" -> dragon++;
+                case "salterhead" -> salter++;
+                case "gravelerhead" -> graveler++; 
+                default -> {break;}
+            }
+        }
+        res.append("\n\tCurrentHead: ").append(currentHead.toList());
+        res.append("\n\tHeads: Sweeper: ").append(sweeper)
+           .append("\n\t       Blower:").append(blower)
+           .append("\n\t       Salter:").append(salter)
+           .append("\n\t       IceBreaker:").append(icebreaker)
+           .append("\n\t       Graveler:").append(graveler)
+           .append("\n\t       Dragon:").append(dragon);
         return res.toString();
     }
 }

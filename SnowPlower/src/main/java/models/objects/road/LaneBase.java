@@ -54,4 +54,27 @@ public abstract class LaneBase implements ILane {
     public String toList() {
         return Integer.toString(id);
     }
+    /**
+     * Részletes listázó segédfüggvény 
+     * @param roadId road idje
+     * @return printState formátumú szöveg
+     */
+    @Override
+    public String printLong(int roadId) {
+        StringBuilder res = new StringBuilder("Lane");
+        res.append(id)
+           .append(": ")
+           .append(roadId)
+           .append(", ")
+           .append(start.toList())
+           .append("-")
+           .append(end.toList())
+           .append(", ")
+           .append(state.toString());
+        for (IVehicle vehicle : vehicles) {
+            res.append("\n\t")
+                .append(vehicle.toList());
+        }
+        return res.toString();
+    }
 }

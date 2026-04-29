@@ -53,12 +53,30 @@ public class Map {
 
     /**
      * Listázza a járműveket.
+     * formátum: (sorszám) Név/Tipus
      */
     public void listVehicles(){
         for (int i = 0; i < vehicles.size(); i++) {
-            String out = "(" + i + ")" + " " + vehicles.get(i).toString();
+            String out = "(" + i + ")" + " " + vehicles.get(i).getClass().getSimpleName();
             Console.print(out);
         }
+    }
+    /**
+     * Meghatározza az érintendő végpontokat kiválasztás után
+     * Console.setRoute() segédfüggvénye
+     * @param ids
+     * @return
+     */
+    public List<Intersection> determineRoute(List<Integer> ids){
+        ArrayList<Intersection> route = new ArrayList<>();
+        for (Integer id : ids) {
+            if ((id > intersections.size()-1) || id < 0) {
+                route.clear();
+                return route;
+            }
+            route.add(intersections.get(id)); 
+        }
+        return route;
     }
 
     /**
@@ -101,6 +119,62 @@ public class Map {
     }
 
     /**
+     * Listázza a pálya tartalmát 
+     * @return pálya állapota printState -s formátumban
+     */
+    public String print(){
+        StringBuilder res = new StringBuilder();
+        res.append("Map:")
+           .append("\n\troads: ");
+        for (Road road : roads) {
+            for (ILane lane : road.getLanes()) {
+               res.append(lane.toList())
+                  .append(", "); 
+            }
+        }
+        res.append("\n\tintersections: ");
+        for (Intersection intersection : intersections) {
+            res.append(intersection.toList())
+               .append(", ");
+        }
+        res.append("\n\tvehicles: ");
+        for (IVehicle vehicle : vehicles) {
+            res.append(vehicle.toList())
+               .append(", ");
+        }
+
+        return res.toString();
+    }
+    /**
+     * Részletes listázó
+     * @return printState formátumú szöveg
+     */
+    public String printLong(){
+        StringBuilder res = new StringBuilder();
+        res.append(print());
+        for (Road road : roads) {
+            res.append(road.printLong());
+        }
+        for (IVehicle vehicle : vehicles) {
+            res.append(vehicle.printLong());
+        }
+        return res.toString();
+    }
+    /**
+     * Listázza a végpontokat kiválasztási célból
+     * @return végpontok listája, sorszáma
+     */
+    public String printInterSections(){
+        StringBuilder res = new StringBuilder();
+        for (int i = 0; i < intersections.size(); i++) {
+            String[] tmp = intersections.get(i).toString().split("\n");
+            res.append("(").append(i).append(") ")
+               .append(tmp[1]).append(" ").append(tmp[2]);
+        }
+        return res.toString();
+    }
+
+    /**
      * Általános inicializálás a szimulációhoz.
      */
     public void initGeneral(){
@@ -113,6 +187,7 @@ public class Map {
             vehicle.setLane(lane);
         }
     }
+
 
     /**
      * Jeges út szimulációjának inicializálása.

@@ -31,4 +31,5 @@ public interface ILane {
      */
     public boolean changeState(String ns);
     public String toList();
+    public String printLong(int roadId);
 }

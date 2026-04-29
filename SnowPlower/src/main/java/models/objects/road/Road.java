@@ -36,13 +36,26 @@ public class Road {
     }
     @Override
     public String toString() {
-        String res = "R";
-        res += "\nid=" + id;
-        res += "lanes=";
+        StringBuilder res = new StringBuilder("R");
+        res.append("\nid=" + id)
+        .append("\nlanes=");
         for (ILane lane : lanes) {
-           res += lane.toList() + ";";
+           res.append(lane.toList())
+           .append(";");
         }
-        res += "length=" + length;
-        return res;
+        res.append("\nlength=")
+           .append(length);
+        return res.toString();
+    }
+    public String toList(){
+        return Integer.toString(id);
+    }
+    public String printLong(){
+        StringBuilder res = new StringBuilder();
+        for (ILane lane : lanes) {
+            res.append("\n")
+               .append(lane.printLong(id));
+        }
+        return res.toString();
     }
 }

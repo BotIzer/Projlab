@@ -23,10 +23,13 @@ public interface IVehicle {
     public void Slipping();
 
     /**
-     * Előírja az útvonaltervezés megvalósítását két kereszteződés között.
-     * @param start keződ kereszteződés
-     * @param end keződ kereszteződés
+     * Előírja az útvonaltervezés megvalósítását két kereszteződés között, vagy teljes útvonalt.
+     * @param intersections az érintendő csúcspontok, ha
+     *                      egy elemű: jelenlegi út kezdőpontja és megadott pont között legrövidebb,
+     *                      ha két elemű: a két végpont közti legrövidebb út
+     *                      különben teljes útvonal
      */
     public void SetRoute(List<Intersection> intersections);
     public String toList();
+    public String printLong();
 }

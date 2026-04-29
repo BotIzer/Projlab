@@ -48,10 +48,26 @@ public abstract class VehicleBase implements IVehicle {
         Console.print("-> VehicleBase.SetRoute(Intersection start, Intersection end)");
         Console.print("<- VehicleBase.SetRoute(Intersection start, Intersection end): void");
     }
+
     public void setLane(ILane l){
         lane = l;
     }
+    @Override
     public String toList(){
         return Integer.toString(id);
+    }
+    @Override
+    public String printLong() {
+        StringBuilder res = new StringBuilder(this.getClass().getSimpleName());
+        res.append(id)
+           .append(": ")
+           .append(id).append(", ")
+           .append(lane.toList()).append(", ")
+           .append("\nRoute: ");
+        for (ILane node : route) {
+            res.append(node.toList())
+               .append(", ");
+        }
+        return res.toString();
     }
 }

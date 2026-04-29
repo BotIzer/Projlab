@@ -33,4 +33,17 @@ public class FileHandler {
         Console.print("\t<-FileHandler.loadState(" + loc +"): true");
         return true;
     }
+    /**
+     * Létrehozza a mentési formátumnak megfelelő szöveget
+     * @param p a játékos állapota
+     * @param map a játék állapota
+     * @return megformázott szöveg
+     */
+    public String format(Player p, Map map){
+        StringBuilder res = new StringBuilder();
+        res.append(p.toString());
+        res.append(map.toString());
+
+        return res.toString();
+    }
 }

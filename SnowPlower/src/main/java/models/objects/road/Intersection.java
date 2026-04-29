@@ -25,14 +25,14 @@ public class Intersection {
     }
     @Override
     public String toString() {
-        String res = "I";
-        res += "\nid=" + id;
-        res += "lanes=";
+        StringBuilder res = new StringBuilder("I");
+        res.append("\nid=").append(id)
+           .append("\nlanes=");
         for (Road road : roads) {
             for (ILane lane : road.getLanes()) {
-                res += lane.toList() + ";";
+                res.append(lane.toList()).append(";");
             }
         }
-        return res;
+        return res.toString();
     }
 }
