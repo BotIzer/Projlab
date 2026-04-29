@@ -15,6 +15,7 @@ public class Main {
     public static void main(String[] args) {
         String line;
         try {
+            boolean invalidInput = true;
             do{
                 Console.print("Start game or Run tests?");
                 Console.print("(0) Start game");
@@ -24,13 +25,18 @@ public class Main {
                 (x)Exit
                 """);
                 line = Console.readLine();
+                switch (line) {
+                    case "x" -> invalidInput = false;
+                    case "0" -> invalidInput = false;
+                    case "1" -> invalidInput = false;
+                    default -> {break;}
+                }
 
-            }   while (!line.equals("x") || !line.equals("0") || !line.equals("1"));  
+            }   while (invalidInput);  
 
             switch (line) {
                 case "x":
                     break;
-            
                 case "0":
                     console.start();
                     break;

@@ -84,21 +84,22 @@ public class Console implements ICommand {
      */
     public void input(String cmd){
         print("-> Console.input()");
-        String[] tmp = cmd.trim().split("\\s+", 2);
-        List<String> args = (tmp.length > 1) ? Arrays.asList(tmp) : Arrays.asList();
-        args.removeFirst();
+        String[] tmp = cmd.trim().split("\\s+");
+        if(tmp.length == 0) return;
+        String command = tmp[0];
+        List<String> args = Arrays.stream(tmp).skip(1).toList();
         List<String> matchingCommands = validCommands.stream()
-                                                     .filter(cd -> cd.startsWith(cmd))
+                                                     .filter(cd -> cd.startsWith(command))
                                                      .toList();
         if (matchingCommands.isEmpty()){
-            Console.print("Invalid command! \nType help for list of commands, or help <command> for specific command!");
+            print("Invalid command! \nType help for list of commands, or help <command> for specific command!");
             return;
         } 
         if (matchingCommands.size() > 1) {
-            Console.print("Command is ambigous: " + String.join(",", matchingCommands));
+            Console.print("Command is ambigous, list of valid commands: \n\t" + String.join(",\n\t", matchingCommands));
             return;
         }
-        execute(cmd, args);
+        execute(command, args);
         print("<- Console.input()");
     }
     /**
@@ -109,11 +110,11 @@ public class Console implements ICommand {
      */
     private void execute(String cmd, List<String> args){
         boolean isSelected = selectedVehicle != null;
-
+        
         switch (cmd){
             case "help" -> print(HELPMESSAGE);
-            case "load" -> loadState(args.getFirst());
-            case "save" -> saveState(args.getFirst());
+            case "load" -> loadState(args.isEmpty() ? "" : args.get(0));
+            case "save" -> saveState(args.isEmpty() ? "" : args.get(0));
             case "select" -> selectVehicle();
             case "setRoute" -> setRoute();
             case "buy" -> buyEquipment();
@@ -151,7 +152,7 @@ public class Console implements ICommand {
         map = new Map();
         fileHandler = new FileHandler();
         shop = new Shop();
-        
+        loop(); 
         print("<- Console.start():true");
         return true;
     }
@@ -159,28 +160,37 @@ public class Console implements ICommand {
      * A játék befejezése, rákérdez mentési szándékra
      * @return Mentett/nem mentett
      */
+
     @Override
     public boolean end(List<String> args) {
         print("-> Console.end()");
-        String arg = args.contains("-s") ? args.getLast() : ""; 
-        if (arg.isEmpty()) {
-            print("Do you want to save the game?(y/n)");
+        boolean shouldSaveImmediately = args.contains("-s");
+        String filename = ""; 
+        boolean result = true; 
+
+        if (!args.isEmpty()) {
+            String last = args.get(args.size() - 1);
+            filename = last.equals("-s") ? "save.txt" : last;
+        } 
+
+        if (shouldSaveImmediately) {
+            saveState(filename);
+        } else {
+            print("Do you want to save the game? (y/n)");
+            boolean confirm;
             try {
-                
                 String yn = readLine();
-                if (yn == null) return false;
-                if (yn.equalsIgnoreCase("y")) {
-                     return saveState(arg);       
-                }
-                return false;
+                confirm = yn != null && yn.equalsIgnoreCase("y");
             } catch (Exception e) {
-                e.printStackTrace();
+                confirm = false;
             }
+            if (confirm) result = saveState(filename);
         }
-        saveState(arg);
-        print("<- Console.end():true");
-        return true;
+        print("<- Console.end(): " + result);
+        return result;
     }
+
+
     /**
      * Elmenti a játék jelenlegi állapotát a paraméterben átadott fájlba
      * @param loc A mentési fájl, alapértelmezetten save.txt
@@ -188,9 +198,9 @@ public class Console implements ICommand {
      */
     @Override
     public boolean saveState(String loc) {
-        print("-> Console.saveState()");
+        print("-> Console.saveState("+ loc +")");
         boolean res = true;
-        String out = "<- Console.saveState():";
+        String out = "<- Console.saveState("+ loc +"):";
         if(loc != null && !loc.isEmpty())
         {
             res = fileHandler.saveState(loc, player, map);
@@ -201,6 +211,7 @@ public class Console implements ICommand {
         print("Save to: (default: save.txt)");
         try {
             loc = br.readLine();
+            out = "<- Console.saveState("+ loc +"):";
         } catch (Exception e) {
             res = false;
             print(e.getMessage());
@@ -238,6 +249,7 @@ public class Console implements ICommand {
             print(e.getMessage()); 
         }
         if (loc != null && !loc.isEmpty()) res = fileHandler.loadState(loc);
+        else res = fileHandler.loadState("save.txt");
         out += res; 
         print(out);
         return res;
@@ -281,10 +293,14 @@ public class Console implements ICommand {
         String id = null;
         print("Select a vehicle:");
         printVehicles();
-        id = readLine();
-        if(id != null){
-            selectedVehicle = map.getVehicles().get(Integer.parseInt(id));
-            if (selectedVehicle != null)print("<- Console.selectVehicle():true");
+        try {
+            id = readLine();
+            if(id != null){
+                selectedVehicle = map.getVehicles().get(Integer.parseInt(id));
+                if (selectedVehicle != null)print("<- Console.selectVehicle():true");
+            }
+        } catch (Exception e) {
+            print(e.getMessage());
         }
         return true;
     }
@@ -353,7 +369,8 @@ public class Console implements ICommand {
         if(args.contains("-s")){
             print(player.printInventory());
             print(map.print());
-            print("selectedVehicle: " + selectedVehicle.toList());
+            if (selectedVehicle == null) print("selectedVehicle: ");
+            else print("selectedVehicle: " + selectedVehicle.toList());
         } else if(args.contains("-f")){
             print(fileHandler.format(player, map));
         } else {
@@ -409,10 +426,11 @@ public class Console implements ICommand {
     public void loop(){
         String input = "";
         do {
-            
+            input = readLine();
+            input = (input == null) ? "" : input;
+            input(input); 
         } while (!input.startsWith("e"));
         
-        map.loop();
     }
 
 

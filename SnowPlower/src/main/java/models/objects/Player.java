@@ -78,12 +78,12 @@ public class Player {
         res.append("Player:")
            .append("\n\tbalance: ")
            .append(money)
-           .append("\np\tlowers: ");
+           .append("\n\tplowers: ");
         for (SnowPlower plower : plowers) {
             res.append(plower.toList())
                .append(", ");
         }
-        res.append("\nb\tuses:");
+        res.append("\n\tbuses:");
         for (Bus bus : buses) {
             res.append(bus.toList())
                .append(", ");

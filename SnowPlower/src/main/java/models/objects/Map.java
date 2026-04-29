@@ -82,6 +82,7 @@ public class Map {
     /**
      * Végrehajt egy szimulációs ciklust a térképen.
      */
+    //TODO implement simulation
     public void loop(){
         Console.print("-> Map.loop()");
         for (IVehicle vehicle : vehicles) {
