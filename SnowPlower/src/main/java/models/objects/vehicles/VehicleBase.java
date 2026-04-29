@@ -1,6 +1,9 @@
 package main.java.models.objects.vehicles;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
 import main.java.models.interfaces.*;
 import main.java.models.objects.Console;
@@ -69,5 +72,29 @@ public abstract class VehicleBase implements IVehicle {
                .append(", ");
         }
         return res.toString();
+    }
+    //Fileból betöltés, szinkronizálás
+    protected abstract void applyData(Map<String, String> data);
+    public abstract void resolve(Map<Integer, ILane> lanes, Map<Integer, ICleaning> headsTmp);
+    public static IVehicle create(Scanner sc){
+        Map<String, String> data = new HashMap<>();
+        
+        while (sc.hasNext(".*=.*")) {
+            String[] parts = sc.nextLine().split("=", 2);
+            data.put(parts[0].trim(), parts.length > 1 ? parts[1].trim() : "");
+        }
+
+        String type = data.getOrDefault("type", "");
+
+        IVehicle v = switch (type) {
+            case "SnowPlower" -> new SnowPlower(30);
+            case "Bus" -> new Bus(30, "", new ArrayList<>());
+            case "Car" -> new Car(30);
+            default -> throw new IllegalArgumentException("Unknown type: " + type);
+        };
+
+        ((VehicleBase)v).applyData(data); 
+
+        return v;
     }
 }

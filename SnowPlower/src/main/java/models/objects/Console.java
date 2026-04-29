@@ -236,7 +236,7 @@ public class Console implements ICommand {
         String out = "<- Console.loadState():" ;
         if (loc != null && !loc.isEmpty()) 
         {
-            res = fileHandler.loadState(loc);
+            res = fileHandler.loadState(loc, player, map);
             out += res; 
             print(out);
             return res;
@@ -248,8 +248,8 @@ public class Console implements ICommand {
             res = false;
             print(e.getMessage()); 
         }
-        if (loc != null && !loc.isEmpty()) res = fileHandler.loadState(loc);
-        else res = fileHandler.loadState("save.txt");
+        if (loc != null && !loc.isEmpty()) res = fileHandler.loadState(loc, player, map);
+        else res = fileHandler.loadState("save.txt", player, map);
         out += res; 
         print(out);
         return res;

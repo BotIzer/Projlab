@@ -2,6 +2,10 @@ package main.java.models.objects;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+import java.util.Map;
+
 import main.java.models.interfaces.*;
 import main.java.models.objects.vehicles.*;
 
@@ -172,5 +176,48 @@ public class Player {
         }
         res.append(headString);
         return res.toString();
+    }
+    //Kizárólag file-ból betöltésre használt, objektum szinkronizációs segédváltozók
+    private List<Integer> pendingPlowerIds = new ArrayList<>();
+    private List<Integer> pendingBusIds = new ArrayList<>();
+    private List<Integer> pendingHeadIds = new ArrayList<>(); 
+    
+    public void load(Scanner sc){
+       while (sc.hasNext(".*=.*")) {
+            String line = sc.nextLine();
+            String[] parts = line.split("=", 2);
+            String key = parts[0].trim();
+            String value = parts.length > 1 ? parts[1].trim() : "";
+
+            switch (key) {
+                case "balance" -> this.money = Integer.parseInt(value);
+                case "plowers" -> this.pendingPlowerIds = FileHandler.parseList(value);
+                case "buses"   -> this.pendingBusIds = FileHandler.parseList(value);
+                case "heads"   -> this.pendingHeadIds = FileHandler.parseList(value);
+                default -> {break;} 
+            }
+        } 
+    }
+    public void resolve(Map<Integer, IVehicle> vehicles, Map<Integer, ICleaning> heads) {
+        this.plowers = pendingPlowerIds.stream()
+            .map(vehicles::get)
+            .filter(SnowPlower.class::isInstance)
+            .map(SnowPlower.class::cast)
+            .collect(Collectors.toCollection(ArrayList::new));
+
+        this.buses = pendingBusIds.stream()
+            .map(vehicles::get)
+            .filter(Bus.class::isInstance)
+            .map(Bus.class::cast)
+            .collect(Collectors.toCollection(ArrayList::new));
+
+        this.heads = pendingHeadIds.stream()
+            .map(heads::get)
+            .filter(ICleaning.class::isInstance)
+            .collect(Collectors.toCollection(ArrayList::new));
+
+        pendingPlowerIds.clear();
+        pendingBusIds.clear();
+        pendingHeadIds.clear();
     }
 }

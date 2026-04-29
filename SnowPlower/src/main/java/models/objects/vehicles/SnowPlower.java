@@ -1,8 +1,12 @@
 package main.java.models.objects.vehicles;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import main.java.models.interfaces.ICleaning;
 import main.java.models.interfaces.ILane;
 import main.java.models.objects.Console;
+import main.java.models.objects.FileHandler;
 import main.java.models.objects.road.Intersection;
 import main.java.models.objects.vehicles.heads.BlowerHead;
 import main.java.models.objects.vehicles.heads.IceBreakerHead;
@@ -156,5 +160,41 @@ public class SnowPlower extends VehicleBase {
            .append("\n\t       Graveler:").append(graveler)
            .append("\n\t       Dragon:").append(dragon);
         return res.toString();
+    }
+
+    //Fileból betöltés, szinkronizáció
+    private Integer pendingLane;
+    private Integer pendingHead;
+    private List<Integer> pendingRoute = new ArrayList<>();
+    private List<Integer> pendingHeads = new ArrayList<>();
+    @Override
+    protected void applyData(Map<String, String> data) {
+        for (Map.Entry<String, String> entry : data.entrySet()) {
+           switch (entry.getKey()) {
+            case "id" -> id = Integer.parseInt(entry.getValue());
+            case "currentPosition" -> currentPosition = Integer.parseInt(entry.getValue());
+            case "lane" -> pendingLane = Integer.parseInt(entry.getValue());
+            case "baseSpeed" -> baseSpeed = Integer.parseInt(entry.getValue());
+            case "route" -> pendingRoute = FileHandler.parseList(entry.getValue());
+            case "currentHead" -> pendingHead = Integer.parseInt(entry.getValue());
+            case "heads" -> pendingHeads = FileHandler.parseList(entry.getValue());
+            default -> {break;}
+           } 
+        }
+    }
+    @Override
+    public void resolve(Map<Integer, ILane> lanes, Map<Integer, ICleaning> headsTmp){
+        if (pendingLane != null) lane = lanes.get(pendingLane);
+        if (pendingHead != null) currentHead = headsTmp.get(pendingHead); 
+        route = pendingRoute.stream()
+            .map(lanes::get)
+            .collect(Collectors.toCollection(ArrayList::new));
+        heads = pendingHeads.stream()
+            .map(headsTmp::get)
+            .collect(Collectors.toCollection(ArrayList::new));
+        pendingLane = null;
+        pendingHead = null;
+        pendingRoute.clear();
+        pendingHeads.clear();
     }
 }
