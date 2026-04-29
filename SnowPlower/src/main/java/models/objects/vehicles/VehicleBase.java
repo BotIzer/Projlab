@@ -1,4 +1,7 @@
 package main.java.models.objects.vehicles;
+import java.util.ArrayList;
+import java.util.List;
+
 import main.java.models.interfaces.*;
 import main.java.models.objects.Console;
 import main.java.models.objects.road.Intersection;
@@ -7,12 +10,14 @@ import main.java.models.objects.road.Intersection;
  * Minden jármű absztrakt alaposztálya, amely definiálja az alapvető mozgási képességeket és a környezettel való kapcsolatot.
  */
 public abstract class VehicleBase implements IVehicle {
-    protected double CurrentPosition;
+    protected int id;
+    protected double currentPosition;
     protected ILane lane;
     protected double baseSpeed;
+    protected ArrayList<ILane> route;
 
     protected VehicleBase(double bs){
-        CurrentPosition = 0.0;
+        currentPosition = 0.0;
         baseSpeed = bs;
     }
 
@@ -38,12 +43,31 @@ public abstract class VehicleBase implements IVehicle {
     }
 
     @Override
-    public void SetRoute(Intersection start, Intersection end)
+    public void SetRoute(List<Intersection> intersections)
     {
         Console.print("-> VehicleBase.SetRoute(Intersection start, Intersection end)");
         Console.print("<- VehicleBase.SetRoute(Intersection start, Intersection end): void");
     }
+
     public void setLane(ILane l){
         lane = l;
+    }
+    @Override
+    public String toList(){
+        return Integer.toString(id);
+    }
+    @Override
+    public String printLong() {
+        StringBuilder res = new StringBuilder(this.getClass().getSimpleName());
+        res.append(id)
+           .append(": ")
+           .append(id).append(", ")
+           .append(lane.toList()).append(", ")
+           .append("\nRoute: ");
+        for (ILane node : route) {
+            res.append(node.toList())
+               .append(", ");
+        }
+        return res.toString();
     }
 }

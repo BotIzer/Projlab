@@ -2,12 +2,14 @@ package main.java.models.objects.road;
 import java.util.ArrayList;
 import java.util.List;
 
+import main.java.models.interfaces.ILane;
 import main.java.models.objects.Console;
 
 /**
  * A forgalmi csomópontokat kezeli, ahol az utak és a sávok találkoznak.
  */
 public class Intersection {
+    private int id;
     private List<Road> roads;
 
     public Intersection(Road r){
@@ -17,5 +19,20 @@ public class Intersection {
     }
     public void addRoad(Road r){
         roads.add(r);
+    }
+    public String toList(){
+        return Integer.toString(id);
+    }
+    @Override
+    public String toString() {
+        StringBuilder res = new StringBuilder("I");
+        res.append("\nid=").append(id)
+           .append("\nlanes=");
+        for (Road road : roads) {
+            for (ILane lane : road.getLanes()) {
+                res.append(lane.toList()).append(";");
+            }
+        }
+        return res.toString();
     }
 }

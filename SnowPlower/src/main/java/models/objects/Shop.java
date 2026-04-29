@@ -1,10 +1,7 @@
 package main.java.models.objects;
 
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import main.java.models.interfaces.*;
@@ -25,7 +22,6 @@ public class Shop {
     public Shop(){
         Console.print("\t!<<create>>Shop");
     }
-    private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
     private void listItems(){
         Console.print("""
@@ -53,10 +49,10 @@ public class Shop {
         int id;
         int n;
         try {
-            in = br.readLine();
+            in = Console.readLine();
             id = Integer.parseInt(in);
             Console.print("enter amount:");
-            in = br.readLine();
+            in = Console.readLine();
             n = Integer.parseInt(in);
         } catch (Exception e) {
             res = false;

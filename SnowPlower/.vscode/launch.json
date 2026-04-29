@@ -6,9 +6,10 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Current File",
+            "name": "Launch",
             "request": "launch",
-            "mainClass": "${file}"
+            "preLaunchTask": "java (build): Build Workspace",
+            "mainClass": "E:/suli/BME/projlab/PROJECT/Projlab/SnowPlower/src/main/java/Main.java"
         }
     ]
 }

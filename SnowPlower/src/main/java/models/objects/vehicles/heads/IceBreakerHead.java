@@ -13,5 +13,9 @@ public class IceBreakerHead extends AttachmentBase {
         lane.clear();
         Console.print("\t\t\t\t<- IcebreakerHead.Clean(ILane lane, SnowPlower plow)");
     }
+    @Override
+    public String print() {
+        return "IceBreakerHead";
+    }
 }
     

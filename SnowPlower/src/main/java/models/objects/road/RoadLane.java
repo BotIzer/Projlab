@@ -19,4 +19,20 @@ public class RoadLane extends LaneBase {
         Console.print("<-RoadLane.clear()");
         return true;
     }
+    @Override
+    public String toString() {
+        StringBuilder res = new StringBuilder("L");
+        res.append("\nid=" + id);
+        res.append("\ntype=RoadLane");
+        res.append("\nstart=" + start.toList()); 
+        res.append("\nend=" + end.toList()); 
+        res.append("\nvehicles="); 
+        for (IVehicle vehicle : vehicles) {
+            res.append(vehicle.toList() );
+            res.append(";");
+        }
+        res.append("\nstate=" );
+        res.append(state.toString());
+        return res.toString();
+    }
 }

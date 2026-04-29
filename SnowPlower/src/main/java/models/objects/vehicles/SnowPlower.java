@@ -31,9 +31,10 @@ public class SnowPlower extends VehicleBase {
         Console.print("\t<- SSnowPlower.attach(newHead)");
     }
 
-    public void ChangeAttachment(ICleaning head) {
+    public void ChangeAttachment(int id) {
         Console.print("\t-> SnowPlower.ChangeAttachment(head)");
-        currentHead = head;
+        //TODO parameter validation
+        currentHead = heads.get(id);
         Console.print("\t<- SnowPlower.ChangeAttachment(head)");
     }
 
@@ -55,6 +56,21 @@ public class SnowPlower extends VehicleBase {
         Console.print("\t<- SnowPlower.ConsumeSalt(amount)");
         return true;
     }
+
+    /**
+     * Kilistázza a leltárban lévő kotrófejeket kiválasztás érdekében
+     * (attach segédfüggvénye) 
+     * @return
+     */
+    public String listHeads(){
+        StringBuilder list = new StringBuilder();
+        list.append("Heads in Inventory:\n");
+        for (ICleaning head : heads) {
+            Console.print("(" + heads.indexOf(head) + ")" + head.print() + "+");
+        }
+        return list.toString();
+    }
+
 
     /**
      * Üzemanyagot von le a tartályból a munka végzése során.
@@ -86,9 +102,59 @@ public class SnowPlower extends VehicleBase {
      }
 
     @Override
-    public void SetRoute(Intersection start, Intersection end) {
+    public void SetRoute(List<Intersection> intersections) {
         Console.print("\t-> SnowPlower.SetRoute(start, end)");
         Move();
         Console.print("\t<- SnowPlower.SetRoute(start, end)");
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder res = new StringBuilder("V");
+        res.append("\nid=").append(id);
+        res.append("\ntype=SnowPlower");
+        res.append("\ncurrentPosition=" ).append(currentPosition);
+        res.append("\nlane=" ).append(lane.toList());
+        res.append("\nbaseSpeed=" ).append(baseSpeed);
+        res.append("\nroute=");
+        for (ILane lane : route) {
+            res.append(lane.toList());
+            res.append(";");
+        }
+        for (ICleaning head : heads) {
+            res.append(head.toString());
+        }
+        return res.toString();
+    }
+    @Override
+    public String printLong() {
+        StringBuilder res = new StringBuilder(super.printLong());
+
+        int sweeper = 0;
+        int blower = 0;
+        int icebreaker = 0;
+        int dragon = 0;
+        int salter = 0;
+        int graveler =0; 
+        
+        for (ICleaning head : heads) {
+            switch (head.print().toLowerCase()) {
+                case "sweeperhead" -> sweeper++;
+                case "blowerhead" -> blower++;
+                case "icebreakerhead" -> icebreaker++;
+                case "dragonhead" -> dragon++;
+                case "salterhead" -> salter++;
+                case "gravelerhead" -> graveler++; 
+                default -> {break;}
+            }
+        }
+        res.append("\n\tCurrentHead: ").append(currentHead.toList());
+        res.append("\n\tHeads: Sweeper: ").append(sweeper)
+           .append("\n\t       Blower:").append(blower)
+           .append("\n\t       Salter:").append(salter)
+           .append("\n\t       IceBreaker:").append(icebreaker)
+           .append("\n\t       Graveler:").append(graveler)
+           .append("\n\t       Dragon:").append(dragon);
+        return res.toString();
     }
 }

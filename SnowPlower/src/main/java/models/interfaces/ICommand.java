@@ -1,5 +1,7 @@
 package main.java.models.interfaces;
 
+import java.util.List;
+
 /**
  * A rendszer irányításához szükséges magas szintű parancsok interfésze.
  */
@@ -11,22 +13,23 @@ public interface ICommand {
    boolean start();
 
    /**
-    * Befejezi a játékot.
+    * Befejezi a játékot, rákérdez mentési szándékra,
+    * @param args -s <file> kérdés nélkül menti a megadott file-ba
     * @return művelet sikeressége
     */
-   boolean end();
+   boolean end(List<String> args);
 
    /**
     * Elmenti a játék aktuális állását.
     * @return művelet sikeressége
     */
-   boolean saveState();
+   boolean saveState(String loc);
 
    /**
     * Betölti a játék elmentett állását.
     * @return művelet sikeressége
     */
-   boolean loadState();
+   boolean loadState(String loc);
 
    /**
     * Kijelöli az utvonalat.
@@ -78,4 +81,8 @@ public interface ICommand {
      * Végrehajt egy szimulációs ciklust a térképen.
      */
    void loop();
+    /**
+     * Bezárja az olvasót a program leállásakor
+     */
+   void closeReader();
 }
