@@ -1,8 +1,6 @@
 package main.java.models.interfaces;
 import java.util.List;
 
-import main.java.models.objects.road.Intersection;
-
 /**
  * Minden a játékban szereplő közlekedési eszköz (busz, autó, hókotró) közös interfésze.
  */
@@ -29,7 +27,7 @@ public interface IVehicle {
      *                      ha két elemű: a két végpont közti legrövidebb út
      *                      különben teljes útvonal
      */
-    public void SetRoute(List<Intersection> intersections);
+    public void SetRoute(List<ILane> intersections);
     public String toList();
     public String printLong();
 

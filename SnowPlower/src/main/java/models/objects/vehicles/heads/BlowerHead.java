@@ -7,6 +7,9 @@ import main.java.models.objects.vehicles.SnowPlower;
  * A hókotróra szerelhető speciális fej, amely légfúvással távolítja el a könnyebb havat vagy feltört jeget.
  */
 public class BlowerHead extends AttachmentBase {
+    public BlowerHead(int id) {
+        super(id, 100);
+    }
     @Override
     public void Clean(ILane lane, SnowPlower plow) {
         Console.print("\t\t\t\t-> BlowerHead.Clean(ILane lane, SnowPlower plow)");

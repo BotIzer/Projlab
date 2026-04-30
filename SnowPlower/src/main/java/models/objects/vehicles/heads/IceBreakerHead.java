@@ -7,10 +7,17 @@ import main.java.models.objects.vehicles.SnowPlower;
  * Mechanikai úton, zúzással töri fel a jégréteget az útról, de el nem takarítja azt.
  */
 public class IceBreakerHead extends AttachmentBase {
-    @Override
+    public IceBreakerHead(int id) {
+        super(id, 200);
+    }
+   @Override
     public void Clean(ILane lane, SnowPlower plow) {
         Console.print("\t\t\t\t-> IcebreakerHead.Clean(ILane lane, SnowPlower plow)");
-        lane.clear();
+        
+        // TDA: A specifikáció alapján ez a fej NEM clear()-eli az utat, 
+        // hanem feltöri a jeget. Utasítjuk a sávot az állapotváltásra.
+        lane.changeState("BrokenIcy");
+        //lane.clear();
         Console.print("\t\t\t\t<- IcebreakerHead.Clean(ILane lane, SnowPlower plow)");
     }
     @Override
