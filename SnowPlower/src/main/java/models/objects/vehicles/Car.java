@@ -16,41 +16,31 @@ import main.java.models.objects.road.Intersection;
  */
 public class Car extends VehicleBase
 {
+    private main.java.models.objects.Map gameMap;
 
-    public Car(double bs){
+    public Car(double bs, main.java.models.objects.Map gameMap){
         super(bs);
         Console.print("\t!<<create>>Car");
+        this.gameMap = gameMap;
     }
 
-    @Override
-    public void Move()
-    {
-         Console.print("-> Car.Move()");
-         Console.print("<- Car.Move(): void");
+    
+    public void setRoute(List<Intersection> waypoints) {
+        if (this.gameMap != null) {
+            // A Map legenerálja az ILane-ekből álló legrövidebb utat
+            List<ILane> calculatedRoute = gameMap.getShortestPath(waypoints);
+            
+            // Validáció: ha a lista nem null és nem üres, akkor összefüggő, érvényes az út
+            if (calculatedRoute != null && !calculatedRoute.isEmpty()) {
+                // Beállítjuk a VehicleBase 'route' attribútumát
+                super.SetRoute(calculatedRoute);
+            } else {
+                // Érvénytelen az útvonal, dobhatunk egy hibaüzenetet (a doksi szerinti No such route[cite: 3])
+                System.out.println("No such route");
+            }
+        }
     }
 
-    @Override
-    public void Stop()
-    {
-        Console.print("-> Car.Stop()");
-        Console.print("<- Car.Stop(): void");
-    }
-
-    @Override
-    public void Slipping()
-    {
-        Console.print("-> Car.Slipping()");
-        lane.changeState("blocked");
-        Console.print("<- Car.Slipping(): void");
-    }
-
-    @Override
-    public void SetRoute(List<Intersection> intersections)
-    {
-        Console.print("-> Car.SetRoute(Intersection start, Intersection end)");
-        Move();
-        Console.print("<- Car.SetRoute(Intersection start, Intersection end)");
-    }
     @Override
     public String toString() {
         StringBuilder res = new StringBuilder("V");

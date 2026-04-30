@@ -32,4 +32,6 @@ public interface IVehicle {
     public void SetRoute(List<Intersection> intersections);
     public String toList();
     public String printLong();
+
+    public void Collide(IVehicle vehicle);
 }

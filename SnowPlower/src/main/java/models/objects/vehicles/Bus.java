@@ -29,28 +29,12 @@ public class Bus extends VehicleBase {
         this.LineName = lineName;
         this.line = route;
     }
-    @Override 
-    public void Move() {
-        Console.print("\t\t-> Bus.Move()");
-        Console.print("\t\t<- Bus.Move()");
-        Stop();
+    
+    public String getLineName()
+    {
+        return this.LineName;
     }
-    @Override
-    public void Stop() {
-        Console.print("\t\t\t-> Bus.Stop()");
-        Console.print("\t\t\t<- Bus.Stop()");
-    }
-    @Override
-    public void Slipping() {
-        Console.print("\t\t-> Bus.Slipping()");
-        Console.print("\t\t<- Bus.Slipping()");
-    }
-    @Override
-    public void SetRoute(List<Intersection> intersections) {
-        Console.print("\t-> Bus.SetRoute(Intersection start, Intersection end)");
-        Move();
-        Console.print("\t<- Bus.SetRoute(Intersection start, Intersection end)");
-    }
+
     @Override
     public String toString() {
         StringBuilder res = new StringBuilder("V");
