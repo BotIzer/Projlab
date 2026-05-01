@@ -19,15 +19,12 @@ public class SnowPlower extends VehicleBase {
     private List<ICleaning> heads = new ArrayList<>();
     private ICleaning currentHead;
 
-    private double saltStorage = 100.0; 
-    private double keroseneStorage = 100.0;
-    private double gravelStorage = 100.0;
 
     public SnowPlower(double bs){
         super(bs);
         Console.print("\t!<<create>>SnowPlower");
-        heads.add(new BlowerHead(0));
-        heads.add(new IceBreakerHead(1));
+        heads.add(new BlowerHead());
+        heads.add(new IceBreakerHead());
         currentHead = heads.get(0);
     }
 
@@ -62,21 +59,7 @@ public class SnowPlower extends VehicleBase {
         Console.print("\t\t\t<- SnowPlower.PerformCleaning()");
     }
 
-    /**
-     * Csökkenti a sókészletet.
-     * @return true, ha volt elég só, különben false.
-     */
-    public boolean ConsumeSalt(double amount) {
-        Console.print("\t-> SnowPlower.ConsumeSalt(amount)");
-        if (saltStorage >= amount) {
-            saltStorage -= amount;
-            Console.print("\t<- SnowPlower.ConsumeSalt(amount) [SUCCESS]");
-            return true;
-        }
-        Console.print("\t<- SnowPlower.ConsumeSalt(amount) [FAIL - No Salt]");
-        return false;
-    }
-
+    
     /**
      * Kilistázza a leltárban lévő kotrófejeket kiválasztás érdekében
      * (attach segédfüggvénye) 
@@ -97,32 +80,7 @@ public class SnowPlower extends VehicleBase {
      * Üzemanyagot von le a tartályból a munka végzése során.
      * @return true, ha volt elég kerozin, különben false.
      */
-    public boolean ConsumeBioKerosene(double amount) {
-        Console.print("\t-> SnowPlower.ConsumeBioKerosene(amount)");
-        if (keroseneStorage >= amount) {
-            keroseneStorage -= amount;
-            Console.print("\t<- SnowPlower.ConsumeBioKerosene(amount) [SUCCESS]");
-            return true;
-        }
-        Console.print("\t<- SnowPlower.ConsumeBioKerosene(amount) [FAIL - No Kerosene]");
-        return false;
-    }
-
-    /**
-     * Kavicsot von le a tartályból a munka végzése során.
-     * @return true, ha volt elég kavics, különben false.
-     */
-    public boolean ConsumeGravel(double amount) {
-        Console.print("\t-> SnowPlower.ConsumeGravel(amount)");
-        if (gravelStorage >= amount) {
-            gravelStorage -= amount;
-            Console.print("\t<- SnowPlower.ConsumeGravel(amount) [SUCCESS]");
-            return true;
-        }
-        Console.print("\t<- SnowPlower.ConsumeGravel(amount) [FAIL - No Gravel]");
-        return false;
-    }
-
+    
    @Override
     public void Move() {
         Console.print("\t\t-> SnowPlower.Move()");
