@@ -108,9 +108,9 @@ public class SnowPlower extends VehicleBase {
 
     @Override
     public void SetRoute(List<Intersection> intersections) {
-        Console.print("\t-> SnowPlower.SetRoute(start, end)");
-        Move();
-        Console.print("\t<- SnowPlower.SetRoute(start, end)");
+        Console.print("\t-> SnowPlower.SetRoute(intersections)");
+        super.SetRoute(intersections);
+        Console.print("\t<- SnowPlower.SetRoute(intersections)");
     }
 
     @Override

@@ -1,9 +1,18 @@
 package main.java.models.interfaces;
 
+import main.java.models.objects.road.Intersection;
+
 /**
  * Biztosítja, hogy minden sávtípus egységesen kezelhető legyen.
  */
 public interface ILane {
+
+    /** @return a sáv kezdő kereszteződése */
+    Intersection getStart();
+
+    /** @return a sáv záró kereszteződése */
+    Intersection getEnd();
+
     /**
      * Egy jármű (IVehicle) sávba történő belépését kezeli, és visszaadja, hogy a belépés engedélyezett és sikeres volt-e.
      * @param v adott jármű

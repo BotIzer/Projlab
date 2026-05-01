@@ -47,9 +47,9 @@ public class Bus extends VehicleBase {
     }
     @Override
     public void SetRoute(List<Intersection> intersections) {
-        Console.print("\t-> Bus.SetRoute(Intersection start, Intersection end)");
-        Move();
-        Console.print("\t<- Bus.SetRoute(Intersection start, Intersection end)");
+        Console.print("\t-> Bus.SetRoute(intersections)");
+        super.SetRoute(intersections);
+        Console.print("\t<- Bus.SetRoute(intersections)");
     }
     @Override
     public String toString() {

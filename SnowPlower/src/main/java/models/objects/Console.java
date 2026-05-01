@@ -4,7 +4,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import main.java.models.interfaces.*;
 import main.java.models.objects.road.Intersection;
 import main.java.models.objects.road.Road;
@@ -250,6 +249,7 @@ public class Console implements ICommand {
         
         print("<- Console.loadState(): " + success);
         return success;
+
     }
     
     /**

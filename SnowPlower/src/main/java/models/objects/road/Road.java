@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
-
 import main.java.models.interfaces.ILane;
 import main.java.models.objects.Console;
 import main.java.models.objects.FileHandler;
@@ -38,7 +38,23 @@ public class Road {
         length = len;
     }
 
+    public List<ILane> getIntersections(){
+        return lanes;
+    }
+
     public List<ILane> getLanes(){ return lanes; }
+
+    /**
+     * TDA: megmondja az útnak, hogy látogassa meg az adott kereszteződésből induló sávjait.
+     * Nem adja ki a belső listát — a callbacken keresztül "mondja el" a (sáv, hossz) párokat.
+     */
+    public void visitLanesFrom(Intersection from, BiConsumer<ILane, Double> visitor) {
+        for (ILane lane : lanes) {
+            if (lane.getStart() == from) {
+                visitor.accept(lane, length);
+            }
+        }
+    }
 
     public List<Intersection> initGeneral(){
         ArrayList<Intersection> intersections = new ArrayList<>();

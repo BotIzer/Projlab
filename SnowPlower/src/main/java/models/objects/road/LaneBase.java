@@ -56,6 +56,12 @@ public abstract class LaneBase implements ILane {
     }
 
     @Override
+    public Intersection getStart() { return start; }
+
+    @Override
+    public Intersection getEnd() { return end; }
+
+    @Override
     public boolean changeState(String ns) {
         Console.print("->LaneBase.changeState(" + ns + ")");
         Console.print("<-LaneBase.changeState(" + ns + "): true");
