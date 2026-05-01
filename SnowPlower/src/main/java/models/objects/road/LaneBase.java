@@ -23,7 +23,18 @@ public abstract class LaneBase implements ILane {
     State state;
     protected int carsPassedSinceSnow = 0;
 
+    protected static int idCtr = 0;
+    private static void syncId(int  lastId){
+        if (lastId >= idCtr) {
+            idCtr = lastId+1;
+        }
+    }
+    public static void reset(){
+        idCtr = 0;
+    }
+
     protected LaneBase(Intersection s, Intersection e) {
+        id = idCtr++;
         vehicles = new ArrayList<>();
         start = s;
         end = e;
@@ -119,7 +130,10 @@ public abstract class LaneBase implements ILane {
     protected LaneBase(Map<String, String> data){
         for (Map.Entry<String, String> line : data.entrySet()) {
            switch (line.getKey()) {
-            case "id" -> id = Integer.parseInt(line.getValue());
+            case "id" -> {
+                id = Integer.parseInt(line.getValue());
+                syncId(id);
+            }
             case "start" -> pendingStart = Integer.parseInt(line.getValue());
             case "end" -> pendingEnd = Integer.parseInt(line.getValue());
             case "vehicles" -> pendingVehicles = FileHandler.parseList(line.getValue());

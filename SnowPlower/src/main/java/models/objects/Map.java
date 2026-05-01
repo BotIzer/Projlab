@@ -86,18 +86,21 @@ public class Map {
         roads.clear();
         vehicles.clear();
         intersections.clear();
-        //TODO add other resets, when id incrementer gets added
-        //VehicleBase.reset()
-        //Intersection.reset()
-        //Road.reset()
-        //LaneBase.reset()
+        VehicleBase.reset();
+        Intersection.reset();
+        Road.reset();
+        LaneBase.reset();
         AttachmentBase.reset();
          
     }
     /**
      * Végrehajt egy szimulációs ciklust a térképen.
      */
-    public void loop() {
+    public void loop(){
+        Console.print("-> Map.loop()");
+        for (IVehicle vehicle : vehicles) {
+            vehicle.Move();
+        }
         for (Road r : roads) {
             for (ILane lane : r.getLanes()) {
                 int chance = rand.nextInt(100);
