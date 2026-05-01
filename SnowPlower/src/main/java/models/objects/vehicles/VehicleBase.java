@@ -21,7 +21,20 @@ public abstract class VehicleBase implements IVehicle {
     protected double baseSpeed;
     protected ArrayList<ILane> route;
 
+    protected static int idCtr = 0;
+    
+    protected static void syncId(int lastId) {
+        if (lastId >= idCtr) {
+            idCtr = lastId + 1;
+        }
+    }
+    
+    public static void reset() {
+        idCtr = 0;
+    }
+
     protected VehicleBase(double bs){
+        id = idCtr++;
         currentPosition = 0.0;
         baseSpeed = bs;
     }
@@ -81,7 +94,10 @@ public abstract class VehicleBase implements IVehicle {
     protected void applyData(Map<String, String> data){
         for (Entry<String, String> entry : data.entrySet()) {
             switch (entry.getKey()) {
-                case "id" -> id = Integer.parseInt(entry.getValue());
+                case "id" -> {
+                    id = Integer.parseInt(entry.getValue());
+                    syncId(id);
+                }
                 case "currentPosition" -> currentPosition = Double.parseDouble(entry.getValue());
                 case "lane" -> pendingLane = Integer.parseInt(entry.getValue());
                 case "baseSpeed" -> baseSpeed = Double.parseDouble(entry.getValue());

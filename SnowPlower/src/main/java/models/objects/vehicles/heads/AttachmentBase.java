@@ -16,17 +16,17 @@ public abstract class AttachmentBase implements ICleaning {
     protected int id;
     protected double price;
 
-    protected static int id_ctr = 0;
+    protected static int idCtr = 0;
     private static void syncId(int  lastId){
-        if (lastId >= id_ctr) {
-            id_ctr = lastId+1;
+        if (lastId >= idCtr) {
+            idCtr = lastId+1;
         }
     }
     public static void reset(){
-        id_ctr = 0;
+        idCtr = 0;
     }
     protected AttachmentBase(){
-        id = id_ctr++;
+        id = idCtr++;
     }
     /**
      * Absztrakt metódus, amely a konkrét takarítási folyamatot vezérli[cite: 191].
