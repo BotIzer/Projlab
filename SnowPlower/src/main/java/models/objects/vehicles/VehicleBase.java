@@ -47,11 +47,47 @@ public abstract class VehicleBase implements IVehicle {
         Console.print("<- VehicleBase.Slipping(): void");
     }
 
+    /**
+     * TDA: Megmondja a Map-nek, hogy számolja ki az útvonalat — nem kéri el a belső adatokat.
+     * Három működési mód az IVehicle interfész kontraktusa szerint:
+     *   1 elem  → jelenlegi sáv kezdőpontjától az adott kereszteződésig
+     *   2 elem  → a két végpont közti legrövidebb út
+     *   2+ elem → egymást követő waypoint-ok összefűzése
+     */
     @Override
     public void SetRoute(List<Intersection> intersections)
     {
-        Console.print("-> VehicleBase.SetRoute(Intersection start, Intersection end)");
-        Console.print("<- VehicleBase.SetRoute(Intersection start, Intersection end): void");
+        Console.print("-> VehicleBase.SetRoute(intersections)");
+        if (gameMap == null || intersections == null || intersections.isEmpty()) {
+            Console.print("<- VehicleBase.SetRoute: gameMap vagy útvonal hiányzik");
+            return;
+        }
+
+        List<ILane> result;
+
+        if (intersections.size() == 1) {
+            Intersection startNode = (lane != null) ? lane.getStart() : null;
+            result = (startNode != null)
+                ? gameMap.findRoute(startNode, intersections.get(0))
+                : null;
+        } else if (intersections.size() == 2) {
+            result = gameMap.findRoute(intersections.get(0), intersections.get(1));
+        } else {
+            result = new ArrayList<>();
+            for (int i = 0; i < intersections.size() - 1; i++) {
+                List<ILane> segment = gameMap.findRoute(
+                    intersections.get(i), intersections.get(i + 1));
+                if (segment == null) { result = null; break; }
+                result.addAll(segment);
+            }
+        }
+
+        if (result != null) {
+            route = new ArrayList<>(result);
+            Console.print("<- VehicleBase.SetRoute: " + route.size() + " sáv beállítva");
+        } else {
+            Console.print("<- VehicleBase.SetRoute: nem található útvonal");
+        }
     }
 
     public void setLane(ILane l){
@@ -73,9 +109,10 @@ public abstract class VehicleBase implements IVehicle {
            .append(id).append(", ")
            .append(lane.toList()).append(", ")
            .append("\nRoute: ");
-        for (ILane node : route) {
-            res.append(node.toList())
-               .append(", ");
+        if (route != null) {
+            for (ILane node : route) {
+                res.append(node.toList()).append(", ");
+            }
         }
         return res.toString();
     }

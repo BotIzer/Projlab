@@ -8,17 +8,20 @@ import java.util.PriorityQueue;
 
 import main.java.models.interfaces.ILane;
 import main.java.models.objects.road.Intersection;
-import main.java.models.objects.road.Road;
 
 /**
- * Dijkstra-algoritmus alapú legrövidebb útkeresés az úthálózaton.
- * Csúcsok: Intersection, élek: ILane (súly: a lane-t tartalmazó Road hossza).
+ * Package-private Dijkstra-segédosztály — kizárólag a Map osztályon keresztül érhető el.
+ *
+ * TDA szemlélet:
+ *  - Nem kér adatot a Map-től (nincs getRoads / getIntersections hívás).
+ *  - Megmondja az Intersection-nak, hogy látogassa meg a saját kimenő sávjait
+ *    (visitOutgoingLanes), az Intersection pedig megmondja az útnak (visitLanesFrom).
+ *  - A sáv maga mondja meg, hol végződik (lane.getEnd()), és honnan indul (lane.getStart()) —
+ *    ezek a sáv szemantikus tulajdonságai, nem belső implementációs részletek.
  */
-public class Dijkstra {
+class Dijkstra {
 
-    /**
-     * Belső segédrekord a prioritásos sorhoz.
-     */
+    /** Belső segédrekord a prioritásos sorhoz. */
     private record Entry(double dist, Intersection node) implements Comparable<Entry> {
         @Override
         public int compareTo(Entry o) {
@@ -28,26 +31,23 @@ public class Dijkstra {
 
     /**
      * Meghatározza a legrövidebb utat két kereszteződés között.
+     * A Map paraméter szándékosan nincs jelen: az algoritmus kizárólag az
+     * Intersection és Road objektumoknak "mond utasítást", nem kérdezi le a Map-et.
      *
-     * @param map   a játéktérkép (tartalmazza az összes utat és kereszteződést)
      * @param start kezdő kereszteződés
      * @param end   cél kereszteződés
      * @return a legrövidebb utat alkotó ILane-ek listája (start→end sorrendben),
      *         vagy {@code null}, ha a cél nem érhető el
      */
-    public static List<ILane> dijkstra(Map map, Intersection start, Intersection end) {
-        if (map == null || start == null || end == null) return null;
+    static List<ILane> dijkstra(Intersection start, Intersection end) {
+        if (start == null || end == null) return null;
         if (start == end) return new ArrayList<>();
 
-        // IdentityHashMap: referencia-egyenlőség alapján különbözteti meg a csúcsokat
-        // (az id nem feltétlenül egyedi a skeleton-inicializáláskor)
+        // IdentityHashMap: referencia-egyenlőség alapján azonosítja a csomópontokat,
+        // mivel az id mező skeleton-inicializáláskor nem feltétlenül egyedi.
         IdentityHashMap<Intersection, Double> dist = new IdentityHashMap<>();
         IdentityHashMap<Intersection, ILane>  prev = new IdentityHashMap<>();
 
-        for (Intersection i : map.getIntersections()) {
-            dist.put(i, Double.MAX_VALUE);
-            prev.put(i, null);
-        }
         dist.put(start, 0.0);
 
         PriorityQueue<Entry> pq = new PriorityQueue<>();
@@ -60,32 +60,27 @@ public class Dijkstra {
 
             if (node == end) break;
 
-            // Elavult bejegyzés kihagyása
+            // Elavult bejegyzés átugrása (lazy deletion)
             if (nodeDist > dist.getOrDefault(node, Double.MAX_VALUE)) continue;
 
-            // Szomszédos cross-roads: csak az adott csomóponthoz tartozó utakat nézzük
-            for (Road road : node.getRoads()) {
-                double weight = road.getLength();
-                for (ILane lane : road.getLanes()) {
-                    // Csak azok a sávok érdekelnek, amelyek ebből a csomópontból indulnak
-                    if (lane.getStart() != node) continue;
-
-                    Intersection neighbor = lane.getEnd();
-                    double newDist = nodeDist + weight;
-
-                    if (newDist < dist.getOrDefault(neighbor, Double.MAX_VALUE)) {
-                        dist.put(neighbor, newDist);
-                        prev.put(neighbor, lane);
-                        pq.add(new Entry(newDist, neighbor));
-                    }
+            // TDA: Mondjuk meg az Intersection-nak, hogy látogassa meg a kimenő sávjait.
+            // Az Intersection maga dönti el, melyik sávok indulnak belőle — mi csak
+            // a callback logikáját adjuk meg.
+            node.visitOutgoingLanes((lane, weight) -> {
+                Intersection neighbor = lane.getEnd();
+                double newDist = nodeDist + weight;
+                if (newDist < dist.getOrDefault(neighbor, Double.MAX_VALUE)) {
+                    dist.put(neighbor, newDist);
+                    prev.put(neighbor, lane);
+                    pq.add(new Entry(newDist, neighbor));
                 }
-            }
+            });
         }
 
-        // Ha a cél elérhetetlen
-        if (dist.getOrDefault(end, Double.MAX_VALUE) == Double.MAX_VALUE) return null;
+        // Cél elérhetetlen
+        if (!dist.containsKey(end)) return null;
 
-        // Útvonal visszarekonstruálása prev-térképből
+        // Útvonal visszarekonstruálása: a sáv maga mondja meg, honnan indul
         LinkedList<ILane> path = new LinkedList<>();
         Intersection cursor = end;
         while (prev.get(cursor) != null) {

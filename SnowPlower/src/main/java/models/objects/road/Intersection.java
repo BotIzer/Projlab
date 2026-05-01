@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
+import java.util.function.BiConsumer;
 
 import main.java.models.interfaces.ILane;
 import main.java.models.objects.Console;
@@ -53,7 +54,17 @@ public class Intersection {
     public void addRoad(Road r){
         roads.add(r);
     }
-    public List<Road> getRoads(){ return roads; }
+    /**
+     * TDA: megmondja az Intersection-nak, hogy látogassa meg az összes kimenő sávját.
+     * Nem adja ki a belső roads listát — delegál minden útnak, az meg a saját sávjait kezeli.
+     *
+     * @param visitor callback: kapja a sávot és a súlyt (az út hosszát)
+     */
+    public void visitOutgoingLanes(BiConsumer<ILane, Double> visitor) {
+        for (Road road : roads) {
+            road.visitLanesFrom(this, visitor);
+        }
+    }
 
     public String toList(){
         return Integer.toString(id);

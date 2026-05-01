@@ -107,9 +107,10 @@ public class SnowPlower extends VehicleBase {
 
     @Override
     public void SetRoute(List<Intersection> intersections) {
-        Console.print("\t-> SnowPlower.SetRoute(start, end)");
-        Move();
-        Console.print("\t<- SnowPlower.SetRoute(start, end)");
+        Console.print("\t-> SnowPlower.SetRoute(intersections)");
+        // TDA: delegál a VehicleBase-re, amely a Map.findRoute()-on keresztül számítja az utat
+        super.SetRoute(intersections);
+        Console.print("\t<- SnowPlower.SetRoute(intersections)");
     }
 
     @Override

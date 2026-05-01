@@ -1,6 +1,7 @@
 package main.java.models.objects.road;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
 import main.java.models.interfaces.ILane;
 import main.java.models.objects.Console;
 
@@ -20,7 +21,20 @@ public class Road {
 
     public List<ILane> getLanes(){ return lanes; }
 
-    public double getLength(){ return length; }
+    /**
+     * TDA: megmondja az útnak, hogy látogassa meg az adott kereszteződésből induló sávjait.
+     * Nem adja ki a belső listát — a callbacken keresztül "mondja el" a (sáv, hossz) párokat.
+     *
+     * @param from    kiindulási kereszteződés
+     * @param visitor callback: kapja a sávot és az út hosszát súlyként
+     */
+    public void visitLanesFrom(Intersection from, BiConsumer<ILane, Double> visitor) {
+        for (ILane lane : lanes) {
+            if (lane.getStart() == from) {
+                visitor.accept(lane, length);
+            }
+        }
+    }
 
     public List<Intersection> initGeneral(){
         ArrayList<Intersection> intersections = new ArrayList<>();

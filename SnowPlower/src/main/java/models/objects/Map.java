@@ -101,9 +101,18 @@ public class Map {
 
     public List<IVehicle> getVehicles(){ return vehicles; }
 
-    public List<Road> getRoads(){ return roads; }
-
-    public List<Intersection> getIntersections(){ return intersections; }
+    /**
+     * TDA: megmondja a Map-nek, hogy számítsa ki a legrövidebb utat.
+     * A hívónak nem kell tudnia az úthálózat belső struktúráját —
+     * csak a két végpontot adja meg, a Map (és a package-private Dijkstra) intézi a többit.
+     *
+     * @param start kezdő kereszteződés
+     * @param end   cél kereszteződés
+     * @return a legrövidebb utat alkotó ILane-ek listája, vagy {@code null} ha nem érhető el
+     */
+    public List<ILane> findRoute(Intersection start, Intersection end) {
+        return Dijkstra.dijkstra(start, end);
+    }
 
     @Override
     public String toString() {

@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import main.java.models.interfaces.ICleaning;
 import main.java.models.interfaces.ILane;
 import main.java.models.objects.Console;
-import main.java.models.objects.Dijkstra;
 import main.java.models.objects.FileHandler;
 import main.java.models.objects.road.Intersection;
 
@@ -45,51 +44,14 @@ public class Car extends VehicleBase
         Console.print("<- Car.Slipping(): void");
     }
 
-    /**
-     * Útvonalat állít be Dijkstra-algoritmussal.
-     * <ul>
-     *   <li>1 elem  → jelenlegi sáv kezdőpontjától az adott kereszteződésig</li>
-     *   <li>2 elem  → a két végpont közti legrövidebb út</li>
-     *   <li>2+ elem → egymást követő szakaszok legrövidebb összekötése</li>
-     * </ul>
-     */
     @Override
     public void SetRoute(List<Intersection> intersections)
     {
         Console.print("-> Car.SetRoute(intersections)");
-
-        if (gameMap == null || intersections == null || intersections.isEmpty()) {
-            Console.print("<- Car.SetRoute(intersections): gameMap vagy útvonal hiányzik");
-            return;
-        }
-
-        List<ILane> result = null;
-
-        if (intersections.size() == 1) {
-            // Jelenlegi sáv kezdőpontjától a megadott kereszteződésig
-            Intersection startNode = (lane != null) ? lane.getStart() : null;
-            if (startNode != null) {
-                result = Dijkstra.dijkstra(gameMap, startNode, intersections.get(0));
-            }
-        } else if (intersections.size() == 2) {
-            result = Dijkstra.dijkstra(gameMap, intersections.get(0), intersections.get(1));
-        } else {
-            // Egymást követő waypoint-ok közt legrövidebb utat fűzünk össze
-            result = new ArrayList<>();
-            for (int i = 0; i < intersections.size() - 1; i++) {
-                List<ILane> segment = Dijkstra.dijkstra(
-                    gameMap, intersections.get(i), intersections.get(i + 1));
-                if (segment == null) { result = null; break; }
-                result.addAll(segment);
-            }
-        }
-
-        if (result != null) {
-            route = new ArrayList<>(result);
-            Console.print("<- Car.SetRoute(intersections): " + route.size() + " sáv beállítva");
-        } else {
-            Console.print("<- Car.SetRoute(intersections): nem található útvonal");
-        }
+        // TDA: a logika a VehicleBase.SetRoute-ban van — a Map-nek mondjuk meg,
+        // hogy számolja ki az útvonalat, nem mi kérjük el az adatokat tőle.
+        super.SetRoute(intersections);
+        Console.print("<- Car.SetRoute(intersections)");
     }
     @Override
     public String toString() {
