@@ -62,6 +62,7 @@ public abstract class LaneBase implements ILane {
     public boolean clear() {
         Console.print("->LaneBase.clear()");
         Console.print("<-LaneBase.clear()");
+        carsPassedSinceSnow = 0;
         return true;
     }
     @Override
