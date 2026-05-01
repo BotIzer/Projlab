@@ -2,6 +2,8 @@ package main.java.models.objects;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
 import main.java.models.interfaces.*;
 import main.java.models.objects.road.*;
 import main.java.models.objects.vehicles.VehicleBase;
@@ -14,6 +16,7 @@ public class Map {
     private List<Road> roads;
     private List<Intersection> intersections;
     private List<IVehicle> vehicles;
+    private static final Random rand = new Random();
 
     public List<Intersection> getIntersections() {
         return intersections;
@@ -107,10 +110,15 @@ public class Map {
         }
         for (Road r : roads) {
             for (ILane lane : r.getLanes()) {
-                lane.changeState("snowy");
+                int chance = rand.nextInt(100);
+                if (chance < 5) {
+                    lane.changeState("SNOWY");
+                }
             }
         }
-        Console.print("<- Map.loop");
+        for (IVehicle vehicle : vehicles) {
+            vehicle.Move();
+        }
     }
 
     public List<IVehicle> getVehicles(){ return vehicles; }

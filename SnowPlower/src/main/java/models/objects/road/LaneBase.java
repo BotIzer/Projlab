@@ -21,6 +21,7 @@ public abstract class LaneBase implements ILane {
     protected List<IVehicle> vehicles;
     protected enum State{CLEAN, SNOWY, SNOWY_DEEP, ICY, BROKEN_ICE, BLOCKED, GRAVELED}
     State state;
+    protected int carsPassedSinceSnow = 0;
 
     protected static int idCtr = 0;
     private static void syncId(int  lastId){
@@ -39,7 +40,7 @@ public abstract class LaneBase implements ILane {
         end = e;
     }
 
-    //@Override
+    @Override
     public boolean enterVehicle(IVehicle v) {
         Console.print("->LaneBase.enterVehicle(v)");
         vehicles.add(v);
@@ -51,6 +52,12 @@ public abstract class LaneBase implements ILane {
     public boolean exitVehicle(IVehicle v) {
         Console.print("->LaneBase.exitVehicle(v)");
         vehicles.remove(v);
+        if (this.state == State.SNOWY) {
+            carsPassedSinceSnow++;
+            if (carsPassedSinceSnow >= 10) {
+                changeState("ICY");
+            }
+        }
         Console.print("<-LaneBase.exitVehicle(v)");
         return true;
     }
@@ -72,6 +79,7 @@ public abstract class LaneBase implements ILane {
     public boolean clear() {
         Console.print("->LaneBase.clear()");
         Console.print("<-LaneBase.clear()");
+        carsPassedSinceSnow = 0;
         return true;
     }
     @Override
