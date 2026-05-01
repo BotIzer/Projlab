@@ -145,13 +145,13 @@ public class SnowPlower extends VehicleBase {
         super.Slipping(); // Hívjuk az ősosztály Slipping metódusát
         Console.print("\t<- SnowPlower.Slipping()");
     }
-/** 
+
    @Override
     public void SetRoute(List<ILane> validRoute) {
         Console.print("\t-> SnowPlower.SetRoute(route)");
         super.SetRoute(validRoute); // A VehicleBase menti el a route-t
         Console.print("\t<- SnowPlower.SetRoute(route)");
-    } **/
+    } 
 
     @Override
     public String toString() {

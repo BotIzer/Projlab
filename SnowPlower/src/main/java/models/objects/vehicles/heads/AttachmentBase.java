@@ -1,7 +1,7 @@
 package main.java.models.objects.vehicles.heads;
 import main.java.models.interfaces.*;
+import main.java.models.objects.Console;
 import main.java.models.objects.vehicles.SnowPlower;
-
 /**
  * Ez az absztrakt osztály szolgál alapul minden hóeltakarító eszköz (fej) számára.
  */
@@ -19,11 +19,11 @@ public abstract class AttachmentBase implements ICleaning {
      * @param plow A hókotró példány, amelynek az erőforrásait (só, kerozin) használja a fej[cite: 191].
      */
     @Override
-    public abstract void Clean(ILane lane, SnowPlower plow); //{
-        //Console.print("\t\t\t\t-> AttachmentBase.Clean(lane, plower)");
-        //lane.clear();
-        //Console.print("\t\t\t\t<- AttachmentBase.Clean(lane, plower)");
-    //}
+    public void Clean(ILane lane, SnowPlower plow) {
+        Console.print("\t\t\t\t-> AttachmentBase.Clean(lane, plower)");
+        lane.clear();
+        Console.print("\t\t\t\t<- AttachmentBase.Clean(lane, plower)");
+    }
 
     /**kiírásnál: Az objektum magát alakítja listaelem-reprezentációvá, 
      * ahelyett, hogy egy másik osztály kérdezné le az ID-ját. **/
