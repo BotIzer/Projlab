@@ -1,6 +1,9 @@
 package main.java.models.objects;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -27,15 +30,22 @@ public class FileHandler {
 
     /**
      * Elmenti a játék állapotát.
-     * @param loc mentés helye
+     * @param loc mentés helye, ha létezik, felülírja.
      * @param player játékos állapota
      * @param map pálya állapota
      * @return művelet sikeressége
      */
     public boolean saveState(String loc, Player player, main.java.models.objects.Map map) {
         Console.print("\t->FileHandler.saveState(" + loc +")");
-        Console.print("\t<-FileHandler.saveState(" + loc +"): true");
-        return true;
+        boolean res = true;
+        try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(loc)))) {
+            pw.println(format(player, map));
+        } catch (Exception e) {
+            res = false;
+            Console.print(e.getMessage());
+        }
+        Console.print("\t<-FileHandler.saveState(" + loc +"): " + res);
+        return res;
     }
 
     /**
@@ -47,6 +57,9 @@ public class FileHandler {
      */
     public boolean loadState(String loc, Player player, main.java.models.objects.Map map) {
         Console.print("\t->FileHandler.loadState(" + loc +")");
+        player.clear();
+        map.clear();
+        boolean res = true;
         Map<Integer, IVehicle> vehicles = new HashMap<>();
         Map<Integer, Intersection> intersections = new HashMap<>();
         Map<Integer, Road> roads = new HashMap<>();
@@ -83,17 +96,21 @@ public class FileHandler {
                 }
             }
             player.resolve(vehicles, heads);
-            vehicles.values().forEach(v -> ((VehicleBase)v).resolve(lanes, heads));
-            intersections.values().forEach(i -> {i.resolve(roads); map.addIntersections(i);});
-            roads.values().forEach(r -> {r.resolve(lanes); map.addRoad(r);});
+            vehicles.values().forEach(v -> {((VehicleBase)v).resolve(lanes, heads); 
+                                                          map.addVehicle(v);});
+            intersections.values().forEach(i -> {i.resolve(roads); 
+                                                 map.addIntersections(i);});
+            roads.values().forEach(r -> {r.resolve(lanes); 
+                                         map.addRoad(r);});
             lanes.values().forEach(l -> ((LaneBase)l).resolve(intersections, vehicles));
             
         } catch (Exception e) {
             Console.print("Error reading file:\n" + e.getMessage());
+            res = false;
         }
 
 
-        Console.print("\t<-FileHandler.loadState(" + loc +"): true");
+        Console.print("\t<-FileHandler.loadState(" + loc +"): " + res);
         return true;
     }
     /**

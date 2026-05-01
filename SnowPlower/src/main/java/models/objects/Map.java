@@ -5,6 +5,7 @@ import java.util.List;
 import main.java.models.interfaces.*;
 import main.java.models.objects.road.*;
 import main.java.models.objects.vehicles.VehicleBase;
+import main.java.models.objects.vehicles.heads.AttachmentBase;
 
 /**
  * A játékbeli úthálózatot és környezetet reprezentáló központi osztály.
@@ -78,7 +79,18 @@ public class Map {
         }
         return route;
     }
-
+    public void clear(){
+        roads.clear();
+        vehicles.clear();
+        intersections.clear();
+        //TODO add other resets, when id incrementer gets added
+        //VehicleBase.reset()
+        //Intersection.reset()
+        //Road.reset()
+        //LaneBase.reset()
+        AttachmentBase.reset();
+         
+    }
     /**
      * Végrehajt egy szimulációs ciklust a térképen.
      */
@@ -103,16 +115,19 @@ public class Map {
         StringBuilder res = new StringBuilder();
         StringBuilder roadString = new StringBuilder();
         for (Intersection intersection : intersections) {
+            res.append("\n");
             res.append(intersection.toString());
         }
         for (Road road : roads) {
+            roadString.append("\n");
             roadString.append(road.toString());
             for (ILane lane : road.getLanes()) {
+                res.append("\n");
                 res.append(lane.toString());
             } 
         }
         for (IVehicle vehicle : vehicles) {
-
+            res.append("\n");
             res.append(vehicle.toString());
         }
         res.append(roadString);
@@ -157,6 +172,7 @@ public class Map {
             res.append(road.printLong());
         }
         for (IVehicle vehicle : vehicles) {
+            res.append("\n");
             res.append(vehicle.printLong());
         }
         return res.toString();

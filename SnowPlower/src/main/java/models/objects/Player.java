@@ -154,6 +154,12 @@ public class Player {
         }
         return list.toString();
     }
+    public void clear(){
+        money = 0;
+        plowers.clear();
+        buses.clear();
+        heads.clear();
+    }
     @Override
     public String toString(){
         StringBuilder res = new StringBuilder("P");

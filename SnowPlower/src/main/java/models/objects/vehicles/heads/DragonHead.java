@@ -38,7 +38,7 @@ public class DragonHead extends AttachmentBase {
         for (Entry<String, String> line : data.entrySet()) {
             switch (line.getValue()) {
                 case "kerosene" -> Integer.parseInt(line.getValue());
-                case "amountPerSegment" -> Integer.parseInt(line.getValue());
+                case "amountPerSegment" -> Double.parseDouble(line.getValue());
                 default -> {break;}
             }
         }

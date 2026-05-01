@@ -15,13 +15,6 @@ public class IceBreakerHead extends AttachmentBase {
     } 
     protected IceBreakerHead(Map<String, String> data) {
         super(data);
-        for (Entry<String, String> line : data.entrySet()) {
-            switch (line.getValue()) {
-                case "kerosene" -> Integer.parseInt(line.getValue());
-                case "amountPerSegment" -> Integer.parseInt(line.getValue());
-                default -> {break;}
-            }
-        }
     }
     @Override
     public void Clean(ILane lane, SnowPlower plow) {

@@ -1,6 +1,7 @@
 package main.java.models.objects.vehicles;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import main.java.models.interfaces.ICleaning;
@@ -125,9 +126,14 @@ public class SnowPlower extends VehicleBase {
             res.append(lane.toList());
             res.append(";");
         }
+        res.append("\ncurrentHead=").append(currentHead.toList());
+        res.append("\nheads=");
+        StringBuilder headString = new StringBuilder();
         for (ICleaning head : heads) {
-            res.append(head.toString());
+            res.append(head.toList()).append(";");
+            headString.append("\n").append(head.toString());
         }
+        res.append(headString);
         return res.toString();
     }
     @Override
@@ -154,11 +160,11 @@ public class SnowPlower extends VehicleBase {
         }
         res.append("\n\tCurrentHead: ").append(currentHead.toList());
         res.append("\n\tHeads: Sweeper: ").append(sweeper)
-           .append("\n\t       Blower:").append(blower)
-           .append("\n\t       Salter:").append(salter)
-           .append("\n\t       IceBreaker:").append(icebreaker)
-           .append("\n\t       Graveler:").append(graveler)
-           .append("\n\t       Dragon:").append(dragon);
+           .append("\n\t       Blower: ").append(blower)
+           .append("\n\t       Salter: ").append(salter)
+           .append("\n\t       IceBreaker: ").append(icebreaker)
+           .append("\n\t       Graveler: ").append(graveler)
+           .append("\n\t       Dragon: ").append(dragon);
         return res.toString();
     }
 
@@ -167,13 +173,9 @@ public class SnowPlower extends VehicleBase {
     private Integer pendingHead;
     @Override
     protected void applyData(Map<String, String> data) {
+        super.applyData(data);
         for (Map.Entry<String, String> entry : data.entrySet()) {
            switch (entry.getKey()) {
-            case "id" -> id = Integer.parseInt(entry.getValue());
-            case "currentPosition" -> currentPosition = Integer.parseInt(entry.getValue());
-            case "lane" -> pendingLane = Integer.parseInt(entry.getValue());
-            case "baseSpeed" -> baseSpeed = Integer.parseInt(entry.getValue());
-            case "route" -> pendingRoute = FileHandler.parseList(entry.getValue());
             case "currentHead" -> pendingHead = Integer.parseInt(entry.getValue());
             case "heads" -> pendingHeads = FileHandler.parseList(entry.getValue());
             default -> {break;}
@@ -189,6 +191,7 @@ public class SnowPlower extends VehicleBase {
             .collect(Collectors.toCollection(ArrayList::new));
         heads = pendingHeads.stream()
             .map(headsTmp::get)
+            .filter(Objects::nonNull)
             .collect(Collectors.toCollection(ArrayList::new));
         pendingLane = null;
         pendingHead = null;

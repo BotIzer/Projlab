@@ -16,9 +16,17 @@ public abstract class AttachmentBase implements ICleaning {
     protected int id;
     protected double price;
 
-    private static int id_ctr = 0;
+    protected static int id_ctr = 0;
+    private static void syncId(int  lastId){
+        if (lastId >= id_ctr) {
+            id_ctr = lastId+1;
+        }
+    }
+    public static void reset(){
+        id_ctr = 0;
+    }
     protected AttachmentBase(){
-        id_ctr++;
+        id = id_ctr++;
     }
     /**
      * Absztrakt metódus, amely a konkrét takarítási folyamatot vezérli[cite: 191].
@@ -50,11 +58,8 @@ public abstract class AttachmentBase implements ICleaning {
     //Fileból betöltés
     
     protected AttachmentBase(Map<String, String> data){
-        for (Entry<String, String> line : data.entrySet()) {
-            if (line.getValue().equals("id")) {
-                id = Integer.parseInt(line.getValue());
-            }
-        }
+        id = Integer.parseInt(data.get("id"));
+        syncId(id);
     }
     public static ICleaning create(Scanner sc){
 

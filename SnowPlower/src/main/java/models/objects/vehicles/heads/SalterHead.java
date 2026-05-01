@@ -18,7 +18,7 @@ public class SalterHead extends AttachmentBase {
         for (Entry<String, String> line : data.entrySet()) {
             switch (line.getValue()) {
                 case "saltStorage" -> Integer.parseInt(line.getValue());
-                case "amountPerSegment" -> Integer.parseInt(line.getValue());
+                case "amountPerSegment" -> Double.parseDouble(line.getValue());
                 default -> {break;}
             }
         }

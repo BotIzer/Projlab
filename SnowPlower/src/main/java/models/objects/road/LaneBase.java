@@ -99,7 +99,6 @@ public abstract class LaneBase implements ILane {
             String[] parts = sc.nextLine().split("=", 2);
             data.put(parts[0].trim(), parts.length > 1 ? parts[1].trim() : "");
         }
-        data.values().forEach(Console::print);
         String type = data.getOrDefault("type", "");
         switch (type) {
             case "TunnelLane" -> {return new TunnelLane(data);}

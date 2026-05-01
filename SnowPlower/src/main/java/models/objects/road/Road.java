@@ -81,7 +81,7 @@ public class Road {
             switch (line.getKey()) {
                 case "id" -> id = Integer.parseInt(line.getValue());
                 case "lanes" -> pendingLanes = FileHandler.parseList(line.getValue());    
-                case "length" -> length = Integer.parseInt(line.getValue());
+                case "length" -> length = Double.parseDouble(line.getValue());
                 default -> {break;}
             }
         }
