@@ -21,6 +21,7 @@ public abstract class LaneBase implements ILane {
     protected List<IVehicle> vehicles;
     protected enum State{CLEAN, SNOWY, SNOWY_DEEP, ICY, BROKEN_ICE, BLOCKED, GRAVELED}
     State state;
+    protected int carsPassedSinceSnow = 0;
 
     protected LaneBase(Intersection s, Intersection e) {
         vehicles = new ArrayList<>();
@@ -32,6 +33,12 @@ public abstract class LaneBase implements ILane {
     public boolean enterVehicle(IVehicle v) {
         Console.print("->LaneBase.enterVehicle(v)");
         vehicles.add(v);
+        if (this.state == State.SNOWY) {
+            carsPassedSinceSnow++;
+            if (carsPassedSinceSnow >= 10) {
+                changeState("ICY");
+            }
+        }
         Console.print("<-LaneBase.enterVehicle(v)");
         return true;
     }
