@@ -15,6 +15,10 @@ public class Map {
     private List<Intersection> intersections;
     private List<IVehicle> vehicles;
 
+    public List<Intersection> getIntersections() {
+        return intersections;
+    }
+
     public Map(){
         Console.print("\t!<<create>>Map");
         roads = new ArrayList<>();
@@ -49,6 +53,9 @@ public class Map {
     public void addVehicle(IVehicle vehicle) {
         Console.print("->Map.addVehicle(vehicle)");
         vehicles.add(vehicle);
+        if (vehicle instanceof VehicleBase vb) {
+            vb.setMap(this);
+        }
         Console.print("<-Map.addVehicle(vehicle)");
     }
 
@@ -109,6 +116,28 @@ public class Map {
     }
 
     public List<IVehicle> getVehicles(){ return vehicles; }
+
+    /**
+     * Betöltés után meggyógyítja a road–intersection kapcsolatokat.
+     * Ha egy sáv start/end kereszteződéséből hiányzik az adott road,
+     * hozzáadja — így visitOutgoingLanes() minden kimenő élt megtalál.
+     */
+    public void repairConnections() {
+        for (Road road : roads) {
+            for (ILane lane : road.getLanes()) {
+                lane.getStart().addRoad(road);
+                lane.getEnd().addRoad(road);
+            }
+        }
+    }
+
+    /**
+     * TDA: megmondja a Map-nek, hogy számítsa ki a legrövidebb utat.
+     * A hívónak nem kell tudnia az úthálózat belső struktúráját.
+     */
+    public List<ILane> findRoute(Intersection start, Intersection end) {
+        return Dijkstra.dijkstra(start, end);
+    }
 
     @Override
     public String toString() {

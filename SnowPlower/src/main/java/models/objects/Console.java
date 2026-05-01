@@ -4,7 +4,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import main.java.models.interfaces.*;
 import main.java.models.objects.road.Intersection;
 import main.java.models.objects.road.Road;
@@ -231,30 +230,6 @@ public class Console implements ICommand {
 
     @Override
     public boolean loadState(String loc) {
-        //print("-> Console.loadState()");
-        //boolean res = true;
-        //String out = "<- Console.loadState():" ;
-        //if (loc != null && !loc.isEmpty()) 
-        //{
-            //res = fileHandler.loadState(loc, player, map);
-            //out += res; 
-            //print(out);
-            //return res;
-        //}
-        //try {
-            //print("Enter file to load from: (default: save.txt)");
-            //loc = br.readLine();  
-        //} catch (Exception e) {
-            //res = false;
-            //print(e.getMessage()); 
-        //}
-        //if (loc != null && !loc.isEmpty()) res = fileHandler.loadState(loc, player, map);
-        //else res = fileHandler.loadState("save.txt", player, map);
-        //out += res; 
-        //print(out);
-        //return res;
-        print("-> Console.loadState()");
-    
         if (loc == null || loc.isEmpty()) {
             try {
                 print("Enter file to load from: (default: save.txt)");
@@ -270,6 +245,7 @@ public class Console implements ICommand {
         
         print("<- Console.loadState(): " + success);
         return success;
+
     }
     
     /**

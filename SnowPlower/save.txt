@@ -8,7 +8,7 @@ id=0
 lanes=0
 I
 id=1
-lanes=0;1;
+lanes=0;1;3;
 I
 id=2
 lanes=1;2;
