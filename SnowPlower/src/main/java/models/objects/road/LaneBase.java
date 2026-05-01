@@ -33,12 +33,6 @@ public abstract class LaneBase implements ILane {
     public boolean enterVehicle(IVehicle v) {
         Console.print("->LaneBase.enterVehicle(v)");
         vehicles.add(v);
-        if (this.state == State.SNOWY) {
-            carsPassedSinceSnow++;
-            if (carsPassedSinceSnow >= 10) {
-                changeState("ICY");
-            }
-        }
         Console.print("<-LaneBase.enterVehicle(v)");
         return true;
     }
@@ -47,6 +41,12 @@ public abstract class LaneBase implements ILane {
     public boolean exitVehicle(IVehicle v) {
         Console.print("->LaneBase.exitVehicle(v)");
         vehicles.remove(v);
+        if (this.state == State.SNOWY) {
+            carsPassedSinceSnow++;
+            if (carsPassedSinceSnow >= 10) {
+                changeState("ICY");
+            }
+        }
         Console.print("<-LaneBase.exitVehicle(v)");
         return true;
     }
