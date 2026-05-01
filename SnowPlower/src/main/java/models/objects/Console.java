@@ -25,7 +25,7 @@ public class Console implements ICommand {
     private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     //lokális konstansok
     private static final List<String> validCommands = List.of(
-        "help", "load", "save", "select", "setRoute", "buy", "attach", "switch", "printState", "exit" 
+        "help", "load", "save", "select", "setRoute", "buy", "attach", "switch", "printState", "exit", "step" 
     );
     private static final String HELPMESSAGE = 
             """
@@ -37,6 +37,7 @@ public class Console implements ICommand {
             attach : attach head from inventory to selected vehicle (only if selected is SnowPlower)
             switch : switch current head used for cleaning on selected vehicle (only if selected is SnowPlower)
             printState [-f, -s] :lists state of game
+            step : runs one cycle of the game
             """;
 
     /**
@@ -136,6 +137,7 @@ public class Console implements ICommand {
             }
             case "printState" -> printState(args);
             case "exit" -> end(args);
+            case "step" -> step();
             default -> print("Invalid command! \nType help for list of commands, or help <command> for specific command!");
         }
         return;
@@ -230,6 +232,8 @@ public class Console implements ICommand {
 
     @Override
     public boolean loadState(String loc) {
+        print("-> Console.loadState()");
+    
         if (loc == null || loc.isEmpty()) {
             try {
                 print("Enter file to load from: (default: save.txt)");
@@ -371,6 +375,11 @@ public class Console implements ICommand {
             print(map.printLong());
         }
     }
+
+    private void step(){
+        map.loop();
+    }
+
     @Override
     public void initGeneral(){
         Console.print("----------------Initialization--------------");

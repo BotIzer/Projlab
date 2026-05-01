@@ -84,7 +84,7 @@ id=2
 type=Car
 currentPosition=0
 lane=0
-BaseSpeed=30
+baseSpeed=30
 route=0;3;5
 H
 id=0
