@@ -8,7 +8,7 @@ id=0
 lanes=0
 I
 id=1
-lanes=0;1;
+lanes=0;1;3;
 I
 id=2
 lanes=1;2;
@@ -84,7 +84,7 @@ id=2
 type=Car
 currentPosition=0
 lane=0
-BaseSpeed=30
+baseSpeed=30
 route=0;3;5
 H
 id=0
