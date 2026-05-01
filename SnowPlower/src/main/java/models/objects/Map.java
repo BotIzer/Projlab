@@ -1,15 +1,11 @@
 package main.java.models.objects;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.PriorityQueue;
-
 import main.java.models.interfaces.*;
 import main.java.models.objects.road.*;
 import main.java.models.objects.vehicles.VehicleBase;
+import main.java.models.objects.vehicles.heads.AttachmentBase;
 
 /**
  * A játékbeli úthálózatot és környezetet reprezentáló központi osztály.
@@ -83,88 +79,18 @@ public class Map {
         }
         return route;
     }
-
-    public List<ILane> getShortestPath(List<Intersection> waypoints) {
-        if (waypoints == null || waypoints.size() < 2) {
-            return new ArrayList<>();
-        }
-
-        List<ILane> fullPath = new ArrayList<>();
-
-        // Szakaszokra bontjuk a listát, és mindegyikre lefuttatjuk a Dijkstrát
-        for (int i = 0; i < waypoints.size() - 1; i++) {
-            List<ILane> segment = getShortestPathSegment(waypoints.get(i), waypoints.get(i + 1));
-            
-            // Ha a szakasz érvénytelen (nincs összeköttetés), az egész útvonal érvénytelen
-            if (segment == null || segment.isEmpty()) {
-                return new ArrayList<>(); 
-            }
-            fullPath.addAll(segment);
-        }
-
-        return fullPath;
+    public void clear(){
+        roads.clear();
+        vehicles.clear();
+        intersections.clear();
+        //TODO add other resets, when id incrementer gets added
+        //VehicleBase.reset()
+        //Intersection.reset()
+        //Road.reset()
+        //LaneBase.reset()
+        AttachmentBase.reset();
+         
     }
-
-    /**
-     * Belső Dijkstra algoritmus két csomópont között, amely az éleket (ILane) adja vissza.
-     */
-    private List<ILane> getShortestPathSegment(Intersection start, Intersection end) {
-        java.util.Map<Intersection, Double> distances = new HashMap<>();
-        java.util.Map<Intersection, ILane> previousLane = new HashMap<>();
-        
-        PriorityQueue<Intersection> queue = new PriorityQueue<>(
-            Comparator.comparingDouble(distances::get)
-        );
-
-        for (Intersection intersection : intersections) {
-            distances.put(intersection, Double.MAX_VALUE);
-            previousLane.put(intersection, null);
-        }
-        distances.put(start, 0.0);
-        queue.add(start);
-
-        while (!queue.isEmpty()) {
-            Intersection current = queue.poll();
-
-            if (current.equals(end)) break;
-
-            if (current.getLanes() != null) {
-                for (ILane lane : current.getLanes()) {
-                    Intersection neighbor = lane.getEnd(); 
-                    
-                    if (neighbor != null && !neighbor.equals(current)) {
-                        double weight = lane.getLength(); 
-                        double newDist = distances.get(current) + weight;
-                        
-                        if (newDist < distances.get(neighbor)) {
-                            distances.put(neighbor, newDist);
-                            previousLane.put(neighbor, lane); // Eltároljuk, melyik sávon jöttünk
-                            
-                            queue.remove(neighbor);
-                            queue.add(neighbor);
-                        }
-                    }
-                }
-            }
-        }
-
-        // Útvonal visszafejtése a sávok (ILane) alapján
-        List<ILane> path = new ArrayList<>();
-        Intersection curr = end;
-        
-        while (curr != null && !curr.equals(start)) {
-            ILane lane = previousLane.get(curr);
-            if (lane == null) return null; // Nincs elérhető út
-            
-            path.add(lane);
-            curr = lane.getStart(); // Visszalépés a sáv elejére
-        }
-        
-        Collections.reverse(path);
-        return path;
-    }
-    
-
     /**
      * Végrehajt egy szimulációs ciklust a térképen.
      */
@@ -189,16 +115,19 @@ public class Map {
         StringBuilder res = new StringBuilder();
         StringBuilder roadString = new StringBuilder();
         for (Intersection intersection : intersections) {
+            res.append("\n");
             res.append(intersection.toString());
         }
         for (Road road : roads) {
+            roadString.append("\n");
             roadString.append(road.toString());
             for (ILane lane : road.getLanes()) {
+                res.append("\n");
                 res.append(lane.toString());
             } 
         }
         for (IVehicle vehicle : vehicles) {
-
+            res.append("\n");
             res.append(vehicle.toString());
         }
         res.append(roadString);
@@ -243,6 +172,7 @@ public class Map {
             res.append(road.printLong());
         }
         for (IVehicle vehicle : vehicles) {
+            res.append("\n");
             res.append(vehicle.printLong());
         }
         return res.toString();

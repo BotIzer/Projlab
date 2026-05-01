@@ -231,28 +231,45 @@ public class Console implements ICommand {
 
     @Override
     public boolean loadState(String loc) {
+        //print("-> Console.loadState()");
+        //boolean res = true;
+        //String out = "<- Console.loadState():" ;
+        //if (loc != null && !loc.isEmpty()) 
+        //{
+            //res = fileHandler.loadState(loc, player, map);
+            //out += res; 
+            //print(out);
+            //return res;
+        //}
+        //try {
+            //print("Enter file to load from: (default: save.txt)");
+            //loc = br.readLine();  
+        //} catch (Exception e) {
+            //res = false;
+            //print(e.getMessage()); 
+        //}
+        //if (loc != null && !loc.isEmpty()) res = fileHandler.loadState(loc, player, map);
+        //else res = fileHandler.loadState("save.txt", player, map);
+        //out += res; 
+        //print(out);
+        //return res;
         print("-> Console.loadState()");
-        boolean res = true;
-        String out = "<- Console.loadState():" ;
-        if (loc != null && !loc.isEmpty()) 
-        {
-            res = fileHandler.loadState(loc, player, map);
-            out += res; 
-            print(out);
-            return res;
+    
+        if (loc == null || loc.isEmpty()) {
+            try {
+                print("Enter file to load from: (default: save.txt)");
+                loc = br.readLine();
+                if (loc == null || loc.isEmpty()) loc = "save.txt";
+            } catch (Exception e) {
+                print("Input error: " + e.getMessage());
+                return false;
+            }
         }
-        try {
-            print("Enter file to load from: (default: save.txt)");
-            loc = br.readLine();  
-        } catch (Exception e) {
-            res = false;
-            print(e.getMessage()); 
-        }
-        if (loc != null && !loc.isEmpty()) res = fileHandler.loadState(loc, player, map);
-        else res = fileHandler.loadState("save.txt", player, map);
-        out += res; 
-        print(out);
-        return res;
+
+        boolean success = fileHandler.loadState(loc, player, map);
+        
+        print("<- Console.loadState(): " + success);
+        return success;
     }
     
     /**

@@ -57,22 +57,6 @@ public class Car extends VehicleBase
         return res.toString();
     }
     //Fileból betöltés, szinkronizáció
-    private Integer pendingLane;
-    private List<Integer> pendingRoute = new ArrayList<>();
-    @Override
-    protected void applyData(Map<String, String> data) {
-        for (Map.Entry<String, String> entry : data.entrySet()) {
-           switch (entry.getKey()) {
-            case "id" -> id = Integer.parseInt(entry.getValue());
-            case "currentPosition" -> currentPosition = Integer.parseInt(entry.getValue());
-            case "lane" -> pendingLane = Integer.parseInt(entry.getValue());
-            case "baseSpeed" -> baseSpeed = Integer.parseInt(entry.getValue());
-            case "route" -> pendingRoute = FileHandler.parseList(entry.getValue());
-            default -> {break;}
-           } 
-        }
-    }
-
     @Override
     public void resolve(Map<Integer, ILane> lanes, Map<Integer, ICleaning> heads){
         if (pendingLane != null) lane = lanes.get(pendingLane);

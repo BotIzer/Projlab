@@ -154,6 +154,12 @@ public class Player {
         }
         return list.toString();
     }
+    public void clear(){
+        money = 0;
+        plowers.clear();
+        buses.clear();
+        heads.clear();
+    }
     @Override
     public String toString(){
         StringBuilder res = new StringBuilder("P");
@@ -215,6 +221,8 @@ public class Player {
             .map(heads::get)
             .filter(ICleaning.class::isInstance)
             .collect(Collectors.toCollection(ArrayList::new));
+
+        
 
         pendingPlowerIds.clear();
         pendingBusIds.clear();

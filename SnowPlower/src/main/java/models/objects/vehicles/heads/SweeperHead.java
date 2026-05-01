@@ -1,4 +1,5 @@
 package main.java.models.objects.vehicles.heads;
+import java.util.Map;
 import main.java.models.interfaces.ILane;
 import main.java.models.objects.Console;
 import main.java.models.objects.vehicles.SnowPlower;
@@ -7,8 +8,11 @@ import main.java.models.objects.vehicles.SnowPlower;
  * A friss hó vagy feltört jég seprésére tervezett kefés tisztítófej.
  */
 public class SweeperHead extends AttachmentBase {
-    public SweeperHead(int id) {
-        super(id, 50); // Ár a 8.1.6 Shop specifikáció alapján[cite: 1].
+    public SweeperHead(){
+        super();
+    }
+    protected SweeperHead(Map<String, String> data) {
+        super(data);
     }
     @Override
     public void Clean(ILane lane, SnowPlower plow) {

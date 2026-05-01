@@ -3,11 +3,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
+import java.util.Map.Entry;
 import java.util.Scanner;
 
 import main.java.models.interfaces.*;
 import main.java.models.objects.Console;
+import main.java.models.objects.FileHandler;
 import main.java.models.objects.road.Intersection;
 
 /**
@@ -147,7 +148,7 @@ public abstract class VehicleBase implements IVehicle {
            .append(": ")
            .append(id).append(", ")
            .append(lane.toList()).append(", ")
-           .append("\nRoute: ");
+           .append("\n\tRoute: ");
         for (ILane node : route) {
             res.append(node.toList())
                .append(", ");
@@ -155,7 +156,20 @@ public abstract class VehicleBase implements IVehicle {
         return res.toString();
     }
     //Fileból betöltés, szinkronizálás
-    protected abstract void applyData(Map<String, String> data);
+    protected Integer pendingLane;
+    protected List<Integer> pendingRoute = new ArrayList<>();
+    protected void applyData(Map<String, String> data){
+        for (Entry<String, String> entry : data.entrySet()) {
+            switch (entry.getKey()) {
+                case "id" -> id = Integer.parseInt(entry.getValue());
+                case "currentPosition" -> currentPosition = Double.parseDouble(entry.getValue());
+                case "lane" -> pendingLane = Integer.parseInt(entry.getValue());
+                case "baseSpeed" -> baseSpeed = Double.parseDouble(entry.getValue());
+                case "route" -> pendingRoute = FileHandler.parseList(entry.getValue());
+                default -> {break;}
+            }
+        }
+    }
     public abstract void resolve(Map<Integer, ILane> lanes, Map<Integer, ICleaning> headsTmp);
     public static IVehicle create(Scanner sc){
         Map<String, String> data = new HashMap<>();

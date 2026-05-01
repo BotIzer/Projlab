@@ -1,15 +1,22 @@
 package main.java.models.objects;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+
 import main.java.models.interfaces.*;
 import main.java.models.objects.road.Intersection;
+import main.java.models.objects.road.LaneBase;
 import main.java.models.objects.road.Road;
 import main.java.models.objects.vehicles.VehicleBase;
+import main.java.models.objects.vehicles.heads.AttachmentBase;
 
 import java.util.Map;
 /**
@@ -23,15 +30,22 @@ public class FileHandler {
 
     /**
      * Elmenti a játék állapotát.
-     * @param loc mentés helye
+     * @param loc mentés helye, ha létezik, felülírja.
      * @param player játékos állapota
      * @param map pálya állapota
      * @return művelet sikeressége
      */
     public boolean saveState(String loc, Player player, main.java.models.objects.Map map) {
         Console.print("\t->FileHandler.saveState(" + loc +")");
-        Console.print("\t<-FileHandler.saveState(" + loc +"): true");
-        return true;
+        boolean res = true;
+        try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(loc)))) {
+            pw.println(format(player, map));
+        } catch (Exception e) {
+            res = false;
+            Console.print(e.getMessage());
+        }
+        Console.print("\t<-FileHandler.saveState(" + loc +"): " + res);
+        return res;
     }
 
     /**
@@ -42,8 +56,10 @@ public class FileHandler {
      * @return művelet sikeressége
      */
     public boolean loadState(String loc, Player player, main.java.models.objects.Map map) {
-        //TODO finish function implementations
         Console.print("\t->FileHandler.loadState(" + loc +")");
+        player.clear();
+        map.clear();
+        boolean res = true;
         Map<Integer, IVehicle> vehicles = new HashMap<>();
         Map<Integer, Intersection> intersections = new HashMap<>();
         Map<Integer, Road> roads = new HashMap<>();
@@ -59,23 +75,42 @@ public class FileHandler {
                         intersections.put(Integer.parseInt(i.toList()), i);
                     }
                     case "L" -> {
+                        ILane l = LaneBase.create(sc);
+                        lanes.put(Integer.parseInt(l.toList()), l);
                     }
                     case "V" -> {
                         IVehicle v = VehicleBase.create(sc);
+                        vehicles.put(Integer.parseInt(v.toList()), v);
                     }
-                    case "H" -> {}
-                    case "R" -> {}
+                    case "H" -> {
+                        ICleaning h = AttachmentBase.create(sc);
+                        heads.put(Integer.parseInt(h.toList()), h);
+                    }
+                    case "R" -> {
+                        Road r = Road.create(sc);
+                        roads.put(Integer.parseInt(r.toList()), r);
+                    }
                         
                 
                     default -> {break;}
                 }
             }
+            player.resolve(vehicles, heads);
+            vehicles.values().forEach(v -> {((VehicleBase)v).resolve(lanes, heads); 
+                                                          map.addVehicle(v);});
+            intersections.values().forEach(i -> {i.resolve(roads); 
+                                                 map.addIntersections(i);});
+            roads.values().forEach(r -> {r.resolve(lanes); 
+                                         map.addRoad(r);});
+            lanes.values().forEach(l -> ((LaneBase)l).resolve(intersections, vehicles));
+            
         } catch (Exception e) {
-            // TODO: handle exception
+            Console.print("Error reading file:\n" + e.getMessage());
+            res = false;
         }
 
 
-        Console.print("\t<-FileHandler.loadState(" + loc +"): true");
+        Console.print("\t<-FileHandler.loadState(" + loc +"): " + res);
         return true;
     }
     /**
@@ -102,6 +137,6 @@ public class FileHandler {
         return Arrays.stream(value.split(";"))
                      .filter(s -> !s.isBlank())
                      .map(Integer::parseInt)
-                     .toList();
+                     .collect(Collectors.toCollection(ArrayList::new));
     }
 }

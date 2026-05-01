@@ -1,5 +1,7 @@
 package main.java.models.objects.road;
 
+import java.util.Map;
+
 import main.java.models.interfaces.IVehicle;
 import main.java.models.objects.Console;
 
@@ -11,6 +13,10 @@ public class RoadLane extends LaneBase {
     public RoadLane(Intersection s, Intersection e) {
         super(s, e);
         Console.print("\t!<<create>>RoadLane");
+    }
+    //Fileból betöltés
+    public RoadLane(Map<String, String> data){
+        super(data);
     }
 
     @Override
