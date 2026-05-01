@@ -1,8 +1,13 @@
 package main.java.models.objects.vehicles;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 import main.java.models.interfaces.ICleaning;
 import main.java.models.interfaces.ILane;
 import main.java.models.objects.Console;
+import main.java.models.objects.FileHandler;
 import main.java.models.objects.road.Intersection;
 import main.java.models.objects.vehicles.heads.BlowerHead;
 import main.java.models.objects.vehicles.heads.IceBreakerHead;
@@ -31,9 +36,10 @@ public class SnowPlower extends VehicleBase {
         Console.print("\t<- SSnowPlower.attach(newHead)");
     }
 
-    public void ChangeAttachment(ICleaning head) {
+    public void ChangeAttachment(int id) {
         Console.print("\t-> SnowPlower.ChangeAttachment(head)");
-        currentHead = head;
+        //TODO parameter validation
+        currentHead = heads.get(id);
         Console.print("\t<- SnowPlower.ChangeAttachment(head)");
     }
 
@@ -55,6 +61,21 @@ public class SnowPlower extends VehicleBase {
         Console.print("\t<- SnowPlower.ConsumeSalt(amount)");
         return true;
     }
+
+    /**
+     * Kilistázza a leltárban lévő kotrófejeket kiválasztás érdekében
+     * (attach segédfüggvénye) 
+     * @return
+     */
+    public String listHeads(){
+        StringBuilder list = new StringBuilder();
+        list.append("Heads in Inventory:\n");
+        for (ICleaning head : heads) {
+            Console.print("(" + heads.indexOf(head) + ")" + head.print() + "+");
+        }
+        return list.toString();
+    }
+
 
     /**
      * Üzemanyagot von le a tartályból a munka végzése során.
@@ -86,9 +107,95 @@ public class SnowPlower extends VehicleBase {
      }
 
     @Override
-    public void SetRoute(Intersection start, Intersection end) {
+    public void SetRoute(List<Intersection> intersections) {
         Console.print("\t-> SnowPlower.SetRoute(start, end)");
         Move();
         Console.print("\t<- SnowPlower.SetRoute(start, end)");
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder res = new StringBuilder("V");
+        res.append("\nid=").append(id);
+        res.append("\ntype=SnowPlower");
+        res.append("\ncurrentPosition=" ).append(currentPosition);
+        res.append("\nlane=" ).append(lane.toList());
+        res.append("\nbaseSpeed=" ).append(baseSpeed);
+        res.append("\nroute=");
+        for (ILane lane : route) {
+            res.append(lane.toList());
+            res.append(";");
+        }
+        res.append("\ncurrentHead=").append(currentHead.toList());
+        res.append("\nheads=");
+        StringBuilder headString = new StringBuilder();
+        for (ICleaning head : heads) {
+            res.append(head.toList()).append(";");
+            headString.append("\n").append(head.toString());
+        }
+        res.append(headString);
+        return res.toString();
+    }
+    @Override
+    public String printLong() {
+        StringBuilder res = new StringBuilder(super.printLong());
+
+        int sweeper = 0;
+        int blower = 0;
+        int icebreaker = 0;
+        int dragon = 0;
+        int salter = 0;
+        int graveler =0; 
+        
+        for (ICleaning head : heads) {
+            switch (head.print().toLowerCase()) {
+                case "sweeperhead" -> sweeper++;
+                case "blowerhead" -> blower++;
+                case "icebreakerhead" -> icebreaker++;
+                case "dragonhead" -> dragon++;
+                case "salterhead" -> salter++;
+                case "gravelerhead" -> graveler++; 
+                default -> {break;}
+            }
+        }
+        res.append("\n\tCurrentHead: ").append(currentHead.toList());
+        res.append("\n\tHeads: Sweeper: ").append(sweeper)
+           .append("\n\t       Blower: ").append(blower)
+           .append("\n\t       Salter: ").append(salter)
+           .append("\n\t       IceBreaker: ").append(icebreaker)
+           .append("\n\t       Graveler: ").append(graveler)
+           .append("\n\t       Dragon: ").append(dragon);
+        return res.toString();
+    }
+
+    //Fileból betöltés, szinkronizáció
+    private List<Integer> pendingHeads = new ArrayList<>();
+    private Integer pendingHead;
+    @Override
+    protected void applyData(Map<String, String> data) {
+        super.applyData(data);
+        for (Map.Entry<String, String> entry : data.entrySet()) {
+           switch (entry.getKey()) {
+            case "currentHead" -> pendingHead = Integer.parseInt(entry.getValue());
+            case "heads" -> pendingHeads = FileHandler.parseList(entry.getValue());
+            default -> {break;}
+           } 
+        }
+    }
+    @Override
+    public void resolve(Map<Integer, ILane> lanes, Map<Integer, ICleaning> headsTmp){
+        if (pendingLane != null) lane = lanes.get(pendingLane);
+        if (pendingHead != null) currentHead = headsTmp.get(pendingHead); 
+        route = pendingRoute.stream()
+            .map(lanes::get)
+            .collect(Collectors.toCollection(ArrayList::new));
+        heads = pendingHeads.stream()
+            .map(headsTmp::get)
+            .filter(Objects::nonNull)
+            .collect(Collectors.toCollection(ArrayList::new));
+        pendingLane = null;
+        pendingHead = null;
+        pendingRoute.clear();
+        pendingHeads.clear();
     }
 }

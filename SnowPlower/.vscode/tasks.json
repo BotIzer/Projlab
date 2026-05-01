@@ -10,7 +10,7 @@
 				"-sourcepath",
 				"./src/", 
 				"-d",
-				"./bin/",
+				"./target/",
 				"./src/main/java/Main.java"
 			],
 			"label": "java (build): Build Workspace",
