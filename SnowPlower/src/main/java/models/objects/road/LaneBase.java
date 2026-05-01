@@ -1,8 +1,15 @@
 package main.java.models.objects.road;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+
 import main.java.models.interfaces.*;
 import main.java.models.objects.Console;
+import main.java.models.objects.FileHandler;
 
 /**
  * Absztrakt alapsztályként elvégzi a specifikus sávok közös, mindennapi adminisztrációját.
@@ -76,5 +83,54 @@ public abstract class LaneBase implements ILane {
                 .append(vehicle.toList());
         }
         return res.toString();
+    }
+    
+    //Fileból betöltés, szinkronizáció
+
+    protected Integer pendingStart;
+    protected Integer pendingEnd;
+    protected List<Integer> pendingVehicles = new ArrayList<>();
+
+    public static ILane create(Scanner sc){
+
+        Map<String, String> data = new HashMap<>();
+        
+        while (sc.hasNext(".*=.*")) {
+            String[] parts = sc.nextLine().split("=", 2);
+            data.put(parts[0].trim(), parts.length > 1 ? parts[1].trim() : "");
+        }
+
+        String type = data.getOrDefault("type", "");
+
+        switch (type) {
+            case "TunnelLane" -> {return new TunnelLane(data);}
+            case "RoadLane" -> {return new RoadLane(data);}
+            case "BridgeLane" -> {return new BridgeLane(data);}
+            default -> throw new IllegalArgumentException("Unknown type: " + type);
+        }
+    }
+
+    protected LaneBase(Map<String, String> data){
+        for (Map.Entry<String, String> line : data.entrySet()) {
+           switch (line.getKey()) {
+            case "id" -> id = Integer.parseInt(line.getValue());
+            case "start" -> pendingStart = Integer.parseInt(line.getValue());
+            case "end" -> pendingEnd = Integer.parseInt(line.getValue());
+            case "vehicles" -> pendingVehicles = FileHandler.parseList(line.getValue());
+            case "state" -> state = State.valueOf(line.getValue().toUpperCase()); 
+            default -> {break;}
+           } 
+        }
+    }
+    public void resolve(Map<Integer, Intersection> intersections, Map<Integer, IVehicle> vehiclesTmp){
+        if (pendingStart != null) start = intersections.get(pendingStart);
+        if (pendingEnd != null) end = intersections.get(pendingEnd); 
+        vehicles = pendingVehicles.stream()
+            .map(vehiclesTmp::get)
+            .filter(Objects::nonNull)
+            .collect(Collectors.toCollection(ArrayList::new));
+        pendingStart = null;
+        pendingEnd = null;
+        pendingVehicles.clear();
     }
 }

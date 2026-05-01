@@ -163,10 +163,8 @@ public class SnowPlower extends VehicleBase {
     }
 
     //Fileból betöltés, szinkronizáció
-    private Integer pendingLane;
-    private Integer pendingHead;
-    private List<Integer> pendingRoute = new ArrayList<>();
     private List<Integer> pendingHeads = new ArrayList<>();
+    private Integer pendingHead;
     @Override
     protected void applyData(Map<String, String> data) {
         for (Map.Entry<String, String> entry : data.entrySet()) {

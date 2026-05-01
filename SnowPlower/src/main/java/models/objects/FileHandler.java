@@ -8,8 +8,10 @@ import java.util.List;
 import java.util.Scanner;
 import main.java.models.interfaces.*;
 import main.java.models.objects.road.Intersection;
+import main.java.models.objects.road.LaneBase;
 import main.java.models.objects.road.Road;
 import main.java.models.objects.vehicles.VehicleBase;
+import main.java.models.objects.vehicles.heads.AttachmentBase;
 
 import java.util.Map;
 /**
@@ -42,7 +44,6 @@ public class FileHandler {
      * @return művelet sikeressége
      */
     public boolean loadState(String loc, Player player, main.java.models.objects.Map map) {
-        //TODO finish function implementations
         Console.print("\t->FileHandler.loadState(" + loc +")");
         Map<Integer, IVehicle> vehicles = new HashMap<>();
         Map<Integer, Intersection> intersections = new HashMap<>();
@@ -59,19 +60,34 @@ public class FileHandler {
                         intersections.put(Integer.parseInt(i.toList()), i);
                     }
                     case "L" -> {
+                        ILane l = LaneBase.create(sc);
+                        lanes.put(Integer.parseInt(l.toList()), l);
                     }
                     case "V" -> {
                         IVehicle v = VehicleBase.create(sc);
+                        vehicles.put(Integer.parseInt(v.toList()), v);
                     }
-                    case "H" -> {}
-                    case "R" -> {}
+                    case "H" -> {
+                        ICleaning h = AttachmentBase.create(sc);
+                        heads.put(Integer.parseInt(h.toList()), h);
+                    }
+                    case "R" -> {
+                        Road r = Road.create(sc);
+                        roads.put(Integer.parseInt(r.toList()), r);
+                    }
                         
                 
                     default -> {break;}
                 }
             }
+            player.resolve(vehicles, heads);
+            vehicles.values().forEach(v -> ((VehicleBase)v).resolve(lanes, heads));
+            intersections.values().forEach(i -> {i.resolve(roads); map.addIntersections(i);});
+            roads.values().forEach(r -> {r.resolve(lanes); map.addRoad(r);});
+            lanes.values().forEach(l -> ((LaneBase)l).resolve(intersections, vehicles));
+            
         } catch (Exception e) {
-            // TODO: handle exception
+            Console.print("Error reading file:\n" + e.getMessage());
         }
 
 

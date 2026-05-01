@@ -74,6 +74,8 @@ public abstract class VehicleBase implements IVehicle {
         return res.toString();
     }
     //Fileból betöltés, szinkronizálás
+    protected Integer pendingLane;
+    protected List<Integer> pendingRoute = new ArrayList<>();
     protected abstract void applyData(Map<String, String> data);
     public abstract void resolve(Map<Integer, ILane> lanes, Map<Integer, ICleaning> headsTmp);
     public static IVehicle create(Scanner sc){
