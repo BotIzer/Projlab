@@ -17,6 +17,8 @@ public class Intersection {
     private int id;
     private List<Road> roads;
 
+    private static int idCtr = 0;
+
     //Betöltés fileból
     //szinkronizációs lista
     private List<Integer> pendingRoads = new ArrayList<>();
@@ -29,7 +31,10 @@ public class Intersection {
             String value = parts.length > 1 ? parts[1].trim() : "";
 
             switch (key) {
-                case "id" -> id = Integer.parseInt(value);
+                case "id" -> {
+                    id = Integer.parseInt(value);
+                    if (this.id > idCtr) idCtr = this.id;
+                }
                 case "lanes" -> pendingRoads = FileHandler.parseList(value);
                 default -> {break;} 
             }
@@ -47,6 +52,7 @@ public class Intersection {
 
     public Intersection(Road r){
         Console.print("\t!<<create>>Intersection");
+        this.id = ++idCtr;
         roads = new ArrayList<>();
         roads.add(r);
     }

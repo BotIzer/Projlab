@@ -19,7 +19,10 @@ public abstract class VehicleBase implements IVehicle {
     protected double baseSpeed;
     protected ArrayList<ILane> route;
 
+    protected static int idCtr = 0;
+
     protected VehicleBase(double bs){
+        this.id = ++idCtr;
         currentPosition = 0.0;
         baseSpeed = bs;
     }
@@ -78,7 +81,7 @@ public abstract class VehicleBase implements IVehicle {
     protected List<Integer> pendingRoute = new ArrayList<>();
     protected abstract void applyData(Map<String, String> data);
     public abstract void resolve(Map<Integer, ILane> lanes, Map<Integer, ICleaning> headsTmp);
-    public static IVehicle create(Scanner sc){
+    public static IVehicle create(Scanner sc) {
         Map<String, String> data = new HashMap<>();
         
         while (sc.hasNext(".*=.*")) {

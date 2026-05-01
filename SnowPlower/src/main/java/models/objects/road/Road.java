@@ -19,8 +19,11 @@ public class Road {
     private List<ILane> lanes;
     private double length;
 
+    private static int idCtr = 0;
+
     public Road(List<ILane> ls, double len) {
         Console.print("\t!<<create>>Road");
+        this.id = ++idCtr;
         lanes = ls;
         length = len;
     }
@@ -79,7 +82,10 @@ public class Road {
     public Road(Map<String, String> data){
         for (Map.Entry<String, String> line : data.entrySet()) {
             switch (line.getKey()) {
-                case "id" -> id = Integer.parseInt(line.getValue());
+                case "id" -> {
+                    id = Integer.parseInt(line.getValue());
+                    if (this.id > idCtr) idCtr = this.id;
+                }
                 case "lanes" -> pendingLanes = FileHandler.parseList(line.getValue());    
                 case "length" -> length = Integer.parseInt(line.getValue());
                 default -> {break;}

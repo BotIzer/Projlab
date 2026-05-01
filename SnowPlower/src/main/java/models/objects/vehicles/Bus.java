@@ -73,10 +73,13 @@ public class Bus extends VehicleBase {
     protected void applyData(Map<String, String> data) {
         for (Map.Entry<String, String> entry : data.entrySet()) {
            switch (entry.getKey()) {
-            case "id" -> id = Integer.parseInt(entry.getValue());
-            case "currentPosition" -> currentPosition = Integer.parseInt(entry.getValue());
+            case "id" -> {
+                id = Integer.parseInt(entry.getValue());
+                if (this.id > idCtr) idCtr = this.id;
+            }
+            case "currentPosition" -> currentPosition = Double.parseDouble(entry.getValue());
             case "lane" -> pendingLane = Integer.parseInt(entry.getValue());
-            case "baseSpeed" -> baseSpeed = Integer.parseInt(entry.getValue());
+            case "baseSpeed" -> baseSpeed = Double.parseDouble(entry.getValue());
             case "route" -> pendingRoute = FileHandler.parseList(entry.getValue());
             default -> {break;}
            } 
