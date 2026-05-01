@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+
 import main.java.models.interfaces.*;
 import main.java.models.objects.road.Intersection;
 import main.java.models.objects.road.LaneBase;
@@ -118,6 +120,6 @@ public class FileHandler {
         return Arrays.stream(value.split(";"))
                      .filter(s -> !s.isBlank())
                      .map(Integer::parseInt)
-                     .toList();
+                     .collect(Collectors.toCollection(ArrayList::new));
     }
 }

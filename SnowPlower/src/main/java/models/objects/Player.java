@@ -216,6 +216,8 @@ public class Player {
             .filter(ICleaning.class::isInstance)
             .collect(Collectors.toCollection(ArrayList::new));
 
+        
+
         pendingPlowerIds.clear();
         pendingBusIds.clear();
         pendingHeadIds.clear();
