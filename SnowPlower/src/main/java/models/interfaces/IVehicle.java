@@ -29,7 +29,7 @@ public interface IVehicle {
      *                      ha két elemű: a két végpont közti legrövidebb út
      *                      különben teljes útvonal
      */
-    public void SetRoute(List<Intersection> intersections);
+    public void SetRoute(List<ILane> intersections);
     public String toList();
     public String printLong();
 

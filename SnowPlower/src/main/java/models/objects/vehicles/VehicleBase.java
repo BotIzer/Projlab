@@ -14,41 +14,47 @@ import main.java.models.objects.road.Intersection;
  * Minden jármű absztrakt alaposztálya, amely definiálja az alapvető mozgási képességeket és a környezettel való kapcsolatot.
  */
 public abstract class VehicleBase implements IVehicle {
-    protected int id;
-    protected double currentPosition = 0.0;
-    protected ILane lane;
-    protected double baseSpeed;
-    protected List<ILane> route;
+    protected int id; //privat id
+    protected double currentPosition = 0.0; //A jarmu jelenlegi pozicioja
+    protected ILane lane; //Az a ut, amin a jarmu tartozkodik
+    protected double baseSpeed; //A jarmu sebessege
+    protected List<ILane> route; //A jarmu kijelolt utja, amit meg fog tenni
 
-    protected boolean crashed = false;
-    protected int crashTimer = 0;
+    protected boolean crashed = false; //Egy olyan boolean tagvaltozo mely azt figyeli, hogy a kocsi karambolozott e
+    protected int crashTimer = 0; //Egy idozito, amely a kotelezo megallast figyeli
 
+    //Ez a metodus beallitja az osztaly lane tagvaltozojat
     public void setLane(ILane l)
     {
         this.lane = l;
     }
 
+    //Ez a metodus beallitja az osztaly currentPosition tagvaltozojat
     public double getPosition()
     {
         return this.currentPosition;
     }
 
+    //utkozest megvalosito fuggveny
     public void Collide(IVehicle vehicle)
     {
-        this.Stop();
+        this.Stop(); //megallitja a jarmuvet
         this.crashed = true;
         this.crashTimer = 30;
         if(this.lane != null)
-            this.lane.changeState("BLOCKED");
+            this.lane.changeState("BLOCKED"); //az ut allapotat blokkoltra rakja
     }
 
+    //jarmu konstruktora
     protected VehicleBase(double bs){
         currentPosition = 0.0;
         baseSpeed = bs;
     }
 
+    //A jarmu mozgasat megvalostito fuggveny
     @Override
     public void Move() {
+        //Azt figyeli, hogy a kotelezo ido lejart e mar
         if (crashed) {
             if (crashTimer > 0) {
                 crashTimer--;
@@ -58,6 +64,7 @@ public abstract class VehicleBase implements IVehicle {
             return; 
         }
 
+        //Ha a kocsi sebessege nulla akkor visszater, mert nem tud menni
         if (baseSpeed == 0.0) return;
 
         currentPosition += baseSpeed;
@@ -93,16 +100,18 @@ public abstract class VehicleBase implements IVehicle {
         }
     }
     
-
+    //A kocsi megallasat megvalosito fuggveny
     @Override
     public void Stop()
     {
         this.baseSpeed = 0.0;
     }
 
+    //A kocsi megcsuszasat megvalosito fuggveny
     @Override
     public void Slipping()
     {
+        //A kocsi megcsuszasara jegen 5% az esely
         Random rand = new Random();
         int randomChance = rand.nextInt(100) + 1;
         boolean collisionHappened = false;
@@ -130,6 +139,7 @@ public abstract class VehicleBase implements IVehicle {
         }
     }
 
+    //A jarmu utjat beallitja 
     @Override
     public void SetRoute(List<ILane> validRoute)
     {

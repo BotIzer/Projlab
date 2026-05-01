@@ -16,29 +16,10 @@ import main.java.models.objects.road.Intersection;
  */
 public class Car extends VehicleBase
 {
-    private main.java.models.objects.Map gameMap;
-
-    public Car(double bs, main.java.models.objects.Map gameMap){
+    public Car(double bs){
         super(bs);
         Console.print("\t!<<create>>Car");
-        this.gameMap = gameMap;
-    }
 
-    
-    public void setRoute(List<Intersection> waypoints) {
-        if (this.gameMap != null) {
-            // A Map legenerálja az ILane-ekből álló legrövidebb utat
-            List<ILane> calculatedRoute = gameMap.getShortestPath(waypoints);
-            
-            // Validáció: ha a lista nem null és nem üres, akkor összefüggő, érvényes az út
-            if (calculatedRoute != null && !calculatedRoute.isEmpty()) {
-                // Beállítjuk a VehicleBase 'route' attribútumát
-                super.SetRoute(calculatedRoute);
-            } else {
-                // Érvénytelen az útvonal, dobhatunk egy hibaüzenetet (a doksi szerinti No such route[cite: 3])
-                System.out.println("No such route");
-            }
-        }
     }
 
     @Override
