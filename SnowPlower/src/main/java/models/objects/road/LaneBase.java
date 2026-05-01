@@ -45,6 +45,12 @@ public abstract class LaneBase implements ILane {
     }
 
     @Override
+    public Intersection getStart() { return start; }
+
+    @Override
+    public Intersection getEnd() { return end; }
+
+    @Override
     public boolean clear() {
         Console.print("->LaneBase.clear()");
         Console.print("<-LaneBase.clear()");

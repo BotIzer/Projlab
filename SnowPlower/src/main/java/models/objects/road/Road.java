@@ -20,6 +20,8 @@ public class Road {
 
     public List<ILane> getLanes(){ return lanes; }
 
+    public double getLength(){ return length; }
+
     public List<Intersection> initGeneral(){
         ArrayList<Intersection> intersections = new ArrayList<>();
         Intersection istart = new Intersection(this);

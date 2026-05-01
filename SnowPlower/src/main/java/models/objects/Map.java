@@ -48,6 +48,9 @@ public class Map {
     public void addVehicle(IVehicle vehicle) {
         Console.print("->Map.addVehicle(vehicle)");
         vehicles.add(vehicle);
+        if (vehicle instanceof VehicleBase vb) {
+            vb.setMap(this);
+        }
         Console.print("<-Map.addVehicle(vehicle)");
     }
 
@@ -97,6 +100,10 @@ public class Map {
     }
 
     public List<IVehicle> getVehicles(){ return vehicles; }
+
+    public List<Road> getRoads(){ return roads; }
+
+    public List<Intersection> getIntersections(){ return intersections; }
 
     @Override
     public String toString() {

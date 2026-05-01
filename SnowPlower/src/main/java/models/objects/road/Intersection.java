@@ -53,6 +53,8 @@ public class Intersection {
     public void addRoad(Road r){
         roads.add(r);
     }
+    public List<Road> getRoads(){ return roads; }
+
     public String toList(){
         return Integer.toString(id);
     }

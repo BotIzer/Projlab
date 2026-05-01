@@ -18,6 +18,8 @@ public abstract class VehicleBase implements IVehicle {
     protected ILane lane;
     protected double baseSpeed;
     protected ArrayList<ILane> route;
+    // Referencia a játéktérképre, az útvonaltervezéshez (Dijkstra)
+    protected main.java.models.objects.Map gameMap;
 
     protected VehicleBase(double bs){
         currentPosition = 0.0;
@@ -54,6 +56,10 @@ public abstract class VehicleBase implements IVehicle {
 
     public void setLane(ILane l){
         lane = l;
+    }
+
+    public void setMap(main.java.models.objects.Map m){
+        gameMap = m;
     }
     @Override
     public String toList(){
