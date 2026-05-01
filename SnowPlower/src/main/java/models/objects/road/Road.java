@@ -19,8 +19,21 @@ public class Road {
     private List<ILane> lanes;
     private double length;
 
+    protected static int idCtr = 0;
+    
+    protected static void syncId(int lastId) {
+        if (lastId >= idCtr) {
+            idCtr = lastId + 1;
+        }
+    }
+    
+    public static void reset() {
+        idCtr = 0;
+    }
+
     public Road(List<ILane> ls, double len) {
         Console.print("\t!<<create>>Road");
+        id = idCtr++;
         lanes = ls;
         length = len;
     }
@@ -79,7 +92,10 @@ public class Road {
     public Road(Map<String, String> data){
         for (Map.Entry<String, String> line : data.entrySet()) {
             switch (line.getKey()) {
-                case "id" -> id = Integer.parseInt(line.getValue());
+                case "id" -> {
+                    id = Integer.parseInt(line.getValue());
+                    syncId(id);
+                }
                 case "lanes" -> pendingLanes = FileHandler.parseList(line.getValue());    
                 case "length" -> length = Double.parseDouble(line.getValue());
                 default -> {break;}
