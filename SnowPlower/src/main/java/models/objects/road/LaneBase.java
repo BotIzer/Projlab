@@ -29,7 +29,7 @@ public abstract class LaneBase implements ILane {
         end = e;
     }
 
-    //@Override
+    @Override
     public boolean enterVehicle(IVehicle v) {
         Console.print("->LaneBase.enterVehicle(v)");
         vehicles.add(v);
