@@ -85,4 +85,8 @@ public interface ICommand {
      * Bezárja az olvasót a program leállásakor
      */
    void closeReader();
+   /**
+    * 
+    */
+   void runTests();
 }
