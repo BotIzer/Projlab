@@ -1,0 +1,2 @@
+type=TunnelLane
+state=BLOCKED

@@ -1,0 +1,8 @@
+load save.txt
+buy
+4
+1
+select
+0
+attach
+0

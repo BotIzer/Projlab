@@ -18,6 +18,19 @@ public class TunnelLane extends LaneBase{
         super(data);
     }
 
+    /**
+     * Alagút immunis a havazásra: SNOWY és SNOWY_DEEP állapotok nem alkalmazhatók.
+     */
+    @Override
+    public boolean changeState(String ns) {
+        Console.print("->TunnelLane.changeState(" + ns + ")");
+        if ("SNOWY".equalsIgnoreCase(ns) || "SNOWY_DEEP".equalsIgnoreCase(ns)) {
+            Console.print("<-TunnelLane.changeState(" + ns + "): false (tunnel immunity)");
+            return false;
+        }
+        return super.changeState(ns);
+    }
+
     @Override
     public String toString() {
         StringBuilder res = new StringBuilder("L");

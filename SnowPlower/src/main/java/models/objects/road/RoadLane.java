@@ -22,8 +22,9 @@ public class RoadLane extends LaneBase {
     @Override
     public boolean clear() {
         Console.print("->RoadLane.clear()");
+        boolean res = super.clear();
         Console.print("<-RoadLane.clear()");
-        return true;
+        return res;
     }
     @Override
     public String toString() {

@@ -22,8 +22,9 @@ public class BridgeLane extends LaneBase {
     @Override
     public boolean clear() {
         Console.print("->BridgeLane.clear()");
+        boolean res = super.clear();
         Console.print("<-BridgeLane.clear():true");
-        return true;
+        return res;
     }
     @Override
     public String toString() {
