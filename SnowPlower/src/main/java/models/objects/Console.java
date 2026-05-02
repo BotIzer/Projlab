@@ -474,6 +474,21 @@ public class Console implements ICommand {
         } while (!input.startsWith("e"));
         
     }
+    @Override
+    public void runTests() {
+        print(TestRunner.TEST_MENU);
+        TestRunner ts = new TestRunner();
+        String input = "";
+        do {
+            try {
+                input = br.readLine();
+                int id = Integer.parseInt(input);             
+                ts.runTests(id);
+            } catch (Exception e) {
+                print(e.getMessage());
+            }
+        } while (!input.equals("x"));
+    }
 
 
 }

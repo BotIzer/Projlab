@@ -41,6 +41,7 @@ public class Main {
                     console.start();
                     break;
                 case "1":
+                    console.runTests();
                     break;
                 default:
                     break;
