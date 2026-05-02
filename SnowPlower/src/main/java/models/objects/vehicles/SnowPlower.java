@@ -1,9 +1,9 @@
 package main.java.models.objects.vehicles;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
 import main.java.models.interfaces.ICleaning;
 import main.java.models.interfaces.ILane;
 import main.java.models.objects.Console;
@@ -11,8 +11,6 @@ import main.java.models.objects.FileHandler;
 import main.java.models.objects.road.Intersection;
 import main.java.models.objects.vehicles.heads.BlowerHead;
 import main.java.models.objects.vehicles.heads.IceBreakerHead;
-
-import java.util.ArrayList;
 
 /**
  * Speciális munkagép (hókotró), amely a sávok tisztítását végzi a felszerelt fejek segítségével.
@@ -38,9 +36,12 @@ public class SnowPlower extends VehicleBase {
 
     public void ChangeAttachment(int id) {
         Console.print("\t-> SnowPlower.ChangeAttachment(head)");
-        //TODO parameter validation
+        if (id < 0 || id >= heads.size()) {
+            Console.print("\t<- SnowPlower.ChangeAttachment(head): invalid id " + id);
+            return;
+        }
         currentHead = heads.get(id);
-        Console.print("\t<- SnowPlower.ChangeAttachment(head)");
+        Console.print("\t<- SnowPlower.ChangeAttachment(head): switched to " + currentHead.print());
     }
 
     /**
@@ -69,9 +70,9 @@ public class SnowPlower extends VehicleBase {
      */
     public String listHeads(){
         StringBuilder list = new StringBuilder();
-        list.append("Heads in Inventory:\n");
+        list.append("Heads on SnowPlower:\n");
         for (ICleaning head : heads) {
-            Console.print("(" + heads.indexOf(head) + ")" + head.print() + "+");
+            list.append("(").append(heads.indexOf(head)).append(") ").append(head.print()).append("\n");
         }
         return list.toString();
     }

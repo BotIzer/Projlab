@@ -9,7 +9,7 @@
             "name": "Launch",
             "request": "launch",
             "preLaunchTask": "java (build): Build Workspace",
-            "mainClass": "E:/suli/BME/projlab/PROJECT/Projlab/SnowPlower/src/main/java/Main.java"
+            "mainClass": "${workspaceFolder}/src/main/java/Main.java"
         }
     ]
 }

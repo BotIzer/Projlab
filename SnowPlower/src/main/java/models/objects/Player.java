@@ -61,9 +61,15 @@ public class Player {
      */
     public boolean changeEquipment(SnowPlower sp) {
         Console.print("->Player.changeEquipment(sp)");
-        sp.listHeads();
+        Console.print(sp.listHeads());
         String id = Console.readLine();
-        sp.ChangeAttachment(Integer.parseInt(id));
+        try {
+            sp.ChangeAttachment(Integer.parseInt(id));
+        } catch (NumberFormatException e) {
+            Console.print("Invalid input: '" + id + "'");
+            Console.print("<-Player.changeEquipment(sp): false");
+            return false;
+        }
         Console.print("<-Player.changeEquipment(sp): true");
         return true;
     }
@@ -128,8 +134,13 @@ public class Player {
      */
     public void updateInventory(List<SnowPlower> lsp, List<ICleaning> lh){
         Console.print("\t->Player.updateInventory()");
-        Console.print("\t<-Player.updateInventory()");
+        plowers.addAll(lsp);
+        heads.addAll(lh);
+        Console.print("\t<-Player.updateInventory(): " + lsp.size() + " plower(s), " + lh.size() + " head(s) added");
     }
+
+    /** Visszaadja a hókotrók listáját (csak olvasható nézet, map-szinkronhoz). */
+    public List<SnowPlower> getPlowers() { return plowers; }
 
     /**
      * Levonja a megadott összeget a játékos egyenlegéből (money), amennyiben rendelkezésre áll a megfelelő fedezet.
