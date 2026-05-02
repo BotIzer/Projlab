@@ -477,12 +477,13 @@ public class Console implements ICommand {
     @Override
     public void runTests() {
         print(TestRunner.TEST_MENU);
+        TestRunner ts = new TestRunner();
         String input = "";
         do {
             try {
                 input = br.readLine();
                 int id = Integer.parseInt(input);             
-                TestRunner.runTests(id);
+                ts.runTests(id);
             } catch (Exception e) {
                 print(e.getMessage());
             }

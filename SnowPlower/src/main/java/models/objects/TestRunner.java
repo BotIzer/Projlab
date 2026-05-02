@@ -1,8 +1,8 @@
 package main.java.models.objects;
 
+import java.io.File;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 public class TestRunner {
     //Constants
-    private static final String TEST_DIR = "\\tests";    
+    private static final String TEST_DIR = "tests";    
     //TODO expand list with added tests
     public static final String TEST_MENU = """
             (0) - load from save.txt 
@@ -19,15 +19,16 @@ public class TestRunner {
             (x) - exit
             """;
 
-    public static boolean runTests(int id){
+    public boolean runTests(int id){
         boolean res = false;
         switch (id) {
-            case 0 -> test0(TEST_DIR + "\\");
+            case 0 -> {res = test0(id);}
             default -> {break;}
         }
+        Console.print("TEST RESULT: (" + id + ")" + res);
         return res;
     }
-    public boolean fileAssert(String current, String expected) {
+    private boolean fileAssert(String current, String expected) {
         Set<String> currentBlocks = parseAndNormalize(current);
         Set<String> expectedBlocks = parseAndNormalize(expected);
 
@@ -103,12 +104,14 @@ public class TestRunner {
     }
 
     //-------------------TESTS------------------------//
-    public static boolean test0(String inputLoc){
+    public boolean test0(int id){
         try {
-            String content = Files.readString(FileSystems.getDefault().getPath("logs", "access.log"));
+            String contentIn = Files.readString(FileSystems.getDefault().getPath(TEST_DIR, Integer.toString(id), "save.txt"));
+            String expected = Files.readString(FileSystems.getDefault().getPath(TEST_DIR, Integer.toString(id), "expected.txt"));
+            return fileAssert(contentIn, expected);
         } catch (Exception e) {
-            // TODO: handle exception
+            Console.print(e.getMessage());
+            return false;
         }
-        return true;
     }
 }
