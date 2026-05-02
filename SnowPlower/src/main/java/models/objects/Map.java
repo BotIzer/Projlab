@@ -104,19 +104,19 @@ public class Map {
      */
     public void loop(){
         Console.print("-> Map.loop()");
-        for (IVehicle vehicle : vehicles) {
+        for (IVehicle vehicle : new ArrayList<>(vehicles)) {
             vehicle.Move();
         }
         for (Road r : roads) {
             for (ILane lane : r.getLanes()) {
+                // TC24: BLOCKED sáv visszaszámlálója
+                lane.tickBlocked();
+                // Véletlenszerű havazás (~5% esély sávonként)
                 int chance = rand.nextInt(100);
                 if (chance < 5) {
                     lane.changeState("SNOWY");
                 }
             }
-        }
-        for (IVehicle vehicle : vehicles) {
-            vehicle.Move();
         }
     }
 

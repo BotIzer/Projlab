@@ -19,7 +19,9 @@ public class IceBreakerHead extends AttachmentBase {
     @Override
     public void Clean(ILane lane, SnowPlower plow) {
         Console.print("\t\t\t\t-> IcebreakerHead.Clean(ILane lane, SnowPlower plow)");
-        lane.clear();
+        if ("ICY".equals(lane.getState())) {
+            lane.changeState("BROKEN_ICE");
+        }
         Console.print("\t\t\t\t<- IcebreakerHead.Clean(ILane lane, SnowPlower plow)");
     }
     @Override

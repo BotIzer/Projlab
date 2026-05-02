@@ -32,4 +32,10 @@ public interface IVehicle {
     public void SetRoute(List<Intersection> intersections);
     public String toList();
     public String printLong();
+
+    /**
+     * Ütközés kezelése: mindkét jármű megáll, a sáv BLOCKED állapotba kerül.
+     * @param other a másik jármű, amellyel ütközés történt
+     */
+    public void Collide(IVehicle other);
 }

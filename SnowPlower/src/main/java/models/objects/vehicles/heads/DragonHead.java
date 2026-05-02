@@ -19,7 +19,9 @@ public class DragonHead extends AttachmentBase {
     @Override
     public void Clean(ILane lane, SnowPlower plow) {
         Console.print("\t\t\t\t-> DragonHead.Clean(ILane lane, SnowPlower plow)");
-        lane.clear();
+        if ("ICY".equals(lane.getState())) {
+            lane.changeState("CLEAN");
+        }
         Console.print("\t\t\t\t<- DragonHead.Clean(ILane lane, SnowPlower plow)");
     }
     @Override

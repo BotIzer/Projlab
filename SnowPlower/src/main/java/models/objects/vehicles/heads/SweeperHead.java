@@ -18,7 +18,10 @@ public class SweeperHead extends AttachmentBase {
     @Override
     public void Clean(ILane lane, SnowPlower plow) {
         Console.print("\t\t\t\t-> SweeperHead.Clean(ILane lane, SnowPlower plow)");
-        lane.clear();
+        String s = lane.getState();
+        if ("SNOWY".equals(s) || "BROKEN_ICE".equals(s)) {
+            lane.changeState("CLEAN");
+        }
         Console.print("\t\t\t\t<- SweeperHead.Clean(ILane lane, SnowPlower plow)");
     }
     @Override

@@ -62,6 +62,16 @@ public abstract class VehicleBase implements IVehicle {
         Console.print("<- VehicleBase.Slipping(): void");
     }
 
+    @Override
+    public void Collide(IVehicle other)
+    {
+        Console.print("-> VehicleBase.Collide(other)");
+        this.Stop();
+        other.Stop();
+        if (lane != null) lane.changeState("BLOCKED");
+        Console.print("<- VehicleBase.Collide(other): void");
+    }
+
     /**
      * TDA: Megmondja a Map-nek, hogy számolja ki az útvonalat.
      *   1 elem  → jelenlegi sáv kezdőpontjától az adott kereszteződésig

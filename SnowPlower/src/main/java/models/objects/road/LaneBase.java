@@ -68,11 +68,45 @@ public abstract class LaneBase implements ILane {
     @Override
     public Intersection getEnd() { return end; }
 
+    protected int blockedTimer = 0;
+    private static final int BLOCKED_TIMEOUT = 30;
+
     @Override
     public boolean changeState(String ns) {
-        Console.print("->LaneBase.changeState(" + ns + ")");
-        Console.print("<-LaneBase.changeState(" + ns + "): true");
-        return true;
+        try {
+            State newState = State.valueOf(ns.toUpperCase());
+            this.state = newState;
+            if (newState == State.BLOCKED) {
+                blockedTimer = BLOCKED_TIMEOUT;
+            }
+            if (newState == State.CLEAN) {
+                carsPassedSinceSnow = 0;
+            }
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+    }
+
+    @Override
+    public String getState() {
+        return state != null ? state.toString() : "CLEAN";
+    }
+
+    @Override
+    public List<IVehicle> getVehicles() {
+        return new ArrayList<>(vehicles);
+    }
+
+    /** TC24: 30 tick után BLOCKED → ICY visszaáll */
+    @Override
+    public void tickBlocked() {
+        if (state == State.BLOCKED) {
+            blockedTimer--;
+            if (blockedTimer <= 0) {
+                changeState("ICY");
+            }
+        }
     }
 
     @Override

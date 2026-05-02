@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import main.java.models.interfaces.ICleaning;
 import main.java.models.interfaces.ILane;
+import main.java.models.interfaces.IVehicle;
 import main.java.models.objects.Console;
 import main.java.models.objects.FileHandler;
 import main.java.models.objects.road.Intersection;
@@ -25,22 +26,82 @@ public class Car extends VehicleBase
     @Override
     public void Move()
     {
-         Console.print("-> Car.Move()");
-         Console.print("<- Car.Move(): void");
+        Console.print("-> Car.Move()");
+
+        if (route == null || route.isEmpty()) {
+            Stop();
+            Console.print("<- Car.Move(): void (utvonal vegere ert)");
+            return;
+        }
+
+        ILane nextLane = route.get(0);
+        String nextState = nextLane.getState();
+
+        if ("BLOCKED".equals(nextState)) {
+            Stop();
+            Console.print("<- Car.Move(): void (BLOCKED sav)");
+            return;
+        }
+
+        if ("SNOWY_DEEP".equals(nextState)) {
+            Stop();
+            Console.print("<- Car.Move(): void (SNOWY_DEEP - elakadt)");
+            return;
+        }
+
+        if (lane != null) {
+            lane.exitVehicle(this);
+        }
+
+        nextLane.enterVehicle(this);
+        lane = nextLane;
+        route.remove(0);
+
+        if ("ICY".equals(nextState)) {
+            Slipping();
+        }
+
+        List<IVehicle> others = lane.getVehicles();
+        for (IVehicle other : others) {
+            if (other != this) {
+                Collide(other);
+                Console.print("<- Car.Move(): void (utkozés)");
+                return;
+            }
+        }
+
+        if (route.isEmpty()) {
+            Stop();
+        }
+
+        Console.print("<- Car.Move(): void");
     }
 
     @Override
     public void Stop()
     {
         Console.print("-> Car.Stop()");
+        route.clear();
         Console.print("<- Car.Stop(): void");
+    }
+
+    @Override
+    public void Collide(IVehicle other)
+    {
+        Console.print("-> Car.Collide(other)");
+        this.Stop();
+        other.Stop();
+        if (lane != null) {
+            lane.changeState("BLOCKED");
+        }
+        Console.print("<- Car.Collide(other): void");
     }
 
     @Override
     public void Slipping()
     {
         Console.print("-> Car.Slipping()");
-        lane.changeState("blocked");
+        if (lane != null) lane.changeState("BLOCKED");
         Console.print("<- Car.Slipping(): void");
     }
 

@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import main.java.models.interfaces.ICleaning;
 import main.java.models.interfaces.ILane;
+import main.java.models.interfaces.IVehicle;
 import main.java.models.objects.Console;
 import main.java.models.objects.FileHandler;
 import main.java.models.objects.road.Intersection;
@@ -91,21 +92,63 @@ public class SnowPlower extends VehicleBase {
     @Override
     public void Move() {
         Console.print("\t\t-> SnowPlower.Move()");
+
+        // Takarítja az aktuális sávot
         PerformCleaning();
+
+        if (route == null || route.isEmpty()) {
+            Stop();
+            Console.print("\t\t<- SnowPlower.Move(): void (utvonal vege)");
+            return;
+        }
+
+        ILane nextLane = route.get(0);
+        String nextState = nextLane.getState();
+
+        if ("BLOCKED".equals(nextState)) {
+            Stop();
+            Console.print("\t\t<- SnowPlower.Move(): void (BLOCKED)");
+            return;
+        }
+
+        // Kilép az aktuális sávból, belép a következőbe
+        if (lane != null) {
+            lane.exitVehicle(this);
+        }
+
+        nextLane.enterVehicle(this);
+        lane = nextLane;
+        route.remove(0);
+
+        if (route.isEmpty()) {
+            Stop();
+        }
+
         Console.print("\t\t<- SnowPlower.Move()");
     }
 
     @Override
     public void Stop() {
         Console.print("\t-> SnowPlower.Stop()");
+        route.clear();
         Console.print("\t<- SnowPlower.Stop()");
      }
 
     @Override
     public void Slipping() { 
         Console.print("\t-> SnowPlower.Slipping()");
+        if (lane != null) lane.changeState("BLOCKED");
         Console.print("\t<- SnowPlower.Slipping()");
      }
+
+    @Override
+    public void Collide(IVehicle other) {
+        Console.print("\t-> SnowPlower.Collide(other)");
+        this.Stop();
+        other.Stop();
+        if (lane != null) lane.changeState("BLOCKED");
+        Console.print("\t<- SnowPlower.Collide(other)");
+    }
 
     @Override
     public void SetRoute(List<Intersection> intersections) {
