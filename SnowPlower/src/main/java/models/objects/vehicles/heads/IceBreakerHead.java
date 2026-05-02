@@ -1,6 +1,5 @@
 package main.java.models.objects.vehicles.heads;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import main.java.models.interfaces.ILane;
 import main.java.models.objects.Console;

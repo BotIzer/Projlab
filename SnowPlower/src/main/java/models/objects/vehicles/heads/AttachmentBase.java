@@ -4,7 +4,6 @@ import main.java.models.objects.vehicles.SnowPlower;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Scanner;
 
 import main.java.models.interfaces.*;

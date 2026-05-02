@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import main.java.models.interfaces.ICleaning;
 import main.java.models.interfaces.ILane;
 import main.java.models.objects.Console;
-import main.java.models.objects.FileHandler;
 import main.java.models.objects.road.Intersection;
 
 /**

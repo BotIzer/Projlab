@@ -21,7 +21,7 @@ public class TestRunner {
     public boolean runTests(int id){
         boolean res = false;
         switch (id) {
-            case 0 -> {res = test0(id);}
+            case 0 -> res = test0(id);
             default -> {break;}
         }
         Console.print("TEST RESULT: (" + id + ")" + res);
