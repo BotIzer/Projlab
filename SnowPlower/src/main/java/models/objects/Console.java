@@ -4,6 +4,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import main.java.models.interfaces.*;
 import main.java.models.objects.road.Intersection;
 import main.java.models.objects.road.Road;
@@ -120,9 +122,20 @@ public class Console implements ICommand {
             case "buy" -> buyEquipment();
             case "attach" -> {
                 if (isSelected && selectedVehicle instanceof SnowPlower plower) {
-                    player.listHeads();
-                    String id = Console.readLine();
-                    player.attach(plower, Integer.parseInt(id));
+                    String headList = player.listHeads();
+                    if (headList.isBlank()) {
+                        print("No heads in inventory. Buy some first with 'buy'.");
+                    } else {
+                        print(headList);
+                        String id = Console.readLine();
+                        try {
+                            player.attach(plower, Integer.parseInt(id));
+                        } catch (NumberFormatException e) {
+                            print("Invalid input: '" + id + "' — enter a number");
+                        } catch (IndexOutOfBoundsException e) {
+                            print("Invalid index: " + id);
+                        }
+                    }
                 } else {
                     print("No vehicle of type SnowPlower is selected");
                 }
@@ -259,24 +272,34 @@ public class Console implements ICommand {
     @Override
     public boolean setRoute() {
         print("-> Console.setRoute(vehicle)");
-        if(selectedVehicle == null) 
-        {
+        if (selectedVehicle == null) {
             print("No vehicle selected");
+            print("<- Console.setRoute(vehicle): false");
             return false;
         }
         print("Select intersections: (enter x to end selection)");
-        map.printInterSections();
+        print(map.printInterSections());
         String input = "";
         ArrayList<Integer> ids = new ArrayList<>();
         do {
             input = readLine();
-            input = (input == null) ? "" : input;
-            ids.add(Integer.parseInt(input));
+            input = (input == null) ? "x" : input.trim();
+            if (!input.equals("x")) {
+                try {
+                    ids.add(Integer.parseInt(input));
+                } catch (NumberFormatException e) {
+                    print("Invalid input: '" + input + "' — enter a number or x to finish");
+                }
+            }
         } while (!input.equals("x"));
 
+        if (ids.isEmpty()) {
+            print("<- Console.setRoute(vehicle): false (no intersections selected)");
+            return false;
+        }
         List<Intersection> route = map.determineRoute(ids);
         selectedVehicle.SetRoute(route);
-        print("<- Console.setRoute(vehicle):true");
+        print("<- Console.setRoute(vehicle): true");
         return true;
     }
 
@@ -308,9 +331,16 @@ public class Console implements ICommand {
     @Override
     public boolean buyEquipment() {
         print("-> Console.buyEquipment()");
-        shop.processPurchase(player);
-        print("<- Console.buyEquipment():true");
-        return true;
+        int plowersBefore = player.getPlowers().size();
+        boolean res = shop.processPurchase(player);
+        // Az újonnan vásárolt SnowPlower-eket a Map-hez is hozzáadjuk,
+        // hogy mentéskor és Dijkstránál is látszódjanak.
+        List<SnowPlower> plowers = player.getPlowers();
+        for (int i = plowersBefore; i < plowers.size(); i++) {
+            map.addVehicle(plowers.get(i));
+        }
+        print("<- Console.buyEquipment(): " + res);
+        return res;
     }
 
     /**
@@ -320,9 +350,15 @@ public class Console implements ICommand {
      */
     @Override
     public boolean changeEquipment() {
-        print("-> Console.changeEquipment(newEq)");
-        print("<- Console.changeEquipment(newEq):true");
-        return true;
+        print("-> Console.changeEquipment()");
+        if (selectedVehicle == null || !(selectedVehicle instanceof SnowPlower plower)) {
+            print("No SnowPlower selected");
+            print("<- Console.changeEquipment(): false");
+            return false;
+        }
+        boolean res = player.changeEquipment(plower);
+        print("<- Console.changeEquipment(): " + res);
+        return res;
     }
     /**
      * Kilistázza a pályán lévő autókat
@@ -332,12 +368,14 @@ public class Console implements ICommand {
     public String printVehicles() {
         print("-> Console.printVehicles()");
         StringBuilder list = new StringBuilder();
-        for (IVehicle vehicle : map.getVehicles()) {
-            list.append( "\n(");
-            list.append(map.getVehicles().indexOf(vehicle) );
-            list.append(") type:" );
-            list.append(vehicle.toString().split("\\r?\\n")[1].substring(5));
+        var vehicles = map.getVehicles().stream().filter(Predicate.not(Car.class::isInstance)).collect(Collectors.toCollection(ArrayList::new));
+        for (IVehicle vehicle : vehicles) {
+            list.append("\n(");
+            list.append(map.getVehicles().indexOf(vehicle));
+            list.append(") type:");
+            list.append(vehicle.getClass().getSimpleName());
         }
+        print(list.toString());
         print("<- Console.printVehicles():String");
         return list.toString();
     }
@@ -354,8 +392,10 @@ public class Console implements ICommand {
     @Override
     public String printInventory() {
         print("-> Console.printInventory()");
+        String inv = player.printInventory();
+        print(inv);
         print("<- Console.printInventory():String");
-        return "";
+        return inv;
     }
     /**
      * 

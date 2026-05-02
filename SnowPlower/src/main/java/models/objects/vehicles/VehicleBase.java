@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Scanner;
-
 import main.java.models.interfaces.*;
 import main.java.models.objects.Console;
 import main.java.models.objects.FileHandler;
@@ -121,10 +120,11 @@ public abstract class VehicleBase implements IVehicle {
     @Override
     public String printLong() {
         StringBuilder res = new StringBuilder(this.getClass().getSimpleName());
+
         res.append(id)
            .append(": ")
            .append(id).append(", ")
-           .append(lane.toList()).append(", ")
+           .append(lane == null? "" :lane.toList()).append(", ")
            .append("\n\tRoute: ");
         if (route != null) {
             for (ILane node : route) {
