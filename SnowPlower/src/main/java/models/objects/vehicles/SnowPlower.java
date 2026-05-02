@@ -50,7 +50,9 @@ public class SnowPlower extends VehicleBase {
      */
     public void PerformCleaning() {
         Console.print("\t\t\t-> SnowPlower.PerformCleaning()");
-        currentHead.Clean(lane, null);
+        if (lane != null && currentHead != null) {
+            currentHead.Clean(lane, this);
+        }
         Console.print("\t\t\t<- SnowPlower.PerformCleaning()");
     }
 
@@ -101,6 +103,15 @@ public class SnowPlower extends VehicleBase {
             Console.print("\t\t<- SnowPlower.Move(): void (utvonal vege)");
             return;
         }
+
+        if (route.get(0) == lane) {
+            route.remove(0);
+            if (route.isEmpty()) {
+                Stop();
+                return;
+            }
+        }
+
 
         ILane nextLane = route.get(0);
         String nextState = nextLane.getState();

@@ -112,10 +112,10 @@ public class Map {
                 // TC24: BLOCKED sáv visszaszámlálója
                 lane.tickBlocked();
                 // Véletlenszerű havazás (~5% esély sávonként)
-                int chance = rand.nextInt(100);
-                if (chance < 5) {
-                    lane.changeState("SNOWY");
-                }
+                // int chance = rand.nextInt(100);
+                // if (chance < 5) {
+                //     lane.changeState("SNOWY");
+                // }
             }
         }
     }

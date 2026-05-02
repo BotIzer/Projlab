@@ -33,6 +33,13 @@ public class Car extends VehicleBase
             Console.print("<- Car.Move(): void (utvonal vegere ert)");
             return;
         }
+        if (route.get(0) == lane) {
+            route.remove(0);
+            if (route.isEmpty()) {
+                Stop();
+                return;
+            }
+        }
 
         ILane nextLane = route.get(0);
         String nextState = nextLane.getState();

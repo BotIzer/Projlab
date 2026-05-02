@@ -3,9 +3,9 @@ buy
 2
 1
 x
-attach
-0
 select
+0
+attach
 0
 switch
 2
@@ -13,4 +13,6 @@ setRoute
 1
 2
 x
+step
+step
 step

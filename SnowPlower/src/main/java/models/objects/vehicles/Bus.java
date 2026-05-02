@@ -40,6 +40,14 @@ public class Bus extends VehicleBase {
             return;
         }
 
+        if (route.get(0) == lane) {
+            route.remove(0);
+            if (route.isEmpty()) {
+                Stop();
+                return;
+            }
+        }
+
         ILane nextLane = route.get(0);
         String nextState = nextLane.getState();
 

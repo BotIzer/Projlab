@@ -67,6 +67,13 @@ public class TestRunner {
                     ok++;
                 } else {
                     Console.print(label + " FAIL");
+                    Console.print("========================================");
+                    Console.print("ELVART (Expected):");
+                    Console.print(expected);
+                    Console.print("----------------------------------------");
+                    Console.print("KAPOTT (Actual):");
+                    Console.print(actual);
+                    Console.print("========================================\n");
                     fail++;
                 }
             } catch (Exception e) {

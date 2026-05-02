@@ -28,7 +28,7 @@ public class DragonHead extends AttachmentBase {
     public String toString() {
         StringBuilder res = new StringBuilder(super.toString());
         res.append("\nkerosene=").append(kerosene)
-           .append("amountPerSegment=").append(amountPerSegment);
+           .append("\namountPerSegment=").append(amountPerSegment);
         return res.toString();
     }
     @Override
