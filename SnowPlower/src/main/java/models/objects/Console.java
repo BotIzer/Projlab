@@ -120,26 +120,7 @@ public class Console implements ICommand {
             case "select" -> selectVehicle();
             case "setRoute" -> setRoute();
             case "buy" -> buyEquipment();
-            case "attach" -> {
-                if (isSelected && selectedVehicle instanceof SnowPlower plower) {
-                    String headList = player.listHeads();
-                    if (headList.isBlank()) {
-                        print("No heads in inventory. Buy some first with 'buy'.");
-                    } else {
-                        print(headList);
-                        String id = Console.readLine();
-                        try {
-                            player.attach(plower, Integer.parseInt(id));
-                        } catch (NumberFormatException e) {
-                            print("Invalid input: '" + id + "' — enter a number");
-                        } catch (IndexOutOfBoundsException e) {
-                            print("Invalid index: " + id);
-                        }
-                    }
-                } else {
-                    print("No vehicle of type SnowPlower is selected");
-                }
-            }
+            case "attach" -> attach(isSelected);
                 
             case "switch" -> {
                 if (isSelected && selectedVehicle instanceof SnowPlower plower) {
@@ -476,10 +457,10 @@ public class Console implements ICommand {
     }
     @Override
     public void runTests() {
-        print(TestRunner.TEST_MENU);
         TestRunner ts = new TestRunner();
         String input = "";
         do {
+            print(TestRunner.TEST_MENU);
             try {
                 input = br.readLine();
                 int id = Integer.parseInt(input);             
@@ -490,5 +471,25 @@ public class Console implements ICommand {
         } while (!input.equals("x"));
     }
 
+    private void attach(boolean isSelected){
+        if (isSelected && selectedVehicle instanceof SnowPlower plower) {
+            String headList = player.listHeads();
+            if (headList.isBlank()) {
+                print("No heads in inventory. Buy some first with 'buy'.");
+            } else {
+                print(headList);
+                String id = Console.readLine();
+                try {
+                    player.attach(plower, Integer.parseInt(id));
+                } catch (NumberFormatException e) {
+                    print("Invalid input: '" + id + "' — enter a number");
+                } catch (IndexOutOfBoundsException e) {
+                    print("Invalid index: " + id);
+                }
+            }
+        } else {
+            print("No vehicle of type SnowPlower is selected");
+        }
+    }
 
 }

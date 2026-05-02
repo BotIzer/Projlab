@@ -1,6 +1,5 @@
 package main.java.models.objects;
 
-import java.io.File;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.util.Arrays;
