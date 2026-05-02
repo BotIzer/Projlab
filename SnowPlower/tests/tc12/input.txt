@@ -2,3 +2,4 @@ load save.txt
 buy
 0
 1
+x

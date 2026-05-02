@@ -1,9 +1,16 @@
 load save.txt
+buy
+2
+1
+x
+attach
+0
 select
 0
-setRoute
+switch
 2
-3
+setRoute
+1
+2
 x
-step
 step

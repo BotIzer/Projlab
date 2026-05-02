@@ -1,2 +1,2 @@
-type=TunnelLane
-state=CLEAN
+type=RoadLane
+state=SNOWY_DEEP

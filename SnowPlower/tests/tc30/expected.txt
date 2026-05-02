@@ -1,2 +1,2 @@
-balance=300
 state=CLEAN
+balance=0

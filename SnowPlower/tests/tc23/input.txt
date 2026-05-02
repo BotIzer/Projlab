@@ -1,7 +1,5 @@
 load save.txt
-select
-2
-setRoute
-3
+buy
 4
+1
 x

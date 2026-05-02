@@ -1,2 +1,2 @@
 balance=500
-plowers=0;
+heads=

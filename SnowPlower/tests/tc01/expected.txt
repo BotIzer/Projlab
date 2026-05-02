@@ -1,2 +1,2 @@
-type=TunnelLane
-state=BLOCKED
+type=Car
+lane=0

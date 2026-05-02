@@ -1,2 +1,2 @@
 type=Bus
-lane=0
+route=

@@ -1,2 +1,5 @@
 load save.txt
+select
+1
 switch
+0

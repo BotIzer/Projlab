@@ -1,4 +1,11 @@
 load save.txt
+select
+2
+setRoute
+1
+3
+x
+step
 step
 step
 step

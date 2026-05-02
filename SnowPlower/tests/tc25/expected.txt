@@ -1,4 +1,2 @@
-V
-id=0
-type=SnowPlower
-currentHead=0
+type=Bus
+lane=0

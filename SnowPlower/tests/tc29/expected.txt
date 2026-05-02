@@ -1,3 +1,1 @@
-id=2
-type=RoadLane
-state=CLEAN
+state=SNOWY

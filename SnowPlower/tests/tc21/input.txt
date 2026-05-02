@@ -1,4 +1,2 @@
 load save.txt
-buy
-0
-2
+step

@@ -1,6 +1,7 @@
 load save.txt
 select
-0
+2
 setRoute
 4
 7
+x
