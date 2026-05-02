@@ -76,7 +76,6 @@ public class Console implements ICommand {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return;
     }
     /**
      * Kezeli a felhasználó által adott bemeneteket, 
@@ -134,7 +133,6 @@ public class Console implements ICommand {
             case "step" -> step();
             default -> print("Invalid command! \nType help for list of commands, or help <command> for specific command!");
         }
-        return;
     }
     /**
      * Inicializálja a játékot
