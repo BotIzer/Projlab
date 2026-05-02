@@ -57,7 +57,7 @@ public class Car extends VehicleBase
         res.append("\nid=" + id);
         res.append("\ntype=Car");
         res.append("\ncurrentPosition=" + currentPosition);
-        res.append("\nlane=" + lane.toList());
+        res.append("\nlane=" + (lane != null ? lane.toList() : ""));
         res.append("\nbaseSpeed=" + baseSpeed);
         res.append("\nroute=");
         for (ILane lane : route) {

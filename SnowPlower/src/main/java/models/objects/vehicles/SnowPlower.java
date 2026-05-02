@@ -120,7 +120,7 @@ public class SnowPlower extends VehicleBase {
         res.append("\nid=").append(id);
         res.append("\ntype=SnowPlower");
         res.append("\ncurrentPosition=" ).append(currentPosition);
-        res.append("\nlane=" ).append(lane.toList());
+        res.append("\nlane=").append(lane != null ? lane.toList() : "");
         res.append("\nbaseSpeed=" ).append(baseSpeed);
         res.append("\nroute=");
         for (ILane lane : route) {

@@ -24,7 +24,18 @@ public class Console implements ICommand {
     private Shop shop;
     private FileHandler fileHandler;
     //globális input olvasó
-    private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    private static boolean quiet = false;
+
+    /** Teszt futtatáshoz: átirányítja a bemenetet a megadott streamre. */
+    public static void setReader(java.io.InputStream is) {
+        br = new BufferedReader(new InputStreamReader(is));
+    }
+
+    /** Teszt futtatáshoz: elnyomja a nyomkövetési üzeneteket. */
+    public static void setQuiet(boolean q) {
+        quiet = q;
+    }
     //lokális konstansok
     private static final List<String> validCommands = List.of(
         "help", "load", "save", "select", "setRoute", "buy", "attach", "switch", "printState", "exit", "step" 
@@ -47,10 +58,11 @@ public class Console implements ICommand {
     *  @param msg Az átadott szöveg.
     */        
     public static void print(String msg){
+        if (quiet) return;
         try {
             System.out.println(msg);
         } catch (Exception e) {
-           e.printStackTrace(); 
+           e.printStackTrace();
         }
     }
     /**
@@ -298,6 +310,11 @@ public class Console implements ICommand {
             return false;
         }
         List<Intersection> route = map.determineRoute(ids);
+        if (route.isEmpty()) {
+            print("No such route");
+            print("<- Console.setRoute(vehicle): false");
+            return false;
+        }
         selectedVehicle.SetRoute(route);
         print("<- Console.setRoute(vehicle): true");
         return true;
@@ -466,28 +483,35 @@ public class Console implements ICommand {
     }
     @Override
     public void loop(){
-        String input = "";
+        String input;
         do {
             input = readLine();
-            input = (input == null) ? "" : input;
-            input(input); 
+            if (input == null) break;   // EOF – stdin kimerült (pl. teszt bemenetnél)
+            input(input);
         } while (!input.startsWith("e"));
-        
     }
+    /**
+     * Inicializálja a játék objektumokat loop() nélkül – tesztelési célra.
+     */
+    public void reset() {
+        player = new Player();
+        map = new Map();
+        fileHandler = new FileHandler();
+        shop = new Shop();
+        selectedVehicle = null;
+    }
+
+    /**
+     * Visszaadja a jelenlegi játékállapotot mentésre kész formátumban – tesztelési célra.
+     */
+    public String captureState() {
+        if (fileHandler == null || player == null || map == null) return "";
+        return fileHandler.format(player, map);
+    }
+
     @Override
     public void runTests() {
-        print(TestRunner.TEST_MENU);
-        TestRunner ts = new TestRunner();
-        String input = "";
-        do {
-            try {
-                input = br.readLine();
-                int id = Integer.parseInt(input);             
-                ts.runTests(id);
-            } catch (Exception e) {
-                print(e.getMessage());
-            }
-        } while (!input.equals("x"));
+        new TestRunner().runAll();
     }
 
 

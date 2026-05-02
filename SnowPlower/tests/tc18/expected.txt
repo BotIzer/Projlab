@@ -1,0 +1,4 @@
+balance=500
+type=SnowPlower
+type=Bus
+type=Car

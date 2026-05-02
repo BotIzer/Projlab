@@ -38,6 +38,7 @@ public abstract class VehicleBase implements IVehicle {
         id = idCtr++;
         currentPosition = 0.0;
         baseSpeed = bs;
+        route = new ArrayList<>();
     }
 
     @Override

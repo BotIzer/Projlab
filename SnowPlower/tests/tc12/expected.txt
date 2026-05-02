@@ -1,0 +1,5 @@
+balance=0
+id=3
+type=SnowPlower
+type=BlowerHead
+type=IceBreakerHead
