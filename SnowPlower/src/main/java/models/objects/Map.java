@@ -3,7 +3,6 @@ package main.java.models.objects;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 import main.java.models.interfaces.*;
 import main.java.models.objects.road.*;
 import main.java.models.objects.vehicles.VehicleBase;
@@ -220,9 +219,10 @@ public class Map {
         StringBuilder res = new StringBuilder();
         for (int i = 0; i < intersections.size(); i++) {
             String[] tmp = intersections.get(i).toString().split("\n");
-            res.append("(").append(i).append(") ")
+            res.append("\n").append("(").append(i).append(") ")
                .append(tmp[1]).append(" ").append(tmp[2]);
         }
+        res.append("\n").append("(x) End selection");
         return res.toString();
     }
 

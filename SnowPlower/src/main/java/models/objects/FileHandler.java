@@ -103,15 +103,15 @@ public class FileHandler {
             roads.values().forEach(r -> {r.resolve(lanes); 
                                          map.addRoad(r);});
             lanes.values().forEach(l -> ((LaneBase)l).resolve(intersections, vehicles));
-            
+            map.repairConnections();
+
         } catch (Exception e) {
             Console.print("Error reading file:\n" + e.getMessage());
             res = false;
         }
 
-
         Console.print("\t<-FileHandler.loadState(" + loc +"): " + res);
-        return true;
+        return res;
     }
     /**
      * Létrehozza a mentési formátumnak megfelelő szöveget
