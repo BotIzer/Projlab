@@ -185,10 +185,13 @@ public class Player {
             res.append(bus.toList()); 
             res.append(";");
         }
+        StringBuilder headString = new StringBuilder();
         res.append("\nheads=");
         for (ICleaning head : heads) {
-                res.append("\n").append(head.toString());
-            }
+                headString.append("\n").append(head.toString());
+                res.append(head.toList());
+        }
+        res.append(headString.toString());
         return res.toString();
     }
     //Kizárólag file-ból betöltésre használt, objektum szinkronizációs segédváltozók
