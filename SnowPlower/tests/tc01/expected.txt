@@ -1,0 +1,2 @@
+type=Car
+lane=0

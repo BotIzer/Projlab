@@ -1,0 +1,4 @@
+type=Bus
+currentPosition=0.0
+lane=0
+baseSpeed=30.0

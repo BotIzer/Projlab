@@ -1,0 +1,5 @@
+load save.txt
+buy
+1
+11
+x

@@ -1,0 +1,2 @@
+type=RoadLane
+state=BROKEN_ICE

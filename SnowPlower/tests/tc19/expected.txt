@@ -1,0 +1,3 @@
+balance=500
+plowers=0;
+buses=1;

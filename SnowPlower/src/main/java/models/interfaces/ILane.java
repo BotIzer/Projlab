@@ -1,6 +1,7 @@
 package main.java.models.interfaces;
 
 import main.java.models.objects.road.Intersection;
+import java.util.List;
 
 /**
  * Biztosítja, hogy minden sávtípus egységesen kezelhető legyen.
@@ -41,4 +42,13 @@ public interface ILane {
     public boolean changeState(String ns);
     public String toList();
     public String printLong(int roadId);
+
+    /** @return a sáv jelenlegi állapotának neve (pl. "ICY", "CLEAN") */
+    public String getState();
+
+    /** @return a sávon lévő járművek listája (másolat) */
+    public List<IVehicle> getVehicles();
+
+    /** TC24: BLOCKED állapot visszaszámlálója — Map.loop() hívja minden körben */
+    public void tickBlocked();
 }

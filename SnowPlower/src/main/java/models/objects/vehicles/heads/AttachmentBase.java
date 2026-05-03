@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Scanner;
 
+import main.java.models.objects.vehicles.heads.GravelerHead;
 import main.java.models.interfaces.*;
 
 /**
@@ -78,8 +79,7 @@ public abstract class AttachmentBase implements ICleaning {
             case "IceBreakerHead" -> {return new IceBreakerHead(data);}
             case "SalterHead" -> {return new SalterHead(data);}
             case "DragonHead" -> {return new DragonHead(data);}
-            //TODO uncomment when added
-            //case "GravelerHead" -> {return new GravelerHead(data);}
+            case "GravelerHead" -> {return new GravelerHead(data);}
             default -> throw new IllegalArgumentException("Unknown type: " + type);
         }
     }

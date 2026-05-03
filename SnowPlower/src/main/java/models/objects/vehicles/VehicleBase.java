@@ -38,6 +38,7 @@ public abstract class VehicleBase implements IVehicle {
         id = idCtr++;
         currentPosition = 0.0;
         baseSpeed = bs;
+        route = new ArrayList<>();
     }
 
     @Override
@@ -59,6 +60,16 @@ public abstract class VehicleBase implements IVehicle {
     {
         Console.print("-> VehicleBase.Slipping()");
         Console.print("<- VehicleBase.Slipping(): void");
+    }
+
+    @Override
+    public void Collide(IVehicle other)
+    {
+        Console.print("-> VehicleBase.Collide(other)");
+        this.Stop();
+        other.Stop();
+        if (lane != null) lane.changeState("BLOCKED");
+        Console.print("<- VehicleBase.Collide(other): void");
     }
 
     /**

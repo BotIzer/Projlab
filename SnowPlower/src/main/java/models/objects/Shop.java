@@ -10,6 +10,7 @@ import main.java.models.objects.vehicles.heads.BlowerHead;
 import main.java.models.objects.vehicles.heads.DragonHead;
 import main.java.models.objects.vehicles.heads.IceBreakerHead;
 import main.java.models.objects.vehicles.heads.SalterHead;
+import main.java.models.objects.vehicles.heads.GravelerHead;
 import main.java.models.objects.vehicles.heads.SweeperHead;
 
 /**
@@ -31,6 +32,7 @@ public class Shop {
         (3) Salter - 200               
         (4) IceBreaker - 200               
         (5) Dragon - 500
+        (6) Graveler - 150
                 """
         );
     }
@@ -118,6 +120,12 @@ public class Shop {
                 for (int i = 0; i < n; i++) {
                    lh.add(new DragonHead()); 
                    cost += 500;
+                }
+                break;
+            case 6:
+                for (int i = 0; i < n; i++) {
+                   lh.add(new GravelerHead());
+                   cost += 150;
                 }
                 break;
         

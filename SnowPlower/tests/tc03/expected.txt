@@ -1,0 +1,2 @@
+type=RoadLane
+state=SNOWY_DEEP

@@ -28,7 +28,10 @@ public class SalterHead extends AttachmentBase {
     @Override
     public void Clean(ILane lane, SnowPlower plow) {
         Console.print("\t\t\t\t-> SalterHead.Clean(ILane lane, SnowPlower plow)");
-        lane.clear();
+        String s = lane.getState();
+        if ("SNOWY".equals(s) || "ICY".equals(s)) {
+            lane.changeState("CLEAN");
+        }
         Console.print("\t\t\t\t<- SalterHead.Clean(ILane lane, SnowPlower plow)");
     }
     @Override
@@ -39,7 +42,7 @@ public class SalterHead extends AttachmentBase {
     public String toString() {
         StringBuilder res = new StringBuilder(super.toString());
         res.append("\nsaltStorage=").append(saltStorage)
-           .append("amountPerSegment=").append(amountPerSegment);
+           .append("\namountPerSegment=").append(amountPerSegment);
         return res.toString();
     }
 }

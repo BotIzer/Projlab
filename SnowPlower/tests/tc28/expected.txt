@@ -1,0 +1,3 @@
+type=Bus
+lane=0
+baseSpeed=30.0

@@ -18,7 +18,9 @@ public class BlowerHead extends AttachmentBase {
     @Override
     public void Clean(ILane lane, SnowPlower plow) {
         Console.print("\t\t\t\t-> BlowerHead.Clean(ILane lane, SnowPlower plow)");
-        lane.clear();
+        if ("SNOWY_DEEP".equals(lane.getState())) {
+            lane.changeState("SNOWY");
+        }
         Console.print("\t\t\t\t<- BlowerHead.Clean(ILane lane, SnowPlower plow)");
     }
     @Override

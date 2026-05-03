@@ -68,18 +68,57 @@ public abstract class LaneBase implements ILane {
     @Override
     public Intersection getEnd() { return end; }
 
+    protected int blockedTimer = 0;
+    protected static final int BLOCKED_TIMEOUT = 3;
+
     @Override
     public boolean changeState(String ns) {
         Console.print("->LaneBase.changeState(" + ns + ")");
-        Console.print("<-LaneBase.changeState(" + ns + "): true");
-        return true;
+        try {
+            State newState = State.valueOf(ns.toUpperCase());
+            this.state = newState;
+            if (newState == State.BLOCKED) {
+                blockedTimer = BLOCKED_TIMEOUT;
+            }
+            if (newState == State.CLEAN) {
+                carsPassedSinceSnow = 0;
+            }
+            Console.print("<-LaneBase.changeState(" + ns + "): true");
+            return true;
+        } catch (IllegalArgumentException e) {
+            Console.print("<-LaneBase.changeState(" + ns + "): false");
+            return false;
+        }
+    }
+
+    @Override
+    public String getState() {
+        return state != null ? state.toString() : "CLEAN";
+    }
+
+    @Override
+    public List<IVehicle> getVehicles() {
+        return new ArrayList<>(vehicles);
+    }
+
+    /** TC24: BLOCKED_TIMEOUT tick után BLOCKED → CLEAN visszaáll */
+    @Override
+    public void tickBlocked() {
+        if (state == State.BLOCKED) {
+            blockedTimer--;
+            if (blockedTimer <= 0) {
+                state = State.CLEAN;
+                blockedTimer = 0;
+            }
+        }
     }
 
     @Override
     public boolean clear() {
         Console.print("->LaneBase.clear()");
-        Console.print("<-LaneBase.clear()");
+        state = State.CLEAN;
         carsPassedSinceSnow = 0;
+        Console.print("<-LaneBase.clear(): true");
         return true;
     }
     @Override

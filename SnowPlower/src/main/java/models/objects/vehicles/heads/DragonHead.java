@@ -19,14 +19,16 @@ public class DragonHead extends AttachmentBase {
     @Override
     public void Clean(ILane lane, SnowPlower plow) {
         Console.print("\t\t\t\t-> DragonHead.Clean(ILane lane, SnowPlower plow)");
-        lane.clear();
+        if ("ICY".equals(lane.getState())) {
+            lane.changeState("CLEAN");
+        }
         Console.print("\t\t\t\t<- DragonHead.Clean(ILane lane, SnowPlower plow)");
     }
     @Override
     public String toString() {
         StringBuilder res = new StringBuilder(super.toString());
         res.append("\nkerosene=").append(kerosene)
-           .append("amountPerSegment=").append(amountPerSegment);
+           .append("\namountPerSegment=").append(amountPerSegment);
         return res.toString();
     }
     @Override

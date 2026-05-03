@@ -1,0 +1,2 @@
+type=Bus
+lane=0
