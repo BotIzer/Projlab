@@ -30,6 +30,14 @@ public class Bus extends VehicleBase {
         this.LineName = lineName;
         this.line = route;
     }
+
+    /** File-loading constructor */
+    public Bus(java.util.Map<String, String> data) {
+        super(1.0);
+        this.LineName = "";
+        this.line = new java.util.ArrayList<>();
+        applyData(data);
+    }
     @Override 
     public void Move() {
         Console.print("\t\t-> Bus.Move()");

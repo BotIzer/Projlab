@@ -90,7 +90,8 @@ public abstract class VehicleBase implements IVehicle {
         List<ILane> result;
 
         if (intersections.size() == 1) {
-            Intersection startNode = (lane != null) ? lane.getStart() : null;
+            // A jármű éppen az aktuális sávon van → a sáv VÉGÉRŐL induljon az útvonal
+            Intersection startNode = (lane != null) ? lane.getEnd() : null;
             result = (startNode != null)
                 ? gameMap.findRoute(startNode, intersections.get(0))
                 : null;
@@ -121,6 +122,11 @@ public abstract class VehicleBase implements IVehicle {
     public void setMap(main.java.models.objects.Map m){
         gameMap = m;
     }
+
+    /** Visszaadja az aktuális sávot (GUI-hoz). */
+    public ILane getLane() { return lane; }
+    /** Visszaadja az azonosítót (GUI-hoz). */
+    public int getId() { return id; }
 
     /** Visszaadja az aktuális útvonalat. Főleg tesztelési célra. */
     public List<ILane> getRoute() { return route; }
@@ -174,14 +180,11 @@ public abstract class VehicleBase implements IVehicle {
         String type = data.getOrDefault("type", "");
 
         IVehicle v = switch (type) {
-            case "SnowPlower" -> new SnowPlower(30);
-            case "Bus" -> new Bus(30, "", new ArrayList<>());
-            case "Car" -> new Car(30);
-            default -> throw new IllegalArgumentException("Unknown type: " + type);
+            case "SnowPlower" -> new SnowPlower(data);
+            case "Bus"        -> new Bus(data);
+            case "Car"        -> new Car(data);
+            default           -> throw new IllegalArgumentException("Unknown type: " + type);
         };
-
-        ((VehicleBase)v).applyData(data); 
-
         return v;
     }
 }

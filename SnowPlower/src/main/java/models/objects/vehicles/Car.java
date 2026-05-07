@@ -23,6 +23,12 @@ public class Car extends VehicleBase
         Console.print("\t!<<create>>Car");
     }
 
+    /** File-loading constructor */
+    public Car(java.util.Map<String, String> data) {
+        super(1.0);
+        applyData(data);
+    }
+
     @Override
     public void Move()
     {

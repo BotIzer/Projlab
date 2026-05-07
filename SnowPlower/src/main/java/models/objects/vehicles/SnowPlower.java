@@ -29,6 +29,13 @@ public class SnowPlower extends VehicleBase {
         currentHead = heads.get(0);
     }
 
+    /** File-loading constructor */
+    public SnowPlower(java.util.Map<String, String> data) {
+        super(1.0);
+        // heads and currentHead will be set by resolve()
+        applyData(data);
+    }
+
     public void attach(ICleaning newHead){
         Console.print("\t-> SnowPlower.attach(newHead)");
         heads.add(newHead);
@@ -50,7 +57,9 @@ public class SnowPlower extends VehicleBase {
      */
     public void PerformCleaning() {
         Console.print("\t\t\t-> SnowPlower.PerformCleaning()");
-        currentHead.Clean(lane, null);
+        if (currentHead != null && lane != null) {
+            currentHead.Clean(lane, null);
+        }
         Console.print("\t\t\t<- SnowPlower.PerformCleaning()");
     }
 
@@ -64,9 +73,16 @@ public class SnowPlower extends VehicleBase {
         return true;
     }
 
+    /** GUI-hoz: aktuális fej neve. */
+    public String getCurrentHeadName() {
+        return currentHead != null ? currentHead.print() : "–";
+    }
+    /** GUI-hoz: fejek listája SP-n. */
+    public List<ICleaning> getHeads() { return heads; }
+
     /**
      * Kilistázza a leltárban lévő kotrófejeket kiválasztás érdekében
-     * (attach segédfüggvénye) 
+     * (attach segédfüggvénye)
      * @return
      */
     public String listHeads(){
@@ -170,7 +186,7 @@ public class SnowPlower extends VehicleBase {
             res.append(lane.toList());
             res.append(";");
         }
-        res.append("\ncurrentHead=").append(currentHead.toList());
+        res.append("\ncurrentHead=").append(currentHead != null ? currentHead.toList() : "");
         res.append("\nheads=");
         StringBuilder headString = new StringBuilder();
         for (ICleaning head : heads) {
@@ -202,7 +218,7 @@ public class SnowPlower extends VehicleBase {
                 default -> {break;}
             }
         }
-        res.append("\n\tCurrentHead: ").append(currentHead.toList());
+        res.append("\n\tCurrentHead: ").append(currentHead != null ? currentHead.toList() : "-");
         res.append("\n\tHeads: Sweeper: ").append(sweeper)
            .append("\n\t       Blower: ").append(blower)
            .append("\n\t       Salter: ").append(salter)

@@ -26,6 +26,8 @@ public class Console implements ICommand {
     //globális input olvasó
     private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     private static boolean quiet = false;
+    /** GUI log-sink: ha be van állítva, ide kerülnek a print() üzenetek. */
+    private static java.util.function.Consumer<String> logSink = null;
 
     /** Teszt futtatáshoz: átirányítja a bemenetet a megadott streamre. */
     public static void setReader(java.io.InputStream is) {
@@ -35,6 +37,11 @@ public class Console implements ICommand {
     /** Teszt futtatáshoz: elnyomja a nyomkövetési üzeneteket. */
     public static void setQuiet(boolean q) {
         quiet = q;
+    }
+
+    /** GUI módhoz: naplóüzenetek átirányítása (null = vissza System.out-ra). */
+    public static void setLogSink(java.util.function.Consumer<String> sink) {
+        logSink = sink;
     }
     //lokális konstansok
     private static final List<String> validCommands = List.of(
@@ -59,6 +66,7 @@ public class Console implements ICommand {
     */        
     public static void print(String msg){
         if (quiet) return;
+        if (logSink != null) { logSink.accept(msg); return; }
         try {
             System.out.println(msg);
         } catch (Exception e) {
@@ -433,8 +441,47 @@ public class Console implements ICommand {
         }
     }
 
-    private void step(){
-        map.loop();
+    public void step(){
+        if (map != null) map.loop();
+    }
+
+    // ── GUI helper methods ─────────────────────────────────────────
+
+    /** GUI-hoz: visszaadja a pályát (observer-regisztráláshoz). */
+    public Map getMap()    { return map; }
+    /** GUI-hoz: visszaadja a játékost (observer-regisztráláshoz). */
+    public Player getPlayer() { return player; }
+    /** GUI-hoz: kiválasztja az adott indexű járművet. */
+    public void selectVehicleById(int idx) {
+        java.util.List<IVehicle> vs = map.getVehicles();
+        if (idx >= 0 && idx < vs.size()) selectedVehicle = vs.get(idx);
+    }
+    /** GUI-hoz: visszaadja a kiválasztott járművet. */
+    public IVehicle getSelectedVehicle() { return selectedVehicle; }
+    /** GUI-hoz: útvonal beállítása metszéspont-azonosítók listájával. */
+    public boolean setRouteForSelected(java.util.List<Integer> ids) {
+        if (selectedVehicle == null || map == null) return false;
+        java.util.List<main.java.models.objects.road.Intersection> route =
+            map.determineRoute(ids);
+        if (route.isEmpty()) return false;
+        selectedVehicle.SetRoute(route);
+        return true;
+    }
+    /** GUI-hoz: felszereli az idx-edik player-fejét a kiválasztott SP-re. */
+    public boolean attachToSelected(int playerHeadIdx) {
+        if (selectedVehicle instanceof main.java.models.objects.vehicles.SnowPlower sp) {
+            try { player.attach(sp, playerHeadIdx); return true; }
+            catch (Exception e) { return false; }
+        }
+        return false;
+    }
+    /** GUI-hoz: vált fejét a kiválasztott SP-en. */
+    public boolean switchHeadForSelected(int spHeadIdx) {
+        if (selectedVehicle instanceof main.java.models.objects.vehicles.SnowPlower sp) {
+            sp.ChangeAttachment(spHeadIdx);
+            return true;
+        }
+        return false;
     }
 
     @Override

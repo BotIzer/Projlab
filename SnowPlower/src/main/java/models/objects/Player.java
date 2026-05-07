@@ -12,12 +12,21 @@ import main.java.models.objects.vehicles.*;
 /**
  * A felhasználót (játékost) és annak erőforrásait reprezentáló osztály.
  */
-public class Player {
+public class Player implements IObservable {
 
     private int money;
     private List<SnowPlower> plowers;
     private List<Bus> buses;
     private List<ICleaning> heads;
+
+    // ── Observer support ──────────────────────────────────────────
+    private final List<IViewObserver> observers = new java.util.ArrayList<>();
+    @Override public void addObserver(IViewObserver o)    { observers.add(o); }
+    @Override public void removeObserver(IViewObserver o) { observers.remove(o); }
+    @Override public void notifyObservers() {
+        for (IViewObserver o : new java.util.ArrayList<>(observers)) o.update(this);
+    }
+    public int getBalance() { return money; }
 
     public Player(){
         money = 500;
@@ -137,6 +146,7 @@ public class Player {
         plowers.addAll(lsp);
         heads.addAll(lh);
         Console.print("\t<-Player.updateInventory(): " + lsp.size() + " plower(s), " + lh.size() + " head(s) added");
+        notifyObservers();
     }
 
     /** Visszaadja a hókotrók listáját (csak olvasható nézet, map-szinkronhoz). */
@@ -150,7 +160,8 @@ public class Player {
     public boolean removeFunds(int n){
         if (n <= money) {
            money -= n;
-           return true; 
+           notifyObservers();
+           return true;
         } else {
             return false;
         }
@@ -218,23 +229,18 @@ public class Player {
     public void resolve(Map<Integer, IVehicle> vehicles, Map<Integer, ICleaning> heads) {
         this.plowers = pendingPlowerIds.stream()
             .map(vehicles::get)
-            .filter(SnowPlower.class::isInstance)
-            .map(SnowPlower.class::cast)
+            .filter(v -> v instanceof SnowPlower)
+            .map(v -> (SnowPlower) v)
             .collect(Collectors.toCollection(ArrayList::new));
-
         this.buses = pendingBusIds.stream()
             .map(vehicles::get)
-            .filter(Bus.class::isInstance)
-            .map(Bus.class::cast)
+            .filter(v -> v instanceof Bus)
+            .map(v -> (Bus) v)
             .collect(Collectors.toCollection(ArrayList::new));
-
         this.heads = pendingHeadIds.stream()
             .map(heads::get)
-            .filter(ICleaning.class::isInstance)
+            .filter(java.util.Objects::nonNull)
             .collect(Collectors.toCollection(ArrayList::new));
-
-        
-
         pendingPlowerIds.clear();
         pendingBusIds.clear();
         pendingHeadIds.clear();

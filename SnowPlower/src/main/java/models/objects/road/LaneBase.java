@@ -69,7 +69,7 @@ public abstract class LaneBase implements ILane {
     public Intersection getEnd() { return end; }
 
     protected int blockedTimer = 0;
-    protected static final int BLOCKED_TIMEOUT = 3;
+    protected static final int BLOCKED_TIMEOUT = 30;
 
     @Override
     public boolean changeState(String ns) {

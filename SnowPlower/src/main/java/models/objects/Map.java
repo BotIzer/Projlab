@@ -3,19 +3,36 @@ package main.java.models.objects;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 import main.java.models.interfaces.*;
 import main.java.models.objects.road.*;
+import main.java.models.objects.vehicles.Car;
 import main.java.models.objects.vehicles.VehicleBase;
 import main.java.models.objects.vehicles.heads.AttachmentBase;
 
 /**
- * A játékbeli úthálózatot és környezetet reprezentáló központi osztály.
+ * A jatekbeli uthaloztot es kornyezetet reprezentalo kozponti osztaly.
  */
-public class Map {
+public class Map implements IObservable {
     private List<Road> roads;
     private List<Intersection> intersections;
     private List<IVehicle> vehicles;
     private static final Random rand = new Random();
+
+    // Observer support
+    private final List<IViewObserver> observers = new ArrayList<>();
+    @Override public void addObserver(IViewObserver o)    { observers.add(o); }
+    @Override public void removeObserver(IViewObserver o) { observers.remove(o); }
+    @Override public void notifyObservers() {
+        for (IViewObserver o : new ArrayList<>(observers)) o.update(this);
+    }
+
+    public List<ILane> getAllLanes() {
+        return roads.stream()
+            .flatMap(r -> r.getLanes().stream())
+            .collect(Collectors.toList());
+    }
+    public List<Road> getRoads() { return roads; }
 
     public List<Intersection> getIntersections() {
         return intersections;
@@ -28,30 +45,18 @@ public class Map {
         vehicles = new ArrayList<>();
     }
 
-    /**
-     * Felvesz egy új útszakaszt a térképre.
-     * @param road az új út
-     */
     public void addRoad(Road road) {
         Console.print("->Map.addRoad(road)");
         roads.add(road);
         Console.print("<-Map.addRoad(road)");
     }
 
-    /**
-     * Felvesz egy új kereszteződést a térképre.
-     * @param intersection az új kereszteződés
-     */
     public void addIntersections(Intersection intersection) {
         Console.print("->Map.addIntersections(intersection)");
         intersections.add(intersection);
         Console.print("<-Map.addIntersections(intersection)");
     }
 
-    /**
-     * Felvesz egy új járművet a térképre.
-     * @param vehicle az új jármű
-     */
     public void addVehicle(IVehicle vehicle) {
         Console.print("->Map.addVehicle(vehicle)");
         vehicles.add(vehicle);
@@ -61,22 +66,13 @@ public class Map {
         Console.print("<-Map.addVehicle(vehicle)");
     }
 
-    /**
-     * Listázza a járműveket.
-     * formátum: (sorszám) Név/Tipus
-     */
     public void listVehicles(){
         for (int i = 0; i < vehicles.size(); i++) {
             String out = "(" + i + ")" + " " + vehicles.get(i).getClass().getSimpleName();
             Console.print(out);
         }
     }
-    /**
-     * Meghatározza az érintendő végpontokat kiválasztás után
-     * Console.setRoute() segédfüggvénye
-     * @param ids
-     * @return
-     */
+
     public List<Intersection> determineRoute(List<Integer> ids){
         ArrayList<Intersection> route = new ArrayList<>();
         for (Integer id : ids) {
@@ -84,10 +80,11 @@ public class Map {
                 route.clear();
                 return route;
             }
-            route.add(intersections.get(id)); 
+            route.add(intersections.get(id));
         }
         return route;
     }
+
     public void clear(){
         roads.clear();
         vehicles.clear();
@@ -97,36 +94,79 @@ public class Map {
         Road.reset();
         LaneBase.reset();
         AttachmentBase.reset();
-         
     }
+
     /**
-     * Végrehajt egy szimulációs ciklust a térképen.
+     * Szimulacioس ciklus sorrendje:
+     *  1. Minden jarmu mozog
+     *  2. BLOCKED visszaszamlalo tick + veletlen havazas
+     *  3. Auto-route Cars-oknak ha megalltak es a savjuk mar szabad
+     *  4. Nezet ertesitese
      */
     public void loop(){
         Console.print("-> Map.loop()");
+
+        // 1. Mozgas
         for (IVehicle vehicle : new ArrayList<>(vehicles)) {
             vehicle.Move();
         }
+
+        // 2. Savok tickelese es havazas (~2% per sav)
         for (Road r : roads) {
             for (ILane lane : r.getLanes()) {
-                // TC24: BLOCKED sáv visszaszámlálója
                 lane.tickBlocked();
-                // Véletlenszerű havazás (~5% esély sávonként)
-                int chance = rand.nextInt(100);
-                if (chance < 5) {
+                // Havazas csak CLEAN savokon (ne irja felul a GRAVELED/ICY stb. allapotot)
+                if ("CLEAN".equals(lane.getState()) && rand.nextInt(100) < 2) {
                     lane.changeState("SNOWY");
                 }
             }
         }
+
+        // 3. Auto-route: Cars ujrainditas ha megalltak es savjuk mar nem BLOCKED
+        if (intersections.size() >= 2) {
+            for (IVehicle vehicle : vehicles) {
+                if (!(vehicle instanceof Car car)) continue;
+                if (!car.getRoute().isEmpty()) continue;
+
+                ILane currentLane = car.getLane();
+                if (currentLane == null) continue;
+
+                // Varjunk ha meg BLOCKED sávon all
+                if ("BLOCKED".equals(currentLane.getState())) continue;
+
+                // Utvonal keresese a sav vegerol; ha zsákutca, a sav elejerol
+                boolean assigned = assignRandomRoute(car, currentLane.getEnd());
+                if (!assigned) {
+                    assignRandomRoute(car, currentLane.getStart());
+                }
+            }
+        }
+
+        // 4. Nezet ertesitese
+        notifyObservers();
+    }
+
+    /**
+     * Veletlen celutvonalat keres az autonak a megadott kezdoponttol.
+     * Kizarja a BLOCKED elso savval rendelkezo utvonalakat.
+     */
+    private boolean assignRandomRoute(Car car, Intersection from) {
+        if (from == null) return false;
+        int maxAttempts = intersections.size() * 3;
+        for (int attempt = 0; attempt < maxAttempts; attempt++) {
+            Intersection to = intersections.get(rand.nextInt(intersections.size()));
+            if (to == from) continue;
+            List<ILane> newRoute = findRoute(from, to);
+            if (newRoute == null || newRoute.isEmpty()) continue;
+            if ("BLOCKED".equals(newRoute.get(0).getState())) continue;
+            car.SetRoute(java.util.List.of(from, to));
+            return true;
+        }
+        return false;
     }
 
     public List<IVehicle> getVehicles(){ return vehicles; }
 
-    /**
-     * Betöltés után meggyógyítja a road–intersection kapcsolatokat.
-     * Ha egy sáv start/end kereszteződéséből hiányzik az adott road,
-     * hozzáadja — így visitOutgoingLanes() minden kimenő élt megtalál.
-     */
     public void repairConnections() {
         for (Road road : roads) {
             for (ILane lane : road.getLanes()) {
@@ -136,10 +176,6 @@ public class Map {
         }
     }
 
-    /**
-     * TDA: megmondja a Map-nek, hogy számítsa ki a legrövidebb utat.
-     * A hívónak nem kell tudnia az úthálózat belső struktúráját.
-     */
     public List<ILane> findRoute(Intersection start, Intersection end) {
         return Dijkstra.dijkstra(start, end);
     }
@@ -158,7 +194,7 @@ public class Map {
             for (ILane lane : road.getLanes()) {
                 res.append("\n");
                 res.append(lane.toString());
-            } 
+            }
         }
         for (IVehicle vehicle : vehicles) {
             res.append("\n");
@@ -168,37 +204,26 @@ public class Map {
         return res.toString();
     }
 
-    /**
-     * Listázza a pálya tartalmát 
-     * @return pálya állapota printState -s formátumban
-     */
     public String print(){
         StringBuilder res = new StringBuilder();
         res.append("Map:")
            .append("\n\troads: ");
         for (Road road : roads) {
             for (ILane lane : road.getLanes()) {
-               res.append(lane.toList())
-                  .append(", "); 
+               res.append(lane.toList()).append(", ");
             }
         }
         res.append("\n\tintersections: ");
         for (Intersection intersection : intersections) {
-            res.append(intersection.toList())
-               .append(", ");
+            res.append(intersection.toList()).append(", ");
         }
         res.append("\n\tvehicles: ");
         for (IVehicle vehicle : vehicles) {
-            res.append(vehicle.toList())
-               .append(", ");
+            res.append(vehicle.toList()).append(", ");
         }
-
         return res.toString();
     }
-    /**
-     * Részletes listázó
-     * @return printState formátumú szöveg
-     */
+
     public String printLong(){
         StringBuilder res = new StringBuilder();
         res.append(print());
@@ -211,10 +236,7 @@ public class Map {
         }
         return res.toString();
     }
-    /**
-     * Listázza a végpontokat kiválasztási célból
-     * @return végpontok listája, sorszáma
-     */
+
     public String printInterSections(){
         StringBuilder res = new StringBuilder();
         for (int i = 0; i < intersections.size(); i++) {
@@ -226,12 +248,8 @@ public class Map {
         return res.toString();
     }
 
-    /**
-     * Általános inicializálás a szimulációhoz.
-     */
     public void initGeneral(){
         ArrayList<ILane> lanes = (ArrayList<ILane>)roads.get(0).getLanes();
-        
         for (int i = 0; i < vehicles.size(); i++) {
             ILane lane = lanes.get(i);
             VehicleBase vehicle = (VehicleBase)vehicles.get(i);
@@ -240,10 +258,6 @@ public class Map {
         }
     }
 
-
-    /**
-     * Jeges út szimulációjának inicializálása.
-     */
     public void initIcy(){
         ArrayList<ILane> lanes = (ArrayList<ILane>)roads.get(0).getLanes();
         for (int i = 0; i < vehicles.size(); i++) {

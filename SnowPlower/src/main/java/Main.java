@@ -1,6 +1,7 @@
 package main.java;
 
 
+import main.java.gui.GameFrame;
 import main.java.models.objects.Console;
 import main.java.models.interfaces.ICommand;
 
@@ -9,7 +10,7 @@ import main.java.models.interfaces.ICommand;
  * Felelős a megfelelő használati esetek elindításáért.
  */
 public class Main {
-        
+
     private static ICommand console = new Console();
 
     public static void main(String[] args) {
@@ -18,8 +19,9 @@ public class Main {
             boolean invalidInput = true;
             do{
                 Console.print("Start game or Run tests?");
-                Console.print("(0) Start game");
+                Console.print("(0) Start game (konzol)");
                 Console.print("(1) Run tests");
+                Console.print("(2) GUI mód (Swing)");
                 Console.print("""
                 -----------------
                 (x)Exit
@@ -29,10 +31,11 @@ public class Main {
                     case "x" -> invalidInput = false;
                     case "0" -> invalidInput = false;
                     case "1" -> invalidInput = false;
+                    case "2" -> invalidInput = false;
                     default -> {break;}
                 }
 
-            }   while (invalidInput);  
+            }   while (invalidInput);
 
             switch (line) {
                 case "x":
@@ -43,25 +46,17 @@ public class Main {
                 case "1":
                     console.runTests();
                     break;
+                case "2":
+                    // Swing GUI indítása az EDT-n
+                    javax.swing.SwingUtilities.invokeLater(() -> new GameFrame());
+                    // Megvárjuk, amíg az ablak bezárodik (EDT fut)
+                    // Program stays alive via Swing EDT
+                    break;
                 default:
                     break;
             }
-
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        console.closeReader();
-
-    }
-
-    private static void handleInput(String line){
-        switch (line) {
-            case "0":
-                break;
-            case "1":
-                break;
-            default:
-                break;
         }
     }
 }
